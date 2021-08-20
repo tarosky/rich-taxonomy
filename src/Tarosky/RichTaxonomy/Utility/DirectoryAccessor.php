@@ -9,35 +9,6 @@ namespace Tarosky\RichTaxonomy\Utility;
  */
 trait DirectoryAccessor {
 
-	private static $base_dir = '';
-
-	private static $base_url = '';
-
-	private static $version = '0.0.0';
-
-	/**
-	 * Set directory.
-	 *
-	 * @param string $file base file.
-	 * @return static
-	 */
-	public function set_dir( $file ) {
-		self::$base_dir = plugin_dir_path( $file );
-		self::$base_url = plugin_dir_url( $file );
-		return $this;
-	}
-
-	/**
-	 * Set current version.
-	 *
-	 * @param string $version Version.
-	 * @return static
-	 */
-	public function set_version( $version ) {
-		self::$version = $version;
-		return $this;
-	}
-
 	/**
 	 * Get base directory.
 	 *
@@ -77,6 +48,6 @@ trait DirectoryAccessor {
 	 * @param string[] $deps   Dependencies.
 	 */
 	public function enqueue_js( $handle, $path, $deps ) {
-		wp_enqueue_script( $handle, $this->asset_url( $path ), $deps, self::$version, true );
+		wp_enqueue_script( $handle, $this->asset_url( $path ), $deps, rich_taxonomy_version(), true );
 	}
 }

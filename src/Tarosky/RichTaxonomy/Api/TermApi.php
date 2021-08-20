@@ -1,32 +1,26 @@
 <?php
 
-namespace Tarosky\RichTaxonomy\Controller;
+namespace Tarosky\RichTaxonomy\Api;
 
+use Tarosky\RichTaxonomy\Pattern\RestApiPattern;
 use Tarosky\RichTaxonomy\Pattern\Singleton;
-use Tarosky\RichTaxonomy\Utility\PageAccessor;
-use Tarosky\RichTaxonomy\Utility\SettingAccessor;
 
 /**
  * Rest API handler.
  *
  * @package rich-taxonomy
  */
-class RestApi extends Singleton {
-
-	use PageAccessor, SettingAccessor;
+class TermApi extends RestApiPattern {
 
 	/**
-	 * Constructor.
+	 * @inheritDoc
 	 */
-	protected function init() {
-		add_action( 'rest_api_init', [ $this, 'register_rest' ] );
+	protected function route() {
+		return 'post/(?P<term_id>\d+)';
 	}
 
-	/**
-	 * Register REST API endpoint.
-	 */
-	public function register_rest() {
-		register_rest_route( 'rich-taxonomy/v1', 'post/(?P<term_id>\d+)', [
+	protected function get_rest_setting() {
+		return [
 			[
 				'methods'             => 'POST',
 				'args'                => [
@@ -39,17 +33,7 @@ class RestApi extends Singleton {
 				'callback'            => [ $this, 'callback' ],
 				'permission_callback' => [ $this, 'permission_callback' ],
 			]
-		] );
-	}
-
-	/**
-	 * Handle request.
-	 *
-	 * @param \WP_REST_Request $request
-	 * @return bool
-	 */
-	public function permission_callback( $request ) {
-		return current_user_can( 'edit_posts' );
+		];
 	}
 
 	/**
@@ -73,10 +57,7 @@ class RestApi extends Singleton {
 	}
 
 	/**
-	 * Handle request.
-	 *
-	 * @param \WP_REST_Request $request Request object.
-	 * @return \WP_Error|\WP_REST_Response
+	 * @inheritDoc
 	 */
 	public function callback( $request ) {
 		$term = get_term( $request->get_param( 'term_id' ) );

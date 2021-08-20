@@ -3,11 +3,11 @@
 namespace Tarosky\RichTaxonomy;
 
 
+use Tarosky\RichTaxonomy\Api\PostApi;
+use Tarosky\RichTaxonomy\Api\TermApi;
 use Tarosky\RichTaxonomy\Controller\Editor;
-use Tarosky\RichTaxonomy\Controller\RestApi;
 use Tarosky\RichTaxonomy\Controller\Setting;
 use Tarosky\RichTaxonomy\Pattern\Singleton;
-use Tarosky\RichTaxonomy\Utility\DirectoryAccessor;
 
 /**
  * Bootstrap file.
@@ -16,14 +16,15 @@ use Tarosky\RichTaxonomy\Utility\DirectoryAccessor;
  */
 class Bootstrap extends Singleton {
 
-	use DirectoryAccessor;
-
 	/**
 	 * Make instance.
 	 */
 	protected function init() {
+		// Controllers.
 		Setting::get_instance();
 		Editor::get_instance();
-		RestApi::get_instance();
+		// REST API
+		TermApi::get_instance();
+		PostApi::get_instance();
 	}
 }

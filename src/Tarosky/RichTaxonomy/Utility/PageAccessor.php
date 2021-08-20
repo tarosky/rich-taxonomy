@@ -64,6 +64,24 @@ trait PageAccessor {
 	}
 
 	/**
+	 * Get term object of post.
+	 *
+	 * @param \WP_Post|null|int $post Post object.
+	 * @return \WP_Term|null
+	 */
+	public function get_assigned_term( $post = null ) {
+		$post = get_post( $post );
+		if ( ! $post ) {
+			return null;
+		}
+		$term_id = get_post_meta( $post->ID, $this->post_meta_key(), true );
+		if ( ! $term_id ) {
+			return null;
+		}
+		return get_term( $term_id );
+	}
+
+	/**
 	 * Create draft for term.
 	 *
 	 * @param \WP_Term $term    Term object.

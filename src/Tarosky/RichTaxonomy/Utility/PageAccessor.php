@@ -40,10 +40,11 @@ trait PageAccessor {
 	/**
 	 * Get post object assigned to term.
 	 *
-	 * @param \WP_Term $term Term object.
+	 * @param \WP_Term $term         Term object.
+	 * @param bool     $only_publish If true, returns only published page.
 	 * @return \WP_Post|null
 	 */
-	public function get_post( $term ) {
+	public function get_post( $term, $only_publish = false ) {
 		$query_args = apply_filters( 'rich_taxonomy_get_post_args', [
 			'post_type'      => $this->post_type(),
 			'posts_per_page' => 1,
@@ -55,6 +56,9 @@ trait PageAccessor {
 			],
 			'no_found_rows' => true,
 		] );
+		if ( $only_publish ) {
+			$query_args['post_status'] = 'publish';
+		}
 		$query = new \WP_Query( $query_args );
 		if ( $query->have_posts() ) {
 			return $query->posts[0];

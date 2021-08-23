@@ -6,6 +6,7 @@ namespace Tarosky\RichTaxonomy;
 use Tarosky\RichTaxonomy\Api\PostApi;
 use Tarosky\RichTaxonomy\Api\TermApi;
 use Tarosky\RichTaxonomy\Controller\Editor;
+use Tarosky\RichTaxonomy\Controller\Rewrites;
 use Tarosky\RichTaxonomy\Controller\Setting;
 use Tarosky\RichTaxonomy\Pattern\Singleton;
 
@@ -26,5 +27,7 @@ class Bootstrap extends Singleton {
 		// REST API
 		TermApi::get_instance();
 		PostApi::get_instance();
+		// Rewrite rules.
+		Rewrites::get_instance();
 	}
 }

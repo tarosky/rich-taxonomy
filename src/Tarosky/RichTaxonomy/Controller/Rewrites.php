@@ -21,10 +21,16 @@ class Rewrites extends Singleton {
 	 * Constructor
 	 */
 	protected function init() {
+		// Change request.
 		add_filter( 'posts_results', [ $this, 'posts_results' ], 10, 2 );
+		// Change title.
 		add_filter( 'single_term_title', [ $this, 'change_title' ] );
 		add_filter( 'single_tag_title', [ $this, 'change_title' ] );
 		add_filter( 'single_cat_title', [ $this, 'change_title' ] );
+		// Change template.
+		add_filter( 'tag_template', [ $this, 'template_include' ], 10, 3 );
+		add_filter( 'category_template', [ $this, 'template_include' ], 10, 3 );
+		add_filter( 'taxonomy_template', [ $this, 'template_include' ], 10, 3 );
 	}
 
 	/**
@@ -95,5 +101,26 @@ class Rewrites extends Singleton {
 		}
 		$title = get_the_title( $page );
 		return apply_filters( 'rich_taxonomy_archive_title', $title, $page, get_queried_object() );
+	}
+
+	/**
+	 * Change template.
+	 *
+	 * @param string   $template  Path to the template. See locate_template().
+	 * @param string   $type      Sanitized filename without extension.
+	 * @param string[] $templates A list of template candidates, in descending order of priority.
+	 * @return string
+	 */
+	public function template_include( $template, $type, $templates ) {
+		global $wp_query;
+		$page = $this->get_taxonomy_page_from_query( $wp_query );
+		if ( ! $page ) {
+			return $template;
+		}
+		$alternative_template = Templates::get_instance()->get_post_template_file( $page );
+		if ( $alternative_template ) {
+			$template = $alternative_template;
+		}
+		return $template;
 	}
 }

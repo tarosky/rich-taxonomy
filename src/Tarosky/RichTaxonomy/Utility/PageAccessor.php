@@ -97,6 +97,7 @@ trait PageAccessor {
 		$default_args = apply_filters( 'rich_taxonomy_default_post_object', [
 			'post_type'    => $this->post_type(),
 			'post_title'   => $term->name,
+			'post_name'    => $term->slug,
 			'post_excerpt' => $term->description,
 			'post_content' => '',
 			'post_status'  => 'draft',

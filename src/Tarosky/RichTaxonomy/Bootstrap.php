@@ -8,6 +8,7 @@ use Tarosky\RichTaxonomy\Api\TermApi;
 use Tarosky\RichTaxonomy\Controller\Editor;
 use Tarosky\RichTaxonomy\Controller\Rewrites;
 use Tarosky\RichTaxonomy\Controller\Setting;
+use Tarosky\RichTaxonomy\Controller\Templates;
 use Tarosky\RichTaxonomy\Pattern\Singleton;
 
 /**
@@ -24,6 +25,7 @@ class Bootstrap extends Singleton {
 		// Controllers.
 		Setting::get_instance();
 		Editor::get_instance();
+		Templates::get_instance();
 		// REST API
 		TermApi::get_instance();
 		PostApi::get_instance();

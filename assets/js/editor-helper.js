@@ -1,5 +1,8 @@
 /*!
  * Editor helper.
+ *
+ * @handle rich-taxonomy-editor-helper
+ * @deps wp-element, wp-plugins, wp-edit-post, wp-compose, wp-components, wp-data, wp-i18n
  */
 
 const { useEffect } = wp.element;
@@ -8,7 +11,7 @@ const { PluginPostStatusInfo } = wp.editPost;
 const { __, sprintf } = wp.i18n;
 const { withState } = wp.compose;
 const { select } = wp.data;
-const { domReady, apiFetch } = wp;
+const { apiFetch } = wp;
 const { Spinner } = wp.components;
 
 let termCache = null;
@@ -33,7 +36,7 @@ registerPlugin( 'post-status-info-assigned-term', {
 						loading: false,
 						term: res,
 					} );
-				} ).catch( ( res ) => {
+				} ).catch( () => {
 					setState( {
 						loading: false,
 					} );
@@ -51,7 +54,7 @@ registerPlugin( 'post-status-info-assigned-term', {
 						<strong>{ term.name }</strong>
 						<code>{ term.taxonomy.label }</code>
 						&raquo;
-						<a href={ term.edit_link } target="_blank" rel="noopener noreferer">
+						<a href={ term.edit_link } target="_blank" rel="noreferrer noopener ">
 							{ __( 'Edit', 'rich-taxonomy' ) }
 						</a>
 					</span>

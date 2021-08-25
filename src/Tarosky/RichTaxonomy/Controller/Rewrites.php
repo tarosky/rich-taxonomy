@@ -6,6 +6,7 @@ namespace Tarosky\RichTaxonomy\Controller;
 use Tarosky\RichTaxonomy\Pattern\Singleton;
 use Tarosky\RichTaxonomy\Utility\PageAccessor;
 use Tarosky\RichTaxonomy\Utility\SettingAccessor;
+use Tarosky\RichTaxonomy\Utility\TemplateAccessor;
 
 /**
  * Rewrite rule controllers.
@@ -15,7 +16,8 @@ use Tarosky\RichTaxonomy\Utility\SettingAccessor;
 class Rewrites extends Singleton {
 
 	use PageAccessor,
-		SettingAccessor;
+		SettingAccessor,
+		TemplateAccessor;
 
 	/**
 	 * Constructor
@@ -27,10 +29,12 @@ class Rewrites extends Singleton {
 		add_filter( 'single_term_title', [ $this, 'change_title' ] );
 		add_filter( 'single_tag_title', [ $this, 'change_title' ] );
 		add_filter( 'single_cat_title', [ $this, 'change_title' ] );
-		// Change template.
-		add_filter( 'tag_template', [ $this, 'template_include' ], 10, 3 );
-		add_filter( 'category_template', [ $this, 'template_include' ], 10, 3 );
-		add_filter( 'taxonomy_template', [ $this, 'template_include' ], 10, 3 );
+		// Change template for archive.
+		add_filter( 'tag_template', [ $this, 'archive_template_include' ], 10, 3 );
+		add_filter( 'category_template', [ $this, 'archive_template_include' ], 10, 3 );
+		add_filter( 'taxonomy_template', [ $this, 'archive_template_include' ], 10, 3 );
+		// Change single page for template.
+		add_filter( 'singular_template', [ $this, 'singular_template_include' ], 10, 3 );
 	}
 
 	/**
@@ -91,7 +95,8 @@ class Rewrites extends Singleton {
 	/**
 	 * Change archive title.
 	 *
-	 * @param string $title
+	 * @param string $title Archive page title.
+	 * @return string
 	 */
 	public function change_title( $title ) {
 		global $wp_query;
@@ -111,7 +116,7 @@ class Rewrites extends Singleton {
 	 * @param string[] $templates A list of template candidates, in descending order of priority.
 	 * @return string
 	 */
-	public function template_include( $template, $type, $templates ) {
+	public function archive_template_include( $template, $type, $templates ) {
 		global $wp_query;
 		$page = $this->get_taxonomy_page_from_query( $wp_query );
 		if ( ! $page ) {
@@ -120,6 +125,24 @@ class Rewrites extends Singleton {
 		$alternative_template = Templates::get_instance()->get_post_template_file( $page );
 		if ( $alternative_template ) {
 			$template = $alternative_template;
+		}
+		return $template;
+	}
+
+	/**
+	 * Change template.
+	 *
+	 * @param string   $template  Path to the template. See locate_template().
+	 * @param string   $type      Sanitized filename without extension.
+	 * @param string[] $templates A list of template candidates, in descending order of priority.
+	 * @return string
+	 */
+	public function singular_template_include( $template, $type, $templates ) {
+		if ( is_singular() && $this->post_type() === get_queried_object()->post_type ) {
+			$alternative_template = $this->template()->get_post_template_file( get_queried_object() );
+			if ( $alternative_template ) {
+				$template = $alternative_template;
+			}
 		}
 		return $template;
 	}

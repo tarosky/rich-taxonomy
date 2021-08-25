@@ -4,6 +4,7 @@ namespace Tarosky\RichTaxonomy\Controller;
 
 
 use Tarosky\RichTaxonomy\Pattern\Singleton;
+use Tarosky\RichTaxonomy\Utility\DirectoryAccessor;
 use Tarosky\RichTaxonomy\Utility\PageAccessor;
 
 /**
@@ -13,7 +14,8 @@ use Tarosky\RichTaxonomy\Utility\PageAccessor;
  */
 class Templates extends Singleton {
 
-	use PageAccessor;
+	use PageAccessor,
+		DirectoryAccessor;
 
 	const META_KEY = '_rich_taxonomy_template';
 
@@ -128,7 +130,7 @@ class Templates extends Singleton {
 		if ( $found ) {
 			return $found;
 		}
-		$files = [ 'page.php', 'singular.php', 'single.php', 'index.php' ];
+		$files = [ 'singular-' . $this->post_type() . '.php', 'page.php', 'singular.php', 'single.php', 'index.php' ];
 		foreach ( $files as $file ) {
 			foreach ( $this->get_dirs() as $dir ) {
 				$path = $dir . '/' . $file;
@@ -176,5 +178,36 @@ class Templates extends Singleton {
 			}
 		}
 		return '';
+	}
+
+	/**
+	 * Load template from plugin or theme.
+	 *
+	 * @param string $template Template name.
+	 * @param string $suffix   Suffix.
+	 * @param array  $args     Arguments.
+	 */
+	public function load_template( $template, $suffix = '', $args = [] ) {
+		$dirs = $this->get_dirs();
+		$dirs[] = untrailingslashit( $this->root_dir() );
+		$templates = [ $template ];
+		if ( $suffix ) {
+			array_unshift( $templates, $template . '-' . $suffix );
+		}
+		$found = '';
+		foreach ( $templates as $t ) {
+			foreach ( $dirs as $dir ) {
+				$path = $dir . '/' . $t . '.php';
+				if ( file_exists( $path ) ) {
+					$found = $path;
+					break 2;
+				}
+			}
+		}
+		$found = apply_filters( 'rich_taxonomy_include_template', $found, $template, $suffix, $args );
+		if ( ! $found ) {
+			return;
+		}
+		\load_template( $found, false, $args );
 	}
 }

@@ -101,7 +101,7 @@ class Editor extends Singleton {
 	 */
 	public function admin_enqueue_scripts( $suffix ) {
 		if ( 'edit-tags.php' === $suffix ) {
-			$this->enqueue_js( 'rich-taxonomy-admin-ui-tag-list', 'js/admin-ui-tag-list.js', [ 'jquery', 'wp-i18n', 'wp-api-fetch' ] );
+			wp_enqueue_script( 'rich-taxonomy-admin-ui-tag-list' );
 		}
 	}
 
@@ -208,15 +208,6 @@ class Editor extends Singleton {
 		if ( $this->post_type() !== $screen->post_type ) {
 			return;
 		}
-		$this->enqueue_js( 'rich-taxonomy-editor-helper', 'js/editor-helper.js', [
-			'wp-plugins',
-			'wp-edit-post',
-			'wp-components',
-			'wp-data',
-			'wp-api-fetch',
-			'wp-i18n',
-			'wp-compose',
-			'wp-dom-ready',
-		] );
+		wp_enqueue_script( 'rich-taxonomy-editor-helper' );
 	}
 }

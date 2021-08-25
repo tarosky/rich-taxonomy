@@ -1,7 +1,8 @@
 /*!
- * Tag UI helper.
+ * Tag list table UI helper.
  *
- *
+ * @handle rich-taxonomy-admin-ui-tag-list
+ * @deps jquery, wp-i18n, wp-api-fetch
  */
 
 const $ = jQuery;
@@ -15,7 +16,7 @@ $( document ).ready( () => {
 		const termId = $link.attr( 'href' ).replace( /#create-/, '' );
 		if ( /^\d+$/.test( termId ) ) {
 			const label = $( this ).text();
-			$link.text( __( 'Generating...', 'rich-taxonomy' ) );
+			$link.text( __( 'Generating…', 'rich-taxonomy' ) );
 			e.preventDefault();
 			apiFetch( {
 				path: 'rich-taxonomy/v1/post/' + termId,

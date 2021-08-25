@@ -1,0 +1,115 @@
+/*!
+ * block style for Term Archive block.
+ *
+ * @package rich-taxonomy
+ * @handle rich-taxonomy-term-archive-block
+ */
+
+
+.rich-taxonomy {
+
+	&-wrapper {
+		margin-top: 2em;
+		margin-bottom: 2em;
+	}
+
+	&-toggle-button + &-more-button {
+		display: none;
+	}
+
+	&-container {
+		display: flex;
+		flex-wrap: wrap;
+
+		> * {
+			flex: 0 1 33.333333%;
+			padding: 10px;
+			box-sizing: border-box;
+
+			@at-root .align-full {
+				flex: 0 1 25%;
+			}
+
+			@media only screen and (max-width: 700px) {
+				flex: 0 1 50%;
+			}
+
+			@media only screen and (max-width: 500px) {
+				flex: 0 1 100%;
+			}
+		}
+	}
+
+	&-item {
+
+		&-hidden {
+			display: none;
+		}
+
+		&-link {
+			display: block;
+			height: 100%;
+			padding: 10px;
+
+			&:link,
+			&:visited {
+				text-decoration: none !important;
+				color: inherit;
+				box-shadow: 0 0 5px rgba(0, 0, 0, .4);
+				background-color: #fff;
+			}
+
+			&:hover,
+			&:active {
+				box-shadow: none;
+				text-decoration: none !important;
+				color: inherit;
+			}
+		}
+
+		&-thumbnail {
+			margin: 0 0 0.5em;
+			width: 100%;
+			position: relative;
+			overflow: hidden;
+
+			&::before {
+				position: relative;
+				display: block;
+				content: "";
+				width: 100%;
+				padding-top: 75%;
+			}
+		}
+
+		&-image {
+			width: 100% !important;
+			height: 100% !important;
+			position: absolute;
+			top: 50%;
+			margin-top: -50%;
+			left: 0;
+			right: 0;
+			object-fit: cover;
+		}
+
+		&-title {
+			display: block;
+			font-weight: bold;
+			color: inherit;
+			font-size: 1em;
+		}
+
+		&-meta {
+			font-size: smaller;
+			display: block;
+		}
+
+	}
+
+	&-footer {
+		margin-top: 1em;
+	}
+
+}
+

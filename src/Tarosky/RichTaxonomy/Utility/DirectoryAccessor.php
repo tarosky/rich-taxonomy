@@ -19,14 +19,22 @@ trait DirectoryAccessor {
 	}
 
 	/**
+	 * Get root url.
+	 *
+	 * @return string
+	 */
+	public function root_url() {
+		return untrailingslashit( plugin_dir_url( $this->root_dir() . 'assets' ) );
+	}
+
+	/**
 	 * Get asset url.
 	 *
 	 * @param string $path Relative path of assets.
 	 * @return string
 	 */
 	public function asset_url( $path ) {
-		$base = plugin_dir_url( $this->root_dir() . 'assets' ) . 'dist/';
-		return $base . ltrim( $path, '/' );
+		return $this->root_url() . '/dist/' . ltrim( $path, '/' );
 	}
 
 	/**
@@ -43,6 +51,7 @@ trait DirectoryAccessor {
 	/**
 	 * Enqueue script.
 	 *
+	 * @deprecated
 	 * @param string   $handle Handle name.
 	 * @param string   $path   Relative path.
 	 * @param string[] $deps   Dependencies.

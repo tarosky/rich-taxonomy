@@ -5,6 +5,7 @@ const webpack = require( 'webpack-stream' );
 const webpackBundle = require( 'webpack' );
 const named = require( 'vinyl-named' );
 const mergeStream = require( 'merge-stream' );
+const { dumpSetting } = require('@kunoichi/grab-deps');
 
 let plumber = true;
 
@@ -83,13 +84,27 @@ gulp.task( 'copy', ( done ) => {
 	// );
 } );
 
+// Dump dependencies.
+gulp.task( 'dump', ( done ) => {
+	dumpSetting( 'dist' );
+	done();
+} );
+
 // watch
-gulp.task( 'watch', function () {
+gulp.task( 'watch', ( done ) => {
 	// Make SASS
 	gulp.watch( 'assets/scss/**/*.scss', gulp.parallel( 'sass', 'stylelint' ) );
 	// Bundle JS
 	gulp.watch( [ 'assets/js/**/*.{js,jsx}' ], gulp.parallel( 'jsx', 'eslint' ) );
+	// Dump setting.
+	gulp.watch( [
+		'dist/js/**/*.js',
+		'dist/css/**/*.css',
+	], gulp.task( 'dump' ) );
+	done();
 } );
+
+
 
 // Toggle plumber.
 gulp.task( 'noplumber', ( done ) => {
@@ -98,7 +113,7 @@ gulp.task( 'noplumber', ( done ) => {
 } );
 
 // Build
-gulp.task( 'build', gulp.parallel( 'jsx', 'sass', 'copy' ) );
+gulp.task( 'build', gulp.series( gulp.parallel( 'jsx', 'sass', 'copy' ), 'dump' ) );
 
 // Default Tasks
 gulp.task( 'default', gulp.series( 'watch' ) );

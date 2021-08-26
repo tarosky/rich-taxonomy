@@ -28,11 +28,15 @@ $should_hide = 0 < $args['number'] && $args['query']->post_count > $args['number
 	</nav>
 
 	<footer class="rich-taxonomy-footer">
-		<?php if ( $should_hide ) {
+		<?php
+		if ( $should_hide ) {
 			rich_taxonomy_template( 'template-parts/rich-taxonomy/archive-block-toggle', $args['term']->taxonomy, $args );
-		} ?>
-		<?php if ( $args['url'] ) {
+		}
+		?>
+		<?php
+		if ( $args['url'] ) {
 			rich_taxonomy_template( 'template-parts/rich-taxonomy/archive-block-more', $args['term']->taxonomy, $args );
-		} ?>
+		}
+		?>
 	</footer>
 </div>

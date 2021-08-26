@@ -41,7 +41,7 @@ function rich_taxonomy_version() {
 	if ( $version ) {
 		return $version;
 	}
-	$info = get_file_data( __FILE__, [
+	$info    = get_file_data( __FILE__, [
 		'version' => 'Version',
 	] );
 	$version = $info['version'];

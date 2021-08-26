@@ -25,16 +25,16 @@ class PostApi extends RestApiPattern {
 	protected function get_rest_setting() {
 		return [
 			[
-				'methods' => 'GET',
-				'args' => [
+				'methods'             => 'GET',
+				'args'                => [
 					'post_id' => [
-						'required' => true,
-						'type' => 'int',
-						'description' => _x( 'Post ID', 'rest-param', 'rich-taxonomy' ),
+						'required'          => true,
+						'type'              => 'int',
+						'description'       => _x( 'Post ID', 'rest-param', 'rich-taxonomy' ),
 						'validate_callback' => [ $this, 'validate_post' ],
 					],
 				],
-				'callback' => [ $this, 'callback' ],
+				'callback'            => [ $this, 'callback' ],
 				'permission_callback' => [ $this, 'permission_callback' ],
 			],
 		];
@@ -73,9 +73,9 @@ class PostApi extends RestApiPattern {
 			return new \WP_Error( 'rest_api_error', __( 'No term.', 'rich-taxonomy' ) );
 		}
 		return new \WP_REST_Response( [
-			'name' => $term->name,
-			'slug' => $term->slug,
-			'taxonomy' => [
+			'name'      => $term->name,
+			'slug'      => $term->slug,
+			'taxonomy'  => [
 				'name'  => $term->taxonomy,
 				'label' => get_taxonomy( $term->taxonomy )->label,
 			],

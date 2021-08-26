@@ -62,7 +62,7 @@ class Rewrites extends Singleton {
 	 * @return \WP_Post|null
 	 */
 	public function get_taxonomy_page_from_query( $query = null, $include_admin = false, $only_first = true ) {
-		if ( is_admin() && ! $include_admin) {
+		if ( is_admin() && ! $include_admin ) {
 			return null;
 		}
 		if ( ! $query->is_main_query() ) {
@@ -84,7 +84,7 @@ class Rewrites extends Singleton {
 			return null;
 		}
 		// Should override?
-		$post = $this->get_post( $term, true );
+		$post            = $this->get_post( $term, true );
 		$should_override = apply_filters( 'rich_taxonomy_override', true, $post, $query );
 		if ( ! $should_override ) {
 			return null;

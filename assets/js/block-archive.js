@@ -13,7 +13,7 @@ const { __, sprintf } = wp.i18n;
 const { registerBlockType, unregisterBlockType } = wp.blocks;
 const { InspectorControls } = wp.blockEditor;
 const { select } = wp.data;
-const { PanelBody, SelectControl, TextControl } = wp.components;
+const { PanelBody, TextControl } = wp.components;
 
 //
 // Register Block.
@@ -25,6 +25,7 @@ registerBlockType( RichTaxonomyTermArchiveBlock.name, {
 	category: 'widgets',
 	attributes: RichTaxonomyTermArchiveBlock.attributes,
 	edit( { attributes, setAttributes } ) {
+		// translators: %s is post title.
 		const moreLabel = sprintf( __( 'Archive of %s', 'rich-taxonomy' ), select('core/editor').getCurrentPostAttribute( 'title' ) );
 		return (
 			<>

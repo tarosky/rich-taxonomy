@@ -45,11 +45,14 @@ class Setting extends Singleton {
 		}, 'reading' );
 		// Taxonomies.
 		add_settings_field( $this->option_name, __( 'Taxonomies', 'rich-taxonomy' ), function() {
-			$taxonomies = array_filter( get_taxonomies( [
-				'public' => true,
-			], OBJECT ), function( \WP_Taxonomy $taxonomy ) {
-				return ! in_array( $taxonomy->name, $this->denied_taxonomies(), true );
-			} );
+			$taxonomies = array_filter(
+				get_taxonomies( [
+					'public' => true,
+				], OBJECT ),
+				function( \WP_Taxonomy $taxonomy ) {
+					return ! in_array( $taxonomy->name, $this->denied_taxonomies(), true );
+				}
+			);
 			foreach ( $taxonomies as $taxonomy ) {
 				printf(
 					'<label style="display: inline-block; margin: 0 1em 0.5em 0;"><input type="checkbox" name="%s[]" value="%s" %s/> %s</label>',

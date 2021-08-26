@@ -1,0 +1,124 @@
+name: Deploy Plugin
+
+on:
+  push:
+    branches:
+      - main
+    tags:
+      - '*'
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  test:
+    runs-on: ${{ matrix.operating-system }}
+    strategy:
+      matrix:
+        operating-system: [ ubuntu-18.04 ]  # OS. ubuntu-18.04 is also available.
+        php: [ '5.6', '7.2', '7.4' ] # PHP versions to check.
+        wp: [ 'latest', '5.5' ]      # WordPress version to check.
+    services:
+      mysql:
+        image: mysql:5.7
+        options: --health-cmd "mysqladmin ping --host 127.0.0.1 --port 3306" --health-interval 20s --health-timeout 10s --health-retries 10
+        ports:
+          - 3306/tcp
+        env:
+          MYSQL_ROOT_PASSWORD: root
+    name: WordPress ${{ matrix.wp }} in PHP ${{ matrix.php }} UnitTest
+    steps:
+      - uses: actions/checkout@master
+
+      - name: Setup PHP
+        uses: nanasess/setup-php@master
+        with:
+          php-version: ${{ matrix.php }}
+
+      - name: Validate composer.json and composer.lock
+        run: composer validate
+
+      - name: Install dependencies
+        run: composer install --prefer-dist --no-progress --no-suggest
+
+      - name: Start MySQL
+        run: sudo systemctl start mysql
+
+      - name: Install WordPress
+        run: bash bin/install-wp-tests.sh wordpress root root 127.0.0.1:3306 ${{ matrix.wp }}
+
+      - name: Check PHP Unit
+        run: composer test
+
+      - name: Check PHP styntax
+        run: composer lint
+
+  assets:
+    name: Check Assets
+    runs-on: ubuntu-18.04
+    steps:
+      - uses: actions/checkout@master
+
+      - name: Install Node
+        uses: actions/setup-node@v1
+        with:
+          node-version: '12'
+
+      - name: Install NPM Packages
+        run: npm install
+
+      - name: Check JS & CSS syntax
+        run: npm run lint
+
+  release:
+    name: Deploy GitHub Release
+    needs: [ test, assets ]
+    if: contains(github.ref, 'tags/')
+    runs-on: ubuntu-18.04
+    steps:
+      - uses: actions/checkout@master
+
+      - name: Confirm
+        run: echo ${{ needs.pre_release.outputs.upload_url }}
+
+      - name: Setup PHP
+        uses: nanasess/setup-php@master
+        with:
+          php-version: '5.6'
+
+      - name: Install NPM
+        uses: actions/setup-node@v1
+        with:
+          node-version: '12'
+
+      - name: Build package.
+        run: bash bin/build.sh ${{ github.ref }}
+
+      - name: Clean package.
+        run: bash bin/clean.sh
+
+      - name: Create Zip
+        run: zip -r rich-taxonomy.zip ./
+
+      - name: Create Release
+        id: pre_release
+        uses: actions/create-release@v1.0.0
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tag_name: ${{ github.ref }}
+          release_name: Release Rich TAxonomy ${{ github.ref }}
+          body: |
+            Release Rich Taxonomy plugin version ${{ github.ref }}
+          draft: false
+          prerelease: false
+
+      - name: Upload release asset
+        uses: actions/upload-release-asset@v1.0.1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ steps.pre_release.outputs.upload_url }}
+          asset_path: ./rich-taxonomy.zip
+          asset_name: rich-taxonomy.zip
+          asset_content_type: application/zip

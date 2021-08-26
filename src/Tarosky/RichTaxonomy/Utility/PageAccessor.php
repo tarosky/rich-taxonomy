@@ -54,7 +54,7 @@ trait PageAccessor {
 					'value' => $term->term_id,
 				],
 			],
-			'no_found_rows' => true,
+			'no_found_rows'  => true,
 		] );
 		if ( $only_publish ) {
 			$query_args['post_status'] = 'publish';
@@ -102,7 +102,7 @@ trait PageAccessor {
 			'post_content' => '',
 			'post_status'  => 'draft',
 		], $term, $context );
-		$post_id = wp_insert_post( $default_args, true );
+		$post_id      = wp_insert_post( $default_args, true );
 		if ( is_wp_error( $post_id ) ) {
 			return $post_id;
 		}

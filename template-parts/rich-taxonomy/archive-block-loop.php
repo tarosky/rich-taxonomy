@@ -32,7 +32,7 @@ if ( $args['hide'] ) {
 				<?php the_title(); ?>
 			</span>
 			<span class="rich-taxonomy-item-meta">
-				<time class="rich-taxonomy-item-time"><?php the_time( get_option( 'date_format' ) ) ?></time>
+				<time class="rich-taxonomy-item-time"><?php the_time( get_option( 'date_format' ) ); ?></time>
 			</span>
 		</div>
 	</a>

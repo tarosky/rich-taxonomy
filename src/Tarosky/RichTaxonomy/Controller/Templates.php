@@ -69,14 +69,16 @@ class Templates extends Singleton {
 			<label>
 				<?php esc_html_e( 'Template File', '' ); ?><br />
 				<select name="rich-taxonomy-template" class="widefat" style="box-sizing: border-box;">
-					<?php foreach ( $this->get_template_list() as $template ) {
+					<?php
+					foreach ( $this->get_template_list() as $template ) {
 						printf(
 							'<option value="%s"%s>%s</option>',
 							esc_attr( $template ),
 							selected( $template, $current, false ),
 							esc_html( $template )
 						);
-					} ?>
+					}
+					?>
 				</select>
 			</label>
 		</p>
@@ -90,13 +92,13 @@ class Templates extends Singleton {
 	 */
 	public function get_template_list() {
 		$default = $this->get_default_template();
-		$list = [];
+		$list    = [];
 		foreach ( $this->get_dirs() as $dir ) {
 			foreach ( scandir( $dir ) as $file ) {
 				if ( ! preg_match( '/^(single\.php|singular\.php|page\.php|page-.*\.php)$/u', $file ) ) {
 					continue 1;
 				}
-				if ( $default !== $file && ! in_array( $file,  $list, true ) ) {
+				if ( $default !== $file && ! in_array( $file, $list, true ) ) {
 					$list[] = $file;
 				}
 			}
@@ -112,7 +114,7 @@ class Templates extends Singleton {
 	 * @return string
 	 */
 	public function get_post_template( $post = null ) {
-		$post = get_post( $post );
+		$post     = get_post( $post );
 		$template = get_post_meta( $post->ID, self::META_KEY, true );
 		if ( ! $template ) {
 			$template = $this->get_default_template();
@@ -188,8 +190,8 @@ class Templates extends Singleton {
 	 * @param array  $args     Arguments.
 	 */
 	public function load_template( $template, $suffix = '', $args = [] ) {
-		$dirs = $this->get_dirs();
-		$dirs[] = untrailingslashit( $this->root_dir() );
+		$dirs      = $this->get_dirs();
+		$dirs[]    = untrailingslashit( $this->root_dir() );
 		$templates = [ $template ];
 		if ( $suffix ) {
 			array_unshift( $templates, $template . '-' . $suffix );

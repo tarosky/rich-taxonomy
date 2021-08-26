@@ -15,7 +15,7 @@ abstract class BlockPattern extends Singleton {
 	 * @return string
 	 */
 	protected function name() {
-		$class_name = explode( "\\", get_called_class() );
+		$class_name = explode( '\\', get_called_class() );
 		return preg_replace( '/^-/u', '', preg_replace_callback( '/[A-Z]/u', function( $match ) {
 			list( $letter ) = $match;
 			return '-' . strtolower( $letter );

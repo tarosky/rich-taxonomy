@@ -32,7 +32,7 @@ class TermApi extends RestApiPattern {
 				],
 				'callback'            => [ $this, 'callback' ],
 				'permission_callback' => [ $this, 'permission_callback' ],
-			]
+			],
 		];
 	}
 
@@ -48,9 +48,11 @@ class TermApi extends RestApiPattern {
 			return new \WP_Error( 'rich_taxonomy_api_error', __( 'Term not found.', 'rich-taxonomy' ) );
 		}
 		if ( ! $this->setting()->is_rich( $term->taxonomy ) ) {
+			// translators: %s is term name.
 			return new \WP_Error( 'rich_taxonomy_api_error', sprintf( __( '%s is not able to have a taxonomy page.' ), $term->name ) );
 		}
 		if ( $this->has_post( $term ) ) {
+			// translators: %s is term name.
 			return new \WP_Error( 'rich_taxonomy_api_error', sprintf( __( '%s already has a taxonomy page.' ), $term->name ) );
 		}
 		return true;
@@ -60,7 +62,7 @@ class TermApi extends RestApiPattern {
 	 * @inheritDoc
 	 */
 	public function callback( $request ) {
-		$term = get_term( $request->get_param( 'term_id' ) );
+		$term    = get_term( $request->get_param( 'term_id' ) );
 		$post_id = $this->draft_for_term( $term );
 		if ( is_wp_error( $post_id ) ) {
 			return $post_id;

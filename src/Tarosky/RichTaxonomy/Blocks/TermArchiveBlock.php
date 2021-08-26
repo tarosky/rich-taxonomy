@@ -28,7 +28,7 @@ class TermArchiveBlock extends DynamicBlockPattern {
 				'type'    => 'string',
 				'default' => '',
 			],
-			'more' => [
+			'more'   => [
 				'type'    => 'string',
 				'default' => '',
 			],
@@ -47,7 +47,7 @@ class TermArchiveBlock extends DynamicBlockPattern {
 		if ( ! $term ) {
 			return '';
 		}
-		$attributes = apply_filters( 'rich_taxonomy_archive_block_arguments', wp_parse_args( $attributes, [
+		$attributes         = apply_filters( 'rich_taxonomy_archive_block_arguments', wp_parse_args( $attributes, [
 			'toggle' => __( 'More', 'rich-taxonomy' ),
 			'more'   => '',
 			'number' => 0,
@@ -55,6 +55,7 @@ class TermArchiveBlock extends DynamicBlockPattern {
 		] ), get_the_ID() );
 		$attributes['term'] = $term;
 		if ( empty( $attributes['more'] ) ) {
+			// translators: %s is the page title.
 			$attributes['more'] = sprintf( __( 'Archive of %s', 'rich-taxonomy' ), get_the_title() );
 		}
 		// Build query arguments.
@@ -70,7 +71,7 @@ class TermArchiveBlock extends DynamicBlockPattern {
 				$args = [ $term->taxonomy => $term->slug ];
 				break;
 		}
-		$args = apply_filters( 'rich_taxonomy_archive_block_query_args', $args, $term, get_the_ID() );
+		$args      = apply_filters( 'rich_taxonomy_archive_block_query_args', $args, $term, get_the_ID() );
 		$sub_query = new \WP_Query( $args );
 		if ( ! $sub_query->have_posts() ) {
 			return '';

@@ -31,7 +31,7 @@ class Editor extends Singleton {
 		add_action( 'init', [ $this, 'register_post_type' ] );
 		// Add columns.
 		add_filter( 'manage_' . $this->post_type() . '_posts_columns', [ $this, 'posts_columns' ] );
-		add_action( 'manage_' . $this->post_type() . '_posts_custom_column', [ $this, 'posts_custom_columns' ], 10, 2  );
+		add_action( 'manage_' . $this->post_type() . '_posts_custom_column', [ $this, 'posts_custom_columns' ], 10, 2 );
 		// Edit form tag.
 		add_action( 'admin_head', function() {
 			$taxonomies = $this->setting()->rich_taxonomies();
@@ -53,7 +53,7 @@ class Editor extends Singleton {
 	 */
 	public function action_links( $actions, $tag ) {
 		if ( $this->setting()->is_rich( $tag->taxonomy ) ) {
-			$link = $this->has_post( $tag ) ? get_edit_post_link( $this->get_post( $tag ) ) : sprintf( '#create-%d', $tag->term_id );
+			$link                          = $this->has_post( $tag ) ? get_edit_post_link( $this->get_post( $tag ) ) : sprintf( '#create-%d', $tag->term_id );
 			$actions['edit_rich_taxonomy'] = sprintf( '<a class="rich-taxonomy-link" href="%s">%s</a>', esc_url( $link ), esc_html__( 'Taxonomy Page', 'rich-taxonomy' ) );
 		}
 		return $actions;
@@ -68,7 +68,7 @@ class Editor extends Singleton {
 			return;
 		}
 		// Register post type.
-		$can = current_user_can( 'edit_posts' );
+		$can            = current_user_can( 'edit_posts' );
 		$post_type_args = [
 			'label'               => __( 'Taxonomy Page', 'rich-taxonomy' ),
 			'public'              => $can,
@@ -116,7 +116,7 @@ class Editor extends Singleton {
 		foreach ( $columns as $key => $label ) {
 			$new_columns[ $key ] = $label;
 			if ( 'title' === $key ) {
-				$new_columns[ 'taxonomy' ] = __( 'Taxonomy', 'rich-taxonomy' );
+				$new_columns['taxonomy'] = __( 'Taxonomy', 'rich-taxonomy' );
 			}
 		}
 		return $new_columns;
@@ -160,10 +160,13 @@ class Editor extends Singleton {
 		?>
 		<p>
 			<?php if ( $post ) : ?>
-				<?php printf( esc_html__( 'This term has taxonomy page: "%s"', 'rich-taxonomy' ), esc_html( get_the_title( $post ) ) ) ?>
-				&raquo; <a href="<?php echo esc_url( get_edit_post_link( $post ) ) ?>"><?php esc_html_e( 'Edit', 'rich-taxonomy' ); ?></a>
+				<?php
+				// translators: %s is post title.
+				printf( esc_html__( 'This term has taxonomy page: "%s"', 'rich-taxonomy' ), esc_html( get_the_title( $post ) ) );
+				?>
+				&raquo; <a href="<?php echo esc_url( get_edit_post_link( $post ) ); ?>"><?php esc_html_e( 'Edit', 'rich-taxonomy' ); ?></a>
 			<?php else : ?>
-				<span class="description"><?php esc_html_e( 'This term has no taxonomy page.', 'rich-taxonomy' ) ?></span>
+				<span class="description"><?php esc_html_e( 'This term has no taxonomy page.', 'rich-taxonomy' ); ?></span>
 			<?php endif; ?>
 		</p>
 		<?php
@@ -187,7 +190,8 @@ class Editor extends Singleton {
 				printf(
 					'<p>%s &raquo; <a href="%s" rel="noopener noreferrer" target="_blank">%s</a></p>',
 					sprintf(
-						wp_kses( __( 'Assigned Term: <strong>%s</strong> <code>%s</code>', 'rich-taxonomy' ), [ 'strong' => [], 'code' => [] ] ),
+						// translators: %1$s is term name, %2$s is taxonomy.
+						wp_kses( __( 'Assigned Term: <strong>%1$s</strong> <code>%2$s</code>', 'rich-taxonomy' ), [ 'strong' => [], 'code' => [] ] ),
 						esc_html( $term->name ),
 						esc_html( get_taxonomy( $term->taxonomy )->label )
 					),

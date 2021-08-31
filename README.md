@@ -26,9 +26,90 @@ For example:
 3. Edit the Taxonomy Page in block editor and publish it.
 4. Now the 1st page of "Book" category `<code>/category/book</code>` will dipslay the contents of the Taxonomy Page "Book".
 
-## Customization
+### Template Structure
 
-W.I.P
+You can choose a template for the taxonomy page in editor,
+but you can put `singular-taxonomy-page.php` template in your theme and there's no need to choose.
+Below is the default template priority.
+
+1. singular-taxonomy-page.php
+2. page.php
+3. singular.php
+4. single.php
+5. index.php
+
+Filter hook `rich_taxonomy_include_template` is also available.
+
+### Customization
+
+#### Archive Block
+
+Archive blocks has tempalte structure like below.
+
+```
+template-parts
+- rich-taxonomy
+  - archive-block-loop.php    // Loop of post list.
+  - archive-block-more.php    // Link button.
+  - archive-block-toggle.php  // Toggle button.
+  - archive-block-wrapper.php // Wrapper of archive.
+```
+
+If theme has files in same path, that pirors.
+Copy the file and customize as you like.
+
+#### Styles 
+
+To override styles, 4 hooks are available.
+
+1. rich_taxonomy_block_asset_style
+2. rich_taxonomy_block_asset_editor_style
+3. rich_taxonomy_block_asset_script
+4. rich_taxonomy_block_asset_editor_script
+
+To change looks & feels, `rich_taxonomy_block_asset_style` is the best start point.
+
+```
+// Register style.
+add_action( 'init', function() {
+    wp_registeR_style( 'my-archive-block', $url, $deps, $version );
+} );
+
+// Override handle.
+add_filter( 'rich_taxonomy_block_asset_style', function( $handle, $block_name ) {
+    if ( 'rich-taxonomy/arcvhie-block' === $block_name ) {
+        $handle = 'my-archive-block';
+    }
+    return $handle;
+}, 10, 2 );
+```
+
+This style is loaded in both public and editor.
+
+#### Default Contents
+
+To define default contents of the taxonomy page, use `rich_taxonomy_default_post_object` filter hook.
+
+```
+/**
+ * Fitler default post object.
+ *
+ * @param array   $args    Post object passed to wp_insert_post().
+ * @param WP_Term $term    Term object assigned to this post.
+ * @param string  $context Currently only 'api' is supported.
+ */ 
+add_filter( 'rich_taxonomy_default_post_object', function( $args, $term, $contest ) {
+    // If specific taxonomy, enter default content.
+    if ( 'category' === $term->taxonomy ) {
+        // Post body.
+        $args['post_content'] = 'Here comes default content.';
+        // Immediately publish.
+        $args['post_status']  = 'publish';
+    }
+    return $args;
+}, 10, 3 );
+```
+
 
 ## Installation
 
@@ -55,4 +136,3 @@ Create a new [issue](https://github.com/tarosky/rich-taxonomy/issues) or send [p
 ### 1.0.0
 
 * First release.
-* 

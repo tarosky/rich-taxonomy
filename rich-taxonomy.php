@@ -27,7 +27,7 @@ function rich_taxonomy_init() {
 		Tarosky\RichTaxonomy\Bootstrap::get_instance();
 	}
 	// Load functions.
-	require __DIR__ . '/functions.php';
+	require_once __DIR__ . '/functions.php';
 }
 add_action( 'plugin_loaded', 'rich_taxonomy_init' );
 

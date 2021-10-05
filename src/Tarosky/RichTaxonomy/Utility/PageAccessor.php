@@ -40,8 +40,8 @@ trait PageAccessor {
 	/**
 	 * Get post object assigned to term.
 	 *
-	 * @param \WP_Term $term         Term object.
-	 * @param bool     $only_publish If true, returns only published page.
+	 * @param \WP_Term|int $term         Term object or term id.
+	 * @param bool         $only_publish If true, returns only published page.
 	 * @return \WP_Post|null
 	 */
 	public function get_post( $term, $only_publish = false ) {
@@ -51,7 +51,7 @@ trait PageAccessor {
 			'meta_query'     => [
 				[
 					'key'   => $this->post_meta_key(),
-					'value' => $term->term_id,
+					'value' => isset( $term->term_id ) ? $term->term_id : $term,
 				],
 			],
 			'no_found_rows'  => true,

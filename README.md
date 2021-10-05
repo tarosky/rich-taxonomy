@@ -1,6 +1,6 @@
 # Rich Taxonomy
 
-Tags: theme, speed, optimization  
+Tags: taxonomy, terms, seo  
 Contributors: tarosky, Takahashi_Fumiki  
 Tested up to: 5.8  
 Requires at least: 5.5  
@@ -103,7 +103,7 @@ add_filter( 'rich_taxonomy_default_post_object', function( $args, $term, $contes
     if ( 'category' === $term->taxonomy ) {
         // Post body.
         $args['post_content'] = 'Here comes default content.';
-        // Immediately publish.
+        // Publish immediately.
         $args['post_status']  = 'publish';
     }
     return $args;

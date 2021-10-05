@@ -81,11 +81,7 @@ class Editor extends Singleton {
 			'show_in_rest'        => true,
 			'capability_type'     => 'post',
 			'capabilities'        => [
-				'create_posts'           => 'do_not_allow',
-				'delete_posts'           => 'do_not_allow',
-				'delete_published_posts' => 'do_not_allow',
-				'delete_private_posts'   => 'do_not_allow',
-				'delete_others_posts'    => 'do_not_allow',
+				'create_posts' => 'do_not_allow',
 			],
 			'map_meta_cap'        => true,
 			'supports'            => [ 'title', 'editor', 'thumbnail', 'excerpt' ],
@@ -133,7 +129,7 @@ class Editor extends Singleton {
 			case 'taxonomy':
 				$term = get_term( (int) get_post_meta( $post_id, $this->post_meta_key(), true ) );
 				if ( ! $term ) {
-					echo 'err';
+					printf( '<span style="color:lightgray"><span class="dashicons dashicons-no"></span> %s</span>', esc_html__( 'Error', 'rich-taxonomy' ) );
 				} else {
 					printf(
 						'<a href="%s">%s</a><code>%s</code>',

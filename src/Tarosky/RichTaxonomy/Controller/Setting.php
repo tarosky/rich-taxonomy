@@ -17,7 +17,7 @@ class Setting extends Singleton {
 	protected $option_name = 'rich_taxonomy_names';
 
 	/**
-	 * Denied taxnomies.
+	 * Denied taxonomies.
 	 *
 	 * @return string[]
 	 */
@@ -40,8 +40,8 @@ class Setting extends Singleton {
 			return;
 		}
 		// Register setting fields.
-		add_settings_section( 'rich-taxonomy-section', __( 'Taxonomy Archive', 'rich-taxonomy' ), function() {
-			echo 'hoge';
+		add_settings_section( 'rich-taxonomy-section', __( 'Taxonomy Page', 'rich-taxonomy' ), function() {
+			printf( '<p class="description">%s</p>', esc_html__( 'Specified taxonomies will have taxonomy page. To create a new taxonomy page, go to the terms archive in admin panel.', 'rich-taxonomy' ) );
 		}, 'reading' );
 		// Taxonomies.
 		add_settings_field( $this->option_name, __( 'Taxonomies', 'rich-taxonomy' ), function() {

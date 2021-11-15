@@ -62,10 +62,10 @@ Copy the file and customize as you like.
 
 To override styles, 4 hooks are available.
 
-1. rich_taxonomy_block_asset_style
-2. rich_taxonomy_block_asset_editor_style
-3. rich_taxonomy_block_asset_script
-4. rich_taxonomy_block_asset_editor_script
+1. `rich_taxonomy_block_asset_style`
+2. `rich_taxonomy_block_asset_editor_style`
+3. `rich_taxonomy_block_asset_script`
+4. `rich_taxonomy_block_asset_editor_script`
 
 To change looks & feels, `rich_taxonomy_block_asset_style` is the best start point.
 

@@ -7,7 +7,7 @@
 .gitignore
 .node-version
 .stylelintrc.json
-.wordpress_org
+.wordpress-org
 .wp-env.json
 node_modules
 composer.lock

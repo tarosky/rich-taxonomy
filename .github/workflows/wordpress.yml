@@ -94,11 +94,14 @@ jobs:
       - name: Build package.
         run: bash bin/build.sh ${{ github.ref }}
 
-      - name: Clean package.
-        run: bash bin/clean.sh
-
-      - name: Create Zip
-        run: zip -r rich-taxonomy.zip ./
+      - name: Deploy to WordPress Directory
+        id: deploy
+        uses: 10up/action-wordpress-plugin-deploy@stable
+        with:
+          generate-zip: true
+        env:
+          SVN_USERNAME: ${{ secrets.WP_ORG_USERNAME_TAROSKY }}
+          SVN_PASSWORD: ${{ secrets.WP_ORG_PASSWORD_TAROSKY }}
 
       - name: Create Release
         id: pre_release
@@ -107,9 +110,9 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           tag_name: ${{ github.ref }}
-          release_name: Release Rich TAxonomy ${{ github.ref }}
+          release_name: Release ${{ github.ref }}
           body: |
-            Release Rich Taxonomy plugin version ${{ github.ref }}
+            Release version ${{ github.ref }}
           draft: false
           prerelease: false
 
@@ -118,7 +121,7 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          upload_url: ${{ steps.pre_release.outputs.upload_url }}
-          asset_path: ./rich-taxonomy.zip
-          asset_name: rich-taxonomy.zip
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: ${{ github.workspace }}/${{ github.event.repository.name }}.zip
+          asset_name: ${{ github.event.repository.name }}.zip
           asset_content_type: application/zip

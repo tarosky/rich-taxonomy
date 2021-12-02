@@ -73,7 +73,7 @@ class Editor extends Singleton {
 			'label'               => __( 'Taxonomy Page', 'rich-taxonomy' ),
 			'public'              => $can,
 			'rewrite'             => true,
-			'exclude_from_search' => true,
+			'exclude_from_search' => false,
 			'publicly_queryable'  => $can,
 			'show_ui'             => true,
 			'menu_icon'           => 'dashicons-admin-page',

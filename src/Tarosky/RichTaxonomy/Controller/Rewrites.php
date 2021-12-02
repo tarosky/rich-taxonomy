@@ -35,6 +35,8 @@ class Rewrites extends Singleton {
 		add_filter( 'taxonomy_template', [ $this, 'archive_template_include' ], 10, 3 );
 		// Change single page for template.
 		add_filter( 'singular_template', [ $this, 'singular_template_include' ], 10, 3 );
+		// Add url.
+		add_filter( 'post_type_link', [ $this, 'filter_permalink' ], 10, 2 );
 	}
 
 	/**
@@ -145,5 +147,26 @@ class Rewrites extends Singleton {
 			}
 		}
 		return $template;
+	}
+
+	/**
+	 * Customize permalink.
+	 *
+	 * @param string   $link URL.
+	 * @param \WP_Post $post Post object.
+	 * @return string
+	 */
+	public function filter_permalink( $link, $post ) {
+		if ( is_admin() || $post->post_type !== $this->post_type() ) {
+			return $link;
+		}
+		if ( 'publish' !== $post->post_status ) {
+			return $link;
+		}
+		$term = $this->get_assigned_term( $post );
+		if ( ! $term ) {
+			return $link;
+		}
+		return get_term_link( $term );
 	}
 }

@@ -12,7 +12,7 @@ Text Domain: rich-taxonomy
 Domain Path: /languages
  */
 
-defined( 'ABSPATH' ) or die();
+defined( 'ABSPATH' ) || die();
 
 /**
  * Initializer.
@@ -29,7 +29,7 @@ function rich_taxonomy_init() {
 	// Load functions.
 	require_once __DIR__ . '/functions.php';
 }
-add_action( 'plugin_loaded', 'rich_taxonomy_init' );
+add_action( 'plugins_loaded', 'rich_taxonomy_init' );
 
 /**
  * Get plugin version.

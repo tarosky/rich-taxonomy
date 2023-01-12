@@ -16,6 +16,9 @@
 		"fix:js": "eslint --fix -c .eslintrc assets/js",
 		"fix:css": "stylelint --fix assets/scss"
 	},
+	"engines": {
+		"node": ">=14.0"
+	},
 	"author": "Hametuha inc.",
 	"license": "LGPL-3.0-or-later",
 	"devDependencies": {

@@ -133,6 +133,10 @@ Create a new [issue](https://github.com/tarosky/rich-taxonomy/issues) or send [p
 
 ## Changelog
 
+### 1.0.9
+
+* Fix bug in template selector in taxonomy page editor.
+
 ### 1.0.0
 
 * First release.

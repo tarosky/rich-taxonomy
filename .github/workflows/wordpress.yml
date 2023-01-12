@@ -15,9 +15,15 @@ jobs:
     runs-on: ${{ matrix.operating-system }}
     strategy:
       matrix:
-        operating-system: [ ubuntu-18.04 ]  # OS. ubuntu-18.04 is also available.
-        php: [ '5.6', '7.2', '7.4' ] # PHP versions to check.
-        wp: [ 'latest', '5.5' ]      # WordPress version to check.
+        operating-system: [ ubuntu-latest ]  # OS. ubuntu-18.04 is also available.
+        php: [ 7.4, 8.0 ] # PHP versions to check.
+        wp: [ latest, 5.9 ] # WordPress version to check.
+        tools: [ composer ]
+        include:
+          - php: 5.6
+            wp: 5.9
+            operating-system: ubuntu-18.04
+            tools: composer:2.2
     services:
       mysql:
         image: mysql:5.7
@@ -30,10 +36,13 @@ jobs:
     steps:
       - uses: actions/checkout@master
 
-      - name: Setup PHP
-        uses: nanasess/setup-php@master
+      - name: Setup PHP with composer
+        uses: shivammathur/setup-php@v2
         with:
           php-version: ${{ matrix.php }}
+          tools: ${{ matrix.tools }}
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Validate composer.json and composer.lock
         run: composer validate
@@ -50,19 +59,19 @@ jobs:
       - name: Check PHP Unit
         run: composer test
 
-      - name: Check PHP styntax
+      - name: Check PHP syntax
         run: composer lint
 
   assets:
     name: Check Assets
-    runs-on: ubuntu-18.04
+    runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@master
 
       - name: Install Node
         uses: actions/setup-node@v1
         with:
-          node-version: '12'
+          node-version: '14'
 
       - name: Install NPM Packages
         run: npm install
@@ -81,15 +90,18 @@ jobs:
       - name: Confirm
         run: echo ${{ needs.pre_release.outputs.upload_url }}
 
-      - name: Setup PHP
-        uses: nanasess/setup-php@master
+      - name: Setup PHP with composer
+        uses: shivammathur/setup-php@v2
         with:
-          php-version: '5.6'
+          php-version: 5.6
+          tools: composer:2.2
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Install NPM
         uses: actions/setup-node@v1
         with:
-          node-version: '12'
+          node-version: '14'
 
       - name: Build package.
         run: bash bin/build.sh ${{ github.ref }}

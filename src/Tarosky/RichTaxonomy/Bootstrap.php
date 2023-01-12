@@ -51,7 +51,10 @@ class Bootstrap extends Singleton {
 	public function register_assets() {
 		$json = $this->root_dir() . 'wp-dependencies.json';
 		if ( ! file_exists( $json ) ) {
-			trigger_error( __( 'Dependency list is missing.', 'rich-taxonomy' ), E_USER_WARNING );
+			if ( 'cli' !== php_sapi_name() ) {
+				// Raise error if this is production.
+				trigger_error( __( 'Dependency list is missing.', 'rich-taxonomy' ), E_USER_WARNING );
+			}
 			return;
 		}
 		$assets = json_decode( file_get_contents( $json ), true );

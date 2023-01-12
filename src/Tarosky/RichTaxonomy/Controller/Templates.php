@@ -63,14 +63,16 @@ class Templates extends Singleton {
 	 */
 	public function render_meta_box( $post ) {
 		wp_nonce_field( 'rich_taxonomy_template', '_richtaxonomynonce' );
-		$current = $this->get_post( $post );
-		?>
+		$current       = $this->get_post_template( $post );
+		$template_list = $this->get_template_list();
+		if ( $template_list ) :
+			?>
 		<p>
 			<label>
-				<?php esc_html_e( 'Template File', '' ); ?><br />
+				<?php esc_html_e( 'Template File', 'rich-taxonomy' ); ?><br />
 				<select name="rich-taxonomy-template" class="widefat" style="box-sizing: border-box;">
 					<?php
-					foreach ( $this->get_template_list() as $template ) {
+					foreach ( $template_list as $template ) {
 						printf(
 							'<option value="%s"%s>%s</option>',
 							esc_attr( $template ),
@@ -82,7 +84,12 @@ class Templates extends Singleton {
 				</select>
 			</label>
 		</p>
-		<?php
+		<?php else : ?>
+		<p class="wp-ui-text-notification">
+			<?php esc_html_e( 'No template available. Maybe uncommon theme structure or using block theme.', 'rich-taxonomy' ); ?>
+		</p>
+			<?php
+		endif;
 	}
 
 	/**
@@ -103,7 +110,9 @@ class Templates extends Singleton {
 				}
 			}
 		}
-		array_unshift( $list, $default );
+		if ( ! empty( $default ) ) {
+			array_unshift( $list, $default );
+		}
 		return apply_filters( 'rich_taxonomy_template_list', $list );
 	}
 

@@ -63,10 +63,10 @@ class Templates extends Singleton {
 	 */
 	public function render_meta_box( $post ) {
 		wp_nonce_field( 'rich_taxonomy_template', '_richtaxonomynonce' );
-		$current = $this->get_post_template( $post );
+		$current       = $this->get_post_template( $post );
 		$template_list = $this->get_template_list();
 		if ( $template_list ) :
-		?>
+			?>
 		<p>
 			<label>
 				<?php esc_html_e( 'Template File', 'rich-taxonomy' ); ?><br />
@@ -84,11 +84,11 @@ class Templates extends Singleton {
 				</select>
 			</label>
 		</p>
-		<?php else: ?>
+		<?php else : ?>
 		<p class="wp-ui-text-notification">
 			<?php esc_html_e( 'No template available. Maybe uncommon theme structure or using block theme.', 'rich-taxonomy' ); ?>
 		</p>
-		<?php
+			<?php
 		endif;
 	}
 

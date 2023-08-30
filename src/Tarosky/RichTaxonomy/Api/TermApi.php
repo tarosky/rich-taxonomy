@@ -39,11 +39,12 @@ class TermApi extends RestApiPattern {
 	/**
 	 * Test variables.
 	 *
-	 * @param int $var Term Id.
+	 * @param int $term_id Term id.
+	 *
 	 * @return \WP_Error|true
 	 */
-	public function validate_term_id( $var ) {
-		$term = get_term( $var );
+	public function validate_term_id( $term_id ) {
+		$term = get_term( $term_id );
 		if ( ! $term ) {
 			return new \WP_Error( 'rich_taxonomy_api_error', __( 'Term not found.', 'rich-taxonomy' ) );
 		}

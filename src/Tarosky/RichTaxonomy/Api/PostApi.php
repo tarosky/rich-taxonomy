@@ -43,14 +43,15 @@ class PostApi extends RestApiPattern {
 	/**
 	 * Validate post id.
 	 *
-	 * @param mixed $var Variable.
+	 * @param mixed $value Variable.
+	 *
 	 * @return \WP_Error|bool
 	 */
-	public function validate_post( $var ) {
-		if ( ! is_numeric( $var ) ) {
+	public function validate_post( $value ) {
+		if ( ! is_numeric( $value ) ) {
 			return false;
 		}
-		$post = get_post( $var );
+		$post = get_post( $value );
 		if ( ! $post || $this->post_type() !== $post->post_type ) {
 			return new \WP_Error( 'rest_api_error', __( 'Invalid post requested.', 'rich-taxonomy' ) );
 		}

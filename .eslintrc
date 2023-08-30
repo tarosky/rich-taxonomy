@@ -26,6 +26,7 @@
 		"react/react-in-jsx-scope": "off",
 		"react/jsx-sort-props": "off",
 		"jsdoc/check-tag-names": "off",
+		"react-hooks/rules-of-hooks": "off",
 		"import/order": "off",
 		"no-prototype-builtins": "off",
 		"object-curly-newline": "off",

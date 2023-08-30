@@ -12,8 +12,8 @@ use Tarosky\RichTaxonomy\Utility\SettingAccessor;
  */
 abstract class RestApiPattern extends Singleton {
 
-	use PageAccessor,
-		SettingAccessor;
+	use PageAccessor;
+	use SettingAccessor;
 
 	protected $namespace = 'rich-taxonomy/v1';
 

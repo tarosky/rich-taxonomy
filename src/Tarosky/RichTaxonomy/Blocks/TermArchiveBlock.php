@@ -14,8 +14,8 @@ use Tarosky\RichTaxonomy\Utility\TemplateAccessor;
  */
 class TermArchiveBlock extends DynamicBlockPattern {
 
-	use PageAccessor,
-		TemplateAccessor;
+	use PageAccessor;
+	use TemplateAccessor;
 
 	/**
 	 * Get attribute.

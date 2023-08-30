@@ -15,9 +15,9 @@ use Tarosky\RichTaxonomy\Utility\SettingAccessor;
  */
 class Editor extends Singleton {
 
-	use SettingAccessor,
-		PageAccessor,
-		DirectoryAccessor;
+	use SettingAccessor;
+	use PageAccessor;
+	use DirectoryAccessor;
 
 	/**
 	 * Constructor.
@@ -33,7 +33,7 @@ class Editor extends Singleton {
 		add_filter( 'manage_' . $this->post_type() . '_posts_columns', [ $this, 'posts_columns' ] );
 		add_action( 'manage_' . $this->post_type() . '_posts_custom_column', [ $this, 'posts_custom_columns' ], 10, 2 );
 		// Edit form tag.
-		add_action( 'admin_head', function() {
+		add_action( 'admin_head', function () {
 			$taxonomies = $this->setting()->rich_taxonomies();
 			foreach ( $taxonomies as $taxonomy ) {
 				add_action( $taxonomy . '_term_edit_form_top', [ $this, 'edit_form_fields' ], 10, 2 );
@@ -180,7 +180,7 @@ class Editor extends Singleton {
 		if ( get_current_screen()->is_block_editor() ) {
 			return;
 		}
-		\add_meta_box( 'rich-taxonomy-original', __( 'Original Taxonomy', 'rich-taxonomy' ), function( \WP_Post $post ) {
+		\add_meta_box( 'rich-taxonomy-original', __( 'Original Taxonomy', 'rich-taxonomy' ), function ( \WP_Post $post ) {
 			$term = $this->get_assigned_term( $post );
 			if ( $term ) {
 				printf(

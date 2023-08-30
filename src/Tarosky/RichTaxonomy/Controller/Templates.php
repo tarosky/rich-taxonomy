@@ -14,8 +14,8 @@ use Tarosky\RichTaxonomy\Utility\PageAccessor;
  */
 class Templates extends Singleton {
 
-	use PageAccessor,
-		DirectoryAccessor;
+	use PageAccessor;
+	use DirectoryAccessor;
 
 	const META_KEY = '_rich_taxonomy_template';
 

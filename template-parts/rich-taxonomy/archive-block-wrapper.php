@@ -16,7 +16,7 @@ $should_hide = 0 < $args['number'] && $args['query']->post_count > $args['number
 		<?php
 		$counter = 0;
 		while ( $args['query']->have_posts() ) {
-			$counter++;
+			++$counter;
 			$args['query']->the_post();
 			rich_taxonomy_template( 'template-parts/rich-taxonomy/archive-block-loop', get_post_type(), array_merge( [
 				// Hide less than number.

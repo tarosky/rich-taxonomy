@@ -15,9 +15,9 @@ use Tarosky\RichTaxonomy\Utility\TemplateAccessor;
  */
 class Rewrites extends Singleton {
 
-	use PageAccessor,
-		SettingAccessor,
-		TemplateAccessor;
+	use PageAccessor;
+	use SettingAccessor;
+	use TemplateAccessor;
 
 	/**
 	 * Constructor

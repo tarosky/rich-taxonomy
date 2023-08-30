@@ -15,7 +15,7 @@ trait DirectoryAccessor {
 	 * @return string
 	 */
 	public function root_dir() {
-		return plugin_dir_path( dirname( dirname( dirname( __DIR__ ) ) ) );
+		return plugin_dir_path( dirname( __DIR__, 3 ) );
 	}
 
 	/**

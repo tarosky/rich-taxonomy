@@ -20,10 +20,15 @@
 		<exclude name="WordPress.PHP.DisallowShortTernary.Found" />
 		<exclude name="WordPress.DateTime.CurrentTimeTimestamp.RequestedUTC" />
 		<exclude name="Generic.Arrays.DisallowShortArraySyntax.Found" />
+		<exclude name="Universal.Arrays.DisallowShortArraySyntax.Found" />
 		<exclude name="PEAR.Functions.FunctionCallSignature.CloseBracketLine" />
 		<exclude name="PEAR.Functions.FunctionCallSignature.ContentAfterOpenBracket" />
 		<exclude name="PEAR.Functions.FunctionCallSignature.MultipleArguments"/>
 		<exclude name="WordPress.Arrays.ArrayDeclarationSpacing.AssociativeArrayFound" />
+	</rule>
+
+	<rule ref="PHPCompatibility">
+		<config name="testVersion" value="7.0-"/>
 	</rule>
 
 	<exclude-pattern>*/node_modules/*</exclude-pattern>

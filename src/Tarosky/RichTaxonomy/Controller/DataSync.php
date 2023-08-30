@@ -14,8 +14,8 @@ use Tarosky\RichTaxonomy\Utility\SettingAccessor;
  */
 class DataSync extends Singleton {
 
-	use PageAccessor,
-		SettingAccessor;
+	use PageAccessor;
+	use SettingAccessor;
 
 	/**
 	 * Register hooks.

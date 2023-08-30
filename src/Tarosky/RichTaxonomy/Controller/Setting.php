@@ -40,16 +40,16 @@ class Setting extends Singleton {
 			return;
 		}
 		// Register setting fields.
-		add_settings_section( 'rich-taxonomy-section', __( 'Taxonomy Page', 'rich-taxonomy' ), function() {
+		add_settings_section( 'rich-taxonomy-section', __( 'Taxonomy Page', 'rich-taxonomy' ), function () {
 			printf( '<p class="description">%s</p>', esc_html__( 'Specified taxonomies will have taxonomy page. To create a new taxonomy page, go to the terms archive in admin panel.', 'rich-taxonomy' ) );
 		}, 'reading' );
 		// Taxonomies.
-		add_settings_field( $this->option_name, __( 'Taxonomies', 'rich-taxonomy' ), function() {
+		add_settings_field( $this->option_name, __( 'Taxonomies', 'rich-taxonomy' ), function () {
 			$taxonomies = array_filter(
 				get_taxonomies( [
 					'public' => true,
 				], OBJECT ),
-				function( \WP_Taxonomy $taxonomy ) {
+				function ( \WP_Taxonomy $taxonomy ) {
 					return ! in_array( $taxonomy->name, $this->denied_taxonomies(), true );
 				}
 			);

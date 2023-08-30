@@ -2,9 +2,9 @@
 
 Tags: taxonomy, terms, seo  
 Contributors: tarosky, Takahashi_Fumiki  
-Tested up to: 5.8  
-Requires at least: 5.5  
-Requires PHP: 5.6  
+Tested up to: 6.3  
+Requires at least: 5.9  
+Requires PHP: 7.0  
 Stable Tag: nightly  
 License: GPLv3 or later  
 License URI: http://www.gnu.org/licenses/gpl-3.0.txt
@@ -132,6 +132,10 @@ Please create new ticket on support forum.
 Create a new [issue](https://github.com/tarosky/rich-taxonomy/issues) or send [pull requests](https://github.com/tarosky/rich-taxonomy/pulls).
 
 ## Changelog
+
+### 1.1.0
+
+* Fix bug for block dissapearing.
 
 ### 1.0.9
 

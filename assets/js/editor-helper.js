@@ -2,14 +2,13 @@
  * Editor helper.
  *
  * @handle rich-taxonomy-editor-helper
- * @deps wp-element, wp-plugins, wp-edit-post, wp-compose, wp-components, wp-data, wp-i18n
+ * @deps wp-element, wp-plugins, wp-edit-post, wp-components, wp-data, wp-i18n
  */
 
-const { useEffect } = wp.element;
+const { useEffect, useState } = wp.element;
 const { registerPlugin } = wp.plugins;
 const { PluginPostStatusInfo } = wp.editPost;
 const { __, sprintf } = wp.i18n;
-const { withState } = wp.compose;
 const { select } = wp.data;
 const { apiFetch } = wp;
 const { Spinner } = wp.components;
@@ -21,10 +20,9 @@ const getTerm = () => {
 }
 
 registerPlugin( 'post-status-info-assigned-term', {
-	render: withState( {
-		loading: true,
-		term: getTerm(),
-	} )( ( { term, loading, setState } ) => {
+	render() {
+		const [ loading, setLoading ] = useState( true );
+		const [ term, setTerm ] = useState( getTerm() );
 		useEffect( () => {
 			if ( null === getTerm() ) {
 				termCache = false;
@@ -32,14 +30,10 @@ registerPlugin( 'post-status-info-assigned-term', {
 					path: sprintf( 'rich-taxonomy/v1/term/%d', select( 'core/editor' ).getCurrentPostId() ),
 				} ).then( ( res ) => {
 					termCache = res;
-					setState( {
-						loading: false,
-						term: res,
-					} );
+					setLoading( false );
+					setTerm( res );
 				} ).catch( () => {
-					setState( {
-						loading: false,
-					} );
+					setLoading( false );
 				} );
 			}
 		} );
@@ -63,5 +57,5 @@ registerPlugin( 'post-status-info-assigned-term', {
 				) }
 			</PluginPostStatusInfo>
 		);
-	} ),
+	},
 } );

@@ -55,8 +55,8 @@ template-parts
   - archive-block-wrapper.php // Wrapper of archive.
 ```
 
-If theme has files in same path, that pirors.
-Copy the file and customize as you like.
+If the theme has files in the same path, that priors.
+Copy the file and customize one as you like.
 
 #### Styles 
 
@@ -67,7 +67,7 @@ To override styles, 4 hooks are available.
 3. `rich_taxonomy_block_asset_script`
 4. `rich_taxonomy_block_asset_editor_script`
 
-To change looks & feels, `rich_taxonomy_block_asset_style` is the best start point.
+To change looks & feels, `rich_taxonomy_block_asset_style` is the best starting point.
 
 ```
 // Register style.
@@ -88,11 +88,11 @@ This style is loaded in both public and editor.
 
 #### Default Contents
 
-To define default contents of the taxonomy page, use `rich_taxonomy_default_post_object` filter hook.
+To define the default contents of the taxonomy page, use `rich_taxonomy_default_post_object` filter hook.
 
 ```
 /**
- * Fitler default post object.
+ * Filter default post object.
  *
  * @param array   $args    Post object passed to wp_insert_post().
  * @param WP_Term $term    Term object assigned to this post.
@@ -116,7 +116,7 @@ add_filter( 'rich_taxonomy_default_post_object', function( $args, $term, $contes
 ### From Plugin Directory
 
 1. Click install and activate it.
-2. Selecte the taxsonomies the Reading Settings (Setting > Reading).
+2. Select the taxsonomies at the Reading Settings page (Setting > Reading).
 
 ### From Github
 
@@ -126,7 +126,7 @@ See [releases](https://github.com/tarosky/rich-taxonomy/releases).
 
 ### Where can I get supported?
 
-Please create new ticket on support forum.
+Please create a new ticket on the support forum.
 
 ### How can I contribute?
 
@@ -134,13 +134,18 @@ Create a new [issue](https://github.com/tarosky/rich-taxonomy/issues) or send [p
 
 ## Changelog
 
+### 1.1.1
+
+* Fix a bug that breaks the block widgets screen.
+* Update README for clearance of installation. props [@megane9988](https://profiles.wordpress.org/megane9988/)
+
 ### 1.1.0
 
-* Fix bug for block dissapearing.
+* Fix the bug for block disappearing.
 
 ### 1.0.9
 
-* Fix bug in template selector in taxonomy page editor.
+* Fix a bug in the template selector in the taxonomy page editor.
 
 ### 1.0.0
 

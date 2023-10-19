@@ -115,7 +115,8 @@ add_filter( 'rich_taxonomy_default_post_object', function( $args, $term, $contes
 
 ### From Plugin Directory
 
-Click install and activate it.
+1. Click install and activate it.
+2. Selecte the taxsonomies the Reading Settings (Setting > Reading).
 
 ### From Github
 

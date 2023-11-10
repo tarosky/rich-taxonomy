@@ -23,6 +23,7 @@ class Templates extends Singleton {
 	 * Register hooks.
 	 */
 	protected function init() {
+		add_action( 'save_post', [ $this, 'save_post' ] );
 		add_action( 'add_meta_boxes', [ $this, 'add_meta_boxes' ] );
 	}
 
@@ -62,7 +63,7 @@ class Templates extends Singleton {
 	 * @param \WP_Post $post Post object.
 	 */
 	public function render_meta_box( $post ) {
-		wp_nonce_field( 'rich_taxonomy_template', '_richtaxonomynonce' );
+		wp_nonce_field( 'rich_taxonomy_template', '_richtaxonomynonce', false );
 		$current       = $this->get_post_template( $post );
 		$template_list = $this->get_template_list();
 		if ( $template_list ) :

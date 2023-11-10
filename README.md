@@ -134,6 +134,10 @@ Create a new [issue](https://github.com/tarosky/rich-taxonomy/issues) or send [p
 
 ## Changelog
 
+### 1.1.2
+
+* Fix bug on template selector.
+
 ### 1.1.1
 
 * Fix a bug that breaks the block widgets screen.

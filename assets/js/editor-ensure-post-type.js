@@ -13,7 +13,14 @@ const { postType } = RichTaxonomyEnsurePostType;
 
 wp.richTaxonomyReady = ( callable, ) => {
 	const unsubscribe = subscribe( () => {
-		if ( select( 'core/editor' ).isCleanNewPost() || select( 'core/block-editor' ).getBlockCount() > 0 ) {
+		const editor = select( 'core/editor' );
+		if ( ! editor ) {
+			// This is not post editor.
+			unsubscribe();
+			callable( false );
+			return;
+		}
+		if ( editor.isCleanNewPost() || select( 'core/block-editor' ).getBlockCount() > 0 ) {
 			const currentPostType = select( 'core/editor' ).getCurrentPostType();
 			unsubscribe();
 			callable( postType === currentPostType );

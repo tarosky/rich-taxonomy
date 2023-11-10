@@ -27,7 +27,7 @@
 		"@babel/preset-env": "^7.1.0",
 		"@kunoichi/grab-deps": "^1.2.2",
 		"@wordpress/env": "^8.8",
-		"@wordpress/eslint-plugin": "^9.0",
+		"@wordpress/eslint-plugin": "^17.2",
 		"babel-eslint": "^10.0.1",
 		"babel-loader": "^8.0.5",
 		"eslint": "^8.51",

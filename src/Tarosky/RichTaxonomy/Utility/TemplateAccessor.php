@@ -19,4 +19,13 @@ trait TemplateAccessor {
 	public function template() {
 		return Templates::get_instance();
 	}
+
+	/**
+	 * Detect if this template is block theme.
+	 *
+	 * @return bool
+	 */
+	public function is_block_theme() {
+		return function_exists( 'wp_is_block_theme' ) && wp_is_block_theme();
+	}
 }

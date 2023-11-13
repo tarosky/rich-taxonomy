@@ -25,18 +25,32 @@ class Rewrites extends Singleton {
 	protected function init() {
 		// Change request.
 		add_filter( 'posts_results', [ $this, 'posts_results' ], 10, 2 );
+		// Filter for template.
+		add_action( 'template_redirect', [ $this, 'register_template_filters' ] );
 		// Change title.
 		add_filter( 'single_term_title', [ $this, 'change_title' ] );
 		add_filter( 'single_tag_title', [ $this, 'change_title' ] );
 		add_filter( 'single_cat_title', [ $this, 'change_title' ] );
+		// Add url.
+		add_filter( 'post_type_link', [ $this, 'filter_permalink' ], 10, 2 );
+	}
+
+	/**
+	 * Register template filters.
+	 *
+	 * @return void
+	 */
+	public function register_template_filters() {
+		if ( $this->is_block_theme() ) {
+			// This is block theme, so do nothing.
+			return;
+		}
 		// Change template for archive.
 		add_filter( 'tag_template', [ $this, 'archive_template_include' ], 10, 3 );
 		add_filter( 'category_template', [ $this, 'archive_template_include' ], 10, 3 );
 		add_filter( 'taxonomy_template', [ $this, 'archive_template_include' ], 10, 3 );
 		// Change single page for template.
 		add_filter( 'singular_template', [ $this, 'singular_template_include' ], 10, 3 );
-		// Add url.
-		add_filter( 'post_type_link', [ $this, 'filter_permalink' ], 10, 2 );
 	}
 
 	/**
@@ -169,4 +183,5 @@ class Rewrites extends Singleton {
 		}
 		return get_term_link( $term );
 	}
+
 }

@@ -3,6 +3,7 @@
 namespace Tarosky\RichTaxonomy\Controller;
 
 use Tarosky\RichTaxonomy\Pattern\Singleton;
+use Tarosky\RichTaxonomy\Utility\TemplateAccessor;
 
 /**
  * Setting class.
@@ -10,6 +11,8 @@ use Tarosky\RichTaxonomy\Pattern\Singleton;
  * @package rich-taxonomy
  */
 class Setting extends Singleton {
+
+	use TemplateAccessor;
 
 	/**
 	 * @var string Option key.
@@ -30,6 +33,7 @@ class Setting extends Singleton {
 	 */
 	protected function init() {
 		add_action( 'admin_init', [ $this, 'admin_init' ] );
+		add_action( 'admin_notices', [ $this, 'notice_for_block_theme' ] );
 	}
 
 	/**
@@ -73,6 +77,7 @@ class Setting extends Singleton {
 	 */
 	public function rich_taxonomies() {
 		$taxonomies = (array) get_option( $this->option_name, [] );
+
 		return apply_filters( 'rich_taxonomy_taxonomies', $taxonomies );
 	}
 
@@ -80,9 +85,28 @@ class Setting extends Singleton {
 	 * If taxonomy should be rich, return true.
 	 *
 	 * @param string $taxonomy Taxonomy name.
+	 *
 	 * @return bool
 	 */
 	public function is_rich( $taxonomy ) {
 		return in_array( $taxonomy, $this->rich_taxonomies(), true );
+	}
+
+	/**
+	 * Display a notice for block themes.
+	 *
+	 * @return void
+	 */
+	public function notice_for_block_theme( $pagenow ) {
+		if ( $this->is_block_theme() ) {
+			printf(
+				'<div class="error"><p>%s</p></div>',
+				sprintf(
+					// translators: %s is a theme name.
+					__( 'Your current theme %s is a block theme. Rich Taxonomy is not necessary.', 'rich-taxonomy' ),
+					esc_html( wp_get_theme()->get( 'Name' ) )
+				)
+			);
+		}
 	}
 }

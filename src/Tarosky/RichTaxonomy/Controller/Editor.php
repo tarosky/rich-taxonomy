@@ -32,6 +32,7 @@ class Editor extends Singleton {
 		// Add columns.
 		add_filter( 'manage_' . $this->post_type() . '_posts_columns', [ $this, 'posts_columns' ] );
 		add_action( 'manage_' . $this->post_type() . '_posts_custom_column', [ $this, 'posts_custom_columns' ], 10, 2 );
+		add_filter( 'post_row_actions', [ $this, 'posts_list_actions' ], 10, 2 );
 		// Edit form tag.
 		add_action( 'admin_head', function () {
 			$taxonomies = $this->setting()->rich_taxonomies();
@@ -55,6 +56,32 @@ class Editor extends Singleton {
 		if ( $this->setting()->is_rich( $tag->taxonomy ) ) {
 			$link                          = $this->has_post( $tag ) ? get_edit_post_link( $this->get_post( $tag ) ) : sprintf( '#create-%d', $tag->term_id );
 			$actions['edit_rich_taxonomy'] = sprintf( '<a class="rich-taxonomy-link" href="%s">%s</a>', esc_url( $link ), esc_html__( 'Taxonomy Page', 'rich-taxonomy' ) );
+		}
+		return $actions;
+	}
+
+	/**
+	 * Post list action.
+	 *
+	 * @param string[] $actions Action links.
+	 * @param \WP_Post $post    Post object.
+	 *
+	 * @return string[]
+	 */
+	public function posts_list_actions( $actions, $post ) {
+		if ( $this->post_type() !== $post->post_type ) {
+			return $actions;
+		}
+		// If already published, check original page.
+		if ( 'publish' === $post->post_status ) {
+			$term = $this->get_assigned_term( $post );
+			if ( $term ) {
+				$actions[ 'rich-taxonomy-preview' ] = sprintf(
+					'<a href="%s">%s</a>',
+					esc_url( get_term_link( $term ) ),
+					esc_html__( 'View Term Archive', 'rich-taxonomy' )
+				);
+			}
 		}
 		return $actions;
 	}

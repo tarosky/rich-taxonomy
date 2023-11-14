@@ -2,6 +2,8 @@
 
 namespace Tarosky\RichTaxonomy\Utility;
 
+use Tarosky\RichTaxonomy\Controller\Setting;
+
 /**
  * Term detector.
  *
@@ -108,5 +110,22 @@ trait PageAccessor {
 		}
 		update_post_meta( $post_id, $this->post_meta_key(), $term->term_id );
 		return $post_id;
+	}
+
+	/**
+	 * Get WP_Post if current page is a overridden.
+	 *
+	 * @return null|\WP_Post
+	 */
+	public function get_overriding_page() {
+		if ( ! ( is_category() || is_tag() || is_tax() ) ) {
+			return null;
+		}
+		if ( ! Setting::get_instance()->is_rich( get_queried_object()->taxonomy ) ) {
+			// Not a rich taxonomy.
+			return null;
+		}
+		// This may be a rich taxonomy page.
+		return $this->get_post( get_queried_object(), ! current_user_can( 'edit_posts' ) );
 	}
 }

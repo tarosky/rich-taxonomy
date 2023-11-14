@@ -13,6 +13,7 @@ use Tarosky\RichTaxonomy\Controller\Setting;
 use Tarosky\RichTaxonomy\Controller\Templates;
 use Tarosky\RichTaxonomy\Pattern\Singleton;
 use Tarosky\RichTaxonomy\Utility\DirectoryAccessor;
+use Tarosky\RichTaxonomy\Vendor\TaroCustomStyle;
 
 /**
  * Bootstrap file.
@@ -43,6 +44,8 @@ class Bootstrap extends Singleton {
 		add_action( 'init', [ $this, 'register_assets' ] );
 		// Register block assets.
 		add_action( 'enqueue_block_editor_assets', [ $this, 'register_block_assets' ] );
+		// Additional hooks.
+		TaroCustomStyle::get_instance();
 	}
 
 	/**

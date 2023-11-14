@@ -183,5 +183,4 @@ class Rewrites extends Singleton {
 		}
 		return get_term_link( $term );
 	}
-
 }

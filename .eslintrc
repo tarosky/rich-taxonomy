@@ -1,21 +1,15 @@
 {
-	"parser": "babel-eslint",
+	"parser": "@babel/eslint-parser",
 	"env": {
 		"browser": true,
 		"jquery": true
 	},
 	"globals": {
 		"wp": false,
-		"jQuery": false,
-		"angular": false,
-		"Hametuha": true,
-		"wpApiSettings": false,
-		"ga": false,
-		"Hashboard": true,
-		"Vue": false
+		"jQuery": false
 	},
 	"extends": [
-		"plugin:@wordpress/eslint-plugin/recommended"
+		"plugin:@wordpress/eslint-plugin/recommended-with-formatting"
 	],
 	"rules": {
 		"no-alert": "off",

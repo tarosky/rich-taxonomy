@@ -32,7 +32,7 @@ jobs:
     name: Check Assets
     uses: tarosky/workflows/.github/workflows/npm.yml@main
     with:
-      node_version: 14
+      node_version: 16
       package: package
 
   status-check:
@@ -63,9 +63,9 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Install NPM
-        uses: actions/setup-node@v1
+        uses: actions/setup-node@v3
         with:
-          node-version: '14'
+          node-version: '16'
 
       - name: Build package.
         run: bash bin/build.sh ${{ github.ref }}

@@ -76,7 +76,7 @@ class Editor extends Singleton {
 		if ( 'publish' === $post->post_status ) {
 			$term = $this->get_assigned_term( $post );
 			if ( $term ) {
-				$actions[ 'rich-taxonomy-preview' ] = sprintf(
+				$actions['rich-taxonomy-preview'] = sprintf(
 					'<a href="%s">%s</a>',
 					esc_url( get_term_link( $term ) ),
 					esc_html__( 'View Term Archive', 'rich-taxonomy' )

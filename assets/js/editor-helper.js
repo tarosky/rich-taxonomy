@@ -17,7 +17,7 @@ let termCache = null;
 
 const getTerm = () => {
 	return termCache;
-}
+};
 
 registerPlugin( 'post-status-info-assigned-term', {
 	render() {

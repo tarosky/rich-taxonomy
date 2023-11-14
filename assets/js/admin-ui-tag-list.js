@@ -12,7 +12,7 @@ const { __ } = wp.i18n;
 $( document ).ready( () => {
 	// Click link and create.
 	$( '.wp-list-table' ).on( 'click', '.rich-taxonomy-link', function( e ) {
-		const $link  = $( this );
+		const $link = $( this );
 		const termId = $link.attr( 'href' ).replace( /#create-/, '' );
 		if ( /^\d+$/.test( termId ) ) {
 			const label = $( this ).text();

@@ -17,20 +17,20 @@
 		"fix:css": "stylelint --fix assets/scss"
 	},
 	"engines": {
-		"node": ">=14.0"
+		"node": ">=16.0"
 	},
 	"author": "Hametuha inc.",
 	"license": "LGPL-3.0-or-later",
 	"devDependencies": {
 		"@babel/core": "^7.1.0",
+		"@babel/eslint-parser": "^7.23.3",
 		"@babel/plugin-transform-react-jsx": "^7.0.0",
 		"@babel/preset-env": "^7.1.0",
 		"@kunoichi/grab-deps": "^1.2.2",
 		"@wordpress/env": "^8.8",
 		"@wordpress/eslint-plugin": "^17.2",
-		"babel-eslint": "^10.0.1",
 		"babel-loader": "^8.0.5",
-		"eslint": "^8.51",
+		"eslint": "^8.53",
 		"gulp": "^4.0.0",
 		"gulp-autoprefixer": "^8.0.0",
 		"gulp-eslint": "^6.0.0",
@@ -38,16 +38,14 @@
 		"gulp-notify": "^3.2.0",
 		"gulp-plumber": "^1.2.0",
 		"gulp-rename": "^2.0.0",
-		"gulp-sass": "^4.0.2",
-		"gulp-sass-glob": "^1.0.9",
+		"gulp-sass": "^5.1.0",
 		"gulp-sourcemaps": "^3.0",
 		"gulp-stylelint": "^13.0.0",
-		"merge-stream": "^2.0.0",
+		"sass": "^1.69.5",
 		"stylelint": "^13.13.1",
 		"stylelint-config-wordpress": "^17.0.0",
 		"vinyl-named": "^1.1.0",
 		"webpack": "^5.3",
 		"webpack-stream": "^7.0"
-	},
-	"dependencies": {}
+	}
 }

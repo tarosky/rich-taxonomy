@@ -26,17 +26,17 @@ registerBlockType( RichTaxonomyTermArchiveBlock.name, {
 	attributes: RichTaxonomyTermArchiveBlock.attributes,
 	edit( { attributes, setAttributes } ) {
 		// translators: %s is post title.
-		const moreLabel = sprintf( __( 'Archive of %s', 'rich-taxonomy' ), select('core/editor').getCurrentPostAttribute( 'title' ) );
+		const moreLabel = sprintf( __( 'Archive of %s', 'rich-taxonomy' ), select( 'core/editor' ).getCurrentPostAttribute( 'title' ) );
 		return (
 			<>
 				<InspectorControls>
 					<PanelBody title={ __( 'Archive Setting', 'rich-taxonomy' ) }>
-						<TextControl type="number" label={ __( 'Number of Posts', 'rich-taxonomy' ) } value={ attributes.number } onChange={ number => setAttributes( { number: parseInt( number, 10 ) } ) }
+						<TextControl type="number" label={ __( 'Number of Posts', 'rich-taxonomy' ) } value={ attributes.number } onChange={ ( number ) => setAttributes( { number: parseInt( number, 10 ) } ) }
 							help={ __( 'If set, the loop whose index is more than this amount will be hidden and revealed by clicking toggle button.', 'rich-taxonomy' ) } />
-						<TextControl label={ __( 'Link Text', 'rich-taxonomy' ) } value={ attributes.more } onChange={ more => setAttributes( { more } ) } placeholder={ moreLabel }
+						<TextControl label={ __( 'Link Text', 'rich-taxonomy' ) } value={ attributes.more } onChange={ ( more ) => setAttributes( { more } ) } placeholder={ moreLabel }
 							help={ __( 'If number of posts are less than default loop number, more label will be displayed.', 'rich-taxonomy' ) } />
 						<TextControl label={ __( 'Toggle Text', 'rich-taxonomy' ) } value={ attributes.toggle } placeholder={ __( 'More', 'rich-taxonomy' ) }
-							onChange={ toggle => setAttributes( { toggle } ) } />
+							onChange={ ( toggle ) => setAttributes( { toggle } ) } />
 					</PanelBody>
 				</InspectorControls>
 				<div className="rich-taxonomy-editor-wrapper">

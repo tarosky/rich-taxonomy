@@ -1,11 +1,10 @@
 const gulp = require( 'gulp' );
-const fs = require( 'fs' );
 const $ = require( 'gulp-load-plugins' )();
 const webpack = require( 'webpack-stream' );
 const webpackBundle = require( 'webpack' );
 const named = require( 'vinyl-named' );
-const mergeStream = require( 'merge-stream' );
-const { dumpSetting } = require('@kunoichi/grab-deps');
+const { dumpSetting } = require( '@kunoichi/grab-deps' );
+const sass = require( 'gulp-sass' )( require( 'sass' ) );
 
 let plumber = true;
 
@@ -16,9 +15,8 @@ gulp.task( 'sass', function () {
 		.pipe( $.plumber( {
 			errorHandler: $.notify.onError( '<%= error.message %>' )
 		} ) )
-		.pipe( $.sassGlob() )
 		.pipe( $.sourcemaps.init() )
-		.pipe( $.sass( {
+		.pipe( sass( {
 			errLogToConsole: true,
 			outputStyle: 'compressed',
 			sourceComments: false,
@@ -56,8 +54,8 @@ gulp.task( 'jsx', function () {
 		.pipe( $.plumber( {
 			errorHandler: $.notify.onError( '<%= error.message %>' )
 		} ) )
-		.pipe( named( (file) =>  {
-			return file.relative.replace(/\.[^\.]+$/, '');
+		.pipe( named( ( file ) => {
+			return file.relative.replace( /\.[^\.]+$/, '' );
 		} ) )
 		.pipe( webpack( require( './webpack.config.js' ), webpackBundle ) )
 		.pipe( gulp.dest( './dist/js' ) );
@@ -73,15 +71,6 @@ gulp.task( 'eslint', function () {
 	}
 	return task.pipe( $.eslint( { useEslintrc: true } ) )
 		.pipe( $.eslint.format() );
-} );
-
-// Copy bundles.
-gulp.task( 'copy', ( done ) => {
-	done();
-	// return mergeStream(
-	// 	gulp.src( [] )
-	// 		.pipe( gulp.dest( 'dist/vendor' ) )
-	// );
 } );
 
 // Dump dependencies.
@@ -105,7 +94,6 @@ gulp.task( 'watch', ( done ) => {
 } );
 
 
-
 // Toggle plumber.
 gulp.task( 'noplumber', ( done ) => {
 	plumber = false;
@@ -113,7 +101,7 @@ gulp.task( 'noplumber', ( done ) => {
 } );
 
 // Build
-gulp.task( 'build', gulp.series( gulp.parallel( 'jsx', 'sass', 'copy' ), 'dump' ) );
+gulp.task( 'build', gulp.series( gulp.parallel( 'jsx', 'sass' ), 'dump' ) );
 
 // Default Tasks
 gulp.task( 'default', gulp.series( 'watch' ) );

@@ -1,12 +1,6 @@
 {
-	"core": null,
 	"plugins": [ "." ],
 	"themes": [
-		"https://downloads.wordpress.org/theme/twentytwenty.latest-stable.zip"
-	],
-	"config": {
-		"WP_DEBUG": true,
-		"SCRIPT_DEBUG": true,
-		"WP_DEBUG_LOG": true
-	}
+		"https://downloads.wordpress.org/theme/twentytwentyone.latest-stable.zip"
+	]
 }

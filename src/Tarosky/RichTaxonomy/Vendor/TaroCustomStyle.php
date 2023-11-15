@@ -38,7 +38,7 @@ class TaroCustomStyle extends AbstractVendor {
 	 * @return \WP_Term[]
 	 */
 	public function add_style_group( $styles ) {
-		$rich_taxonomy_page = $this->get_overriding_page();
+		$rich_taxonomy_page = rich_taxonomy_current_post();
 		if ( ! $rich_taxonomy_page ) {
 			return $styles;
 		}
@@ -59,6 +59,6 @@ class TaroCustomStyle extends AbstractVendor {
 	 * @return \WP_Term|\WP_Post|null
 	 */
 	public function override_rich_taxonomy_page( $object ) {
-		return $this->get_overriding_page() ?: $object;
+		return rich_taxonomy_current_post() ?: $object;
 	}
 }

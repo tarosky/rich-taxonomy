@@ -100,7 +100,7 @@ class Rewrites extends Singleton {
 			return null;
 		}
 		// Should override?
-		$post            = $this->get_post( $term, true );
+		$post            = $this->get_post( $term, ! current_user_can( 'edit_posts' ) );
 		$should_override = apply_filters( 'rich_taxonomy_override', true, $post, $query );
 		if ( ! $should_override ) {
 			return null;

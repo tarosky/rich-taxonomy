@@ -1,15 +1,17 @@
 <?php
 /**
-Plugin Name: Rich Taxonomy
-Description: Add rich LP for taxnomy archive.
-Plugin URI: https://wordpress.org/plugins/rich-taxonomy/
-Author: Tarosky INC.
-Version: nightly
-Author URI: https://tarosky.co.jp/
-License: GPL3 or later
-License URI: https://www.gnu.org/licenses/gpl-3.0.html
-Text Domain: rich-taxonomy
-Domain Path: /languages
+ * Plugin Name: Rich Taxonomy
+ * Description: Add rich LP for taxnomy archive.
+ * Plugin URI: https://wordpress.org/plugins/rich-taxonomy/
+ * Author: Tarosky INC.
+ * Version: nightly
+ * Requires at least: 5.9
+ * Requires PHP: 7.0
+ * Author URI: https://tarosky.co.jp/
+ * License: GPL3 or later
+ * License URI: https://www.gnu.org/licenses/gpl-3.0.html
+ * Text Domain: rich-taxonomy
+ * Domain Path: /languages
  */
 
 defined( 'ABSPATH' ) || die();

@@ -2,7 +2,7 @@
 
 Tags: taxonomy, terms, seo  
 Contributors: tarosky, Takahashi_Fumiki  
-Tested up to: 6.3  
+Tested up to: 6.8  
 Requires at least: 5.9  
 Requires PHP: 7.0  
 Stable Tag: nightly  
@@ -13,7 +13,7 @@ A WordPress plugin to enrich taxonomy archive.
 
 ## Description
 
-This plugin create a custom post type "Taoxnomy Page" which related to a term.
+This plugin create a custom post type "Taxonomy Page" which related to a term.
 
 ### How It Works
 

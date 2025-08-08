@@ -84,9 +84,13 @@ class Rewrites extends Singleton {
 		if ( ! $query->is_main_query() ) {
 			return null;
 		}
-		if ( is_category() || is_tag() || is_tax() ) {
-			$term = get_queried_object();
-		} else {
+		// Ensure we're on a taxonomy archive and the queried object is valid.
+		if ( ! ( is_category() || is_tag() || is_tax() ) ) {
+			return null;
+		}
+		$term = get_queried_object();
+		// Make sure $term is a WP_Term object and has a taxonomy property.
+		if ( ! ( $term instanceof \WP_Term ) || empty( $term->taxonomy ) ) {
 			return null;
 		}
 		// Is first page?

@@ -75,7 +75,7 @@ class Editor extends Singleton {
 		// If already published, check original page.
 		if ( 'publish' === $post->post_status ) {
 			$term = $this->get_assigned_term( $post );
-			if ( $term ) {
+			if ( $term && ! is_wp_error( $term ) ) {
 				$actions['rich-taxonomy-preview'] = sprintf(
 					'<a href="%s">%s</a>',
 					esc_url( get_term_link( $term ) ),
@@ -155,7 +155,7 @@ class Editor extends Singleton {
 		switch ( $column ) {
 			case 'taxonomy':
 				$term = get_term( (int) get_post_meta( $post_id, $this->post_meta_key(), true ) );
-				if ( ! $term ) {
+				if ( ! $term || is_wp_error( $term ) ) {
 					printf( '<span style="color:lightgray"><span class="dashicons dashicons-no"></span> %s</span>', esc_html__( 'Error', 'rich-taxonomy' ) );
 				} else {
 					printf(

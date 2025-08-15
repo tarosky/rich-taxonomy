@@ -44,6 +44,8 @@ class Editor extends Singleton {
 		add_action( 'add_meta_boxes', [ $this, 'add_meta_box' ] );
 		// Block editor helper.
 		add_action( 'enqueue_block_editor_assets', [ $this, 'enqueue_block_editor_assets' ] );
+		// Add notice for broken pages.
+		add_action( 'admin_notices', [ $this, 'notice_for_broken_pages' ] );
 	}
 
 	/**
@@ -236,5 +238,62 @@ class Editor extends Singleton {
 			return;
 		}
 		wp_enqueue_script( 'rich-taxonomy-editor-helper' );
+	}
+
+	/**
+	 * Display a notice for broken pages.
+	 *
+	 * @return void
+	 */
+	public function notice_for_broken_pages( $pagenow ) {
+		// Only show on the taxonomy page list screen.
+		$screen = get_current_screen();
+		if ( ! $screen || $screen->id !== 'edit-taxonomy-page' || $screen->post_type !== $this->post_type() ) {
+			return;
+		}
+		// Get all the taxonomies selected in Settings.
+		$enabled_taxonomies = $this->setting()->rich_taxonomies();
+		// Get all taxonomy pages.
+		$posts        = get_posts([
+			'post_type'      => $this->post_type(),
+			'post_status'    => 'any',
+			'posts_per_page' => -1,
+		]);
+		$broken_pages = [];
+		foreach ( $posts as $post ) {
+			$term_id = get_post_meta( $post->ID, $this->post_meta_key(), true );
+			$term    = get_term( (int) $term_id );
+			if ( $term && ! is_wp_error( $term ) ) {
+				if ( ! in_array( $term->taxonomy, $enabled_taxonomies, true ) ) {
+					$taxonomy_obj   = get_taxonomy( $term->taxonomy );
+					$broken_pages[] = [
+						'title'    => get_the_title( $post->ID ),
+						'edit_url' => get_edit_post_link( $post->ID ),
+						'taxonomy' => $taxonomy_obj ? $taxonomy_obj->label : $term->taxonomy,
+					];
+				}
+			}
+		}
+		if ( ! empty( $broken_pages ) ) {
+			?>
+			<div class="notice notice-warning">
+				<p>
+					<strong><?php esc_html_e( 'Warning:', 'rich-taxonomy' ); ?></strong>
+					<?php esc_html_e( 'These pages may not display correctly. Make sure their taxonomies are selected under Settings → Reading.', 'rich-taxonomy' ); ?>
+				</p>
+				<ul style="list-style: disc; margin-left: 16px;">
+					<?php foreach ( $broken_pages as $page ) : ?>
+						<li>
+							<a href="<?php echo esc_url( $page['edit_url'] ); ?>"><?php echo esc_html( $page['title'] ); ?></a>
+							(
+							<?php esc_html_e( 'Taxonomy:', 'rich-taxonomy' ); ?>
+							<code><?php echo esc_html( $page['taxonomy'] ); ?></code>
+							)
+						</li>
+					<?php endforeach; ?>
+				</ul>
+			</div>
+			<?php
+		}
 	}
 }

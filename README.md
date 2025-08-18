@@ -11,38 +11,40 @@ A WordPress plugin to enrich taxonomy archive.
 
 ## Description
 
-This plugin create a custom post type "Taxonomy Page" which related to a term.
+This plugin lets you create a **Taxonomy Page** (custom post type) that replaces the default page for a term archive. This plugin is intended for classic themes and is **not needed** with block themes that support Full Site Editing.
 
 ### How It Works
 
-Taxonomy Page will override the 1st page of term archive. You can choose which taxonomy to have a Taxonomy Page.
+The Taxonomy Page will override the **first page** of a term archive. In **Settings** you can choose which taxonomies should have the option to create a Taxonomy Page.
 
-For example:
+For example, to create a Taxonomy Page for the *News* category:
 
-1. You have decided "category" to have Taxonomy Page.
-2. Create a Taxonomy Page "Book" for category "Book".
-3. Edit the Taxonomy Page in block editor and publish it.
-4. Now the 1st page of "Book" category `<code>/category/book</code>` will dipslay the contents of the Taxonomy Page "Book".
+1. In **Settings → Reading** select `Category`.
+2. Go to **Posts → Categories**, hover over "News" and click **Taxonomy Page**.
+3. Edit the Taxonomy Page in the block editor and publish it.
+4. View the page at `/category/news` (assuming your permalink structure is set to “Post name”).
+
+Now the first page of the *News* category will dipslay the contents of the Taxonomy Page titled "News".
 
 ### Template Structure
 
-You can choose a template for the taxonomy page in editor,
-but you can put `singular-taxonomy-page.php` template in your theme and there's no need to choose.
-Below is the default template priority.
+You can choose a template for the Taxonomy Page in the block editor. If you create a template called `singular-taxonomy-page.php` in your theme, you don't need to select one.
 
-1. singular-taxonomy-page.php
-2. page.php
-3. singular.php
-4. single.php
-5. index.php
+The default template hierarchy, from highest to lowest priority, is as follows:
 
-Filter hook `rich_taxonomy_include_template` is also available.
+1. `singular-taxonomy-page.php`
+2. `page.php`
+3. `singular.php`
+4. `single.php`
+5. `index.php`
+
+Additionally, the filter hook `rich_taxonomy_include_template` is also available for use.
 
 ### Customization
 
-#### Archive Block
+#### Taxonomy Archive Block
 
-Archive blocks has tempalte structure like below.
+The Taxonomy Archive block has the following template structure:
 
 ```
 template-parts
@@ -65,7 +67,7 @@ To override styles, 4 hooks are available.
 3. `rich_taxonomy_block_asset_script`
 4. `rich_taxonomy_block_asset_editor_script`
 
-To change looks & feels, `rich_taxonomy_block_asset_style` is the best starting point.
+To change the look & feel, `rich_taxonomy_block_asset_style` is the best starting point.
 
 ```
 // Register style.
@@ -82,11 +84,11 @@ add_filter( 'rich_taxonomy_block_asset_style', function( $handle, $block_name ) 
 }, 10, 2 );
 ```
 
-This style is loaded in both public and editor.
+This style is loaded on both the public site and in the block editor.
 
 #### Default Contents
 
-To define the default contents of the taxonomy page, use `rich_taxonomy_default_post_object` filter hook.
+To define the default contents of the Taxonomy Page, use `rich_taxonomy_default_post_object` filter hook.
 
 ```
 /**
@@ -114,7 +116,7 @@ add_filter( 'rich_taxonomy_default_post_object', function( $args, $term, $contes
 ### From Plugin Directory
 
 1. Click install and activate it.
-2. Select the taxsonomies at the Reading Settings page (Setting > Reading).
+2. Select the taxsonomies in Settings → Reading.
 
 ### From Github
 
@@ -122,7 +124,7 @@ See [releases](https://github.com/tarosky/rich-taxonomy/releases).
 
 ## FAQ
 
-### Where can I get supported?
+### Where can I get support?
 
 Please create a new ticket on the support forum.
 

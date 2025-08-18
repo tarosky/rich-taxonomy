@@ -248,7 +248,7 @@ class Editor extends Singleton {
 	public function notice_for_broken_pages( $pagenow ) {
 		// Only show on the taxonomy page list screen.
 		$screen = get_current_screen();
-		if ( ! $screen || $screen->id !== 'edit-taxonomy-page' || $screen->post_type !== $this->post_type() ) {
+		if ( ! $screen || 'edit-taxonomy-page' !== $screen->id || $screen->post_type !== $this->post_type() ) {
 			return;
 		}
 		// Get all the taxonomies selected in Settings.

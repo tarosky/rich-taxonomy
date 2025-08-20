@@ -33,11 +33,11 @@ registerBlockType( RichTaxonomyTermArchiveBlock.name, {
 					<PanelBody title={ __( 'Archive Setting', 'rich-taxonomy' ) }>
 						<TextControl type="number" label={ __( 'Number of Posts', 'rich-taxonomy' ) } value={ attributes.number } onChange={ ( number ) => setAttributes( { number: parseInt( number, 10 ) } ) }
 							help={ __( 'If the total amount of posts exceeds this number, remaining posts will be hidden behind a toggle button.', 'rich-taxonomy' ) } />
-						<TextControl label={ __( 'Link Text', 'rich-taxonomy' ) } value={ attributes.more } onChange={ ( more ) => setAttributes( { more } ) } placeholder={ moreLabel }
-							help={ __( 'If number of posts are less than default loop number, more label will be displayed.', 'rich-taxonomy' ) } />
-						<TextControl label={ __( 'Toggle Text', 'rich-taxonomy' ) } value={ attributes.toggle } placeholder={ __( 'More', 'rich-taxonomy' ) }
-							help={ __( 'Sets the toggle button text. The toggle button reveals / hides hidden posts.', 'rich-taxonomy' ) }
+						<TextControl label={ __( 'Toggle Button Text', 'rich-taxonomy' ) } value={ attributes.toggle } placeholder={ __( 'More', 'rich-taxonomy' ) }
+							help={ __( 'The toggle button reveals hidden posts.', 'rich-taxonomy' ) }
 							onChange={ ( toggle ) => setAttributes( { toggle } ) } />
+						<TextControl label={ __( 'Archive Button Text', 'rich-taxonomy' ) } value={ attributes.more } onChange={ ( more ) => setAttributes( { more } ) } placeholder={ moreLabel }
+							help={ __( 'This button links to the second page of the term archive. It will be displayed when the amount of posts exceeds "Blog pages show at most" in Settings → Reading.', 'rich-taxonomy' ) } />
 					</PanelBody>
 				</InspectorControls>
 				<div className="rich-taxonomy-editor-wrapper">

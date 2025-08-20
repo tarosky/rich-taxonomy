@@ -254,10 +254,10 @@ class Editor extends Singleton {
 		// Get all the taxonomies selected in Settings.
 		$enabled_taxonomies = $this->setting()->rich_taxonomies();
 		// Get all taxonomy pages.
-		$paged = max( 1, get_query_var( 'paged', 1 ) );
-		$per_page = get_user_option( 'edit_' . $screen->post_type . '_per_page' );
+		$paged          = max( 1, get_query_var( 'paged', 1 ) );
+		$per_page       = get_user_option( 'edit_' . $screen->post_type . '_per_page' );
 		$posts_per_page = $per_page ? $per_page : 20;
-		$query = new \WP_Query([
+		$query          = new \WP_Query([
 			'post_type'      => $this->post_type(),
 			'post_status'    => 'any',
 			'posts_per_page' => $posts_per_page,

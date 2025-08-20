@@ -254,21 +254,30 @@ class Editor extends Singleton {
 		// Get all the taxonomies selected in Settings.
 		$enabled_taxonomies = $this->setting()->rich_taxonomies();
 		// Get all taxonomy pages.
-		$posts        = get_posts([
+		$paged = max( 1, get_query_var( 'paged', 1 ) );
+		$per_page = get_user_option( 'edit_' . $screen->post_type . '_per_page' );
+		$posts_per_page = $per_page ? $per_page : 20;
+		$query = new \WP_Query([
 			'post_type'      => $this->post_type(),
 			'post_status'    => 'any',
-			'posts_per_page' => -1,
+			'posts_per_page' => $posts_per_page,
+			'paged'          => $paged,
+			'fields'         => 'ids',
 		]);
+		// Stop here if no posts.
+		if ( ! $query->have_posts() ) {
+			return;
+		}
 		$broken_pages = [];
-		foreach ( $posts as $post ) {
-			$term_id = get_post_meta( $post->ID, $this->post_meta_key(), true );
+		foreach ( $query->posts as $post_id ) {
+			$term_id = get_post_meta( $post_id, $this->post_meta_key(), true );
 			$term    = get_term( (int) $term_id );
 			if ( $term && ! is_wp_error( $term ) ) {
 				if ( ! in_array( $term->taxonomy, $enabled_taxonomies, true ) ) {
 					$taxonomy_obj   = get_taxonomy( $term->taxonomy );
 					$broken_pages[] = [
-						'title'    => get_the_title( $post->ID ),
-						'edit_url' => get_edit_post_link( $post->ID ),
+						'title'    => get_the_title( $post_id ),
+						'edit_url' => get_edit_post_link( $post_id ),
 						'taxonomy' => $taxonomy_obj ? $taxonomy_obj->label : $term->taxonomy,
 					];
 				}

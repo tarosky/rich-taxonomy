@@ -7,13 +7,17 @@ Stable Tag: nightly
 License: GPLv3 or later  
 License URI: http://www.gnu.org/licenses/gpl-3.0.txt
 
-A WordPress plugin to enrich taxonomy archive.
+A WordPress plugin that enhances taxonomy archives by replacing them with custom **Taxonomy Pages**.  
+> **Note:** This plugin is for **classic themes** only — it's **not needed** with block themes that support Full Site Editing (FSE).
 
-## Description
+## Features
 
-This plugin lets you create a **Taxonomy Page** (custom post type) that replaces the default page for a term archive. This plugin is intended for classic themes and is **not needed** with block themes that support Full Site Editing.
+- Replace term archive pages with custom Taxonomy Pages (CPT).
+- Use the block editor to design archive landing pages.
+- Includes a **Taxonomy Archive Block** to display posts.
+- Fully customizable via templates and filter hooks.
 
-### How It Works
+## How It Works
 
 The Taxonomy Page will override the **first page** of a term archive. In **Settings** you can choose which taxonomies should have the option to create a Taxonomy Page.
 
@@ -24,11 +28,22 @@ For example, to create a Taxonomy Page for the *News* category:
 3. Edit the Taxonomy Page in the block editor and publish it.
 4. View the page at `/category/news` (assuming your permalink structure is set to “Post name”).
 
-Now the first page of the *News* category will dipslay the contents of the Taxonomy Page titled "News".
+## Taxonomy Archive Block
 
-### Template Structure
+When editing a Taxonomy Page in the block editor, you also have access to the Taxonomy Archive Block. This block displays an overview of every post in the term archive. A number of options allow you to alter its behavior:
 
-You can choose a template for the Taxonomy Page in the block editor. If you create a template called `singular-taxonomy-page.php` in your theme, you don't need to select one.
+- **Number of Posts**  
+Sets the maximum number of posts displayed in the overview.
+
+- **Toggle Button Text**  
+Sets the text for the toggle button. This button appears when the total number of posts exceeds the number set in "Number of Posts".
+
+- **Archive Button Text**  
+Sets the text for the archive button. This button links to the second page of the term archive. It will be displayed when the amount of posts exceeds `Blog pages show at most` in **Settings → Reading**.
+
+## Template Structure
+
+You can choose a template for the Taxonomy Page in the block editor. Alternatively, you can create your own template, by adding `singular-taxonomy-page.php` to your theme's templates, or using the filter hook `rich_taxonomy_include_template`.
 
 The default template hierarchy, from highest to lowest priority, is as follows:
 
@@ -38,29 +53,26 @@ The default template hierarchy, from highest to lowest priority, is as follows:
 4. `single.php`
 5. `index.php`
 
-Additionally, the filter hook `rich_taxonomy_include_template` is also available for use.
-
 ### Customization
 
-#### Taxonomy Archive Block
+#### Template Override: Taxonomy Archive Block
 
-The Taxonomy Archive block has the following template structure:
+To override the layout of the Taxonomy Archive Block, copy these files into your theme under:
 
 ```
-template-parts
-- rich-taxonomy
-  - archive-block-loop.php    // Loop of post list.
-  - archive-block-more.php    // Link button.
-  - archive-block-toggle.php  // Toggle button.
-  - archive-block-wrapper.php // Wrapper of archive.
+template-parts/rich-taxonomy/
 ```
 
-If the theme has files in the same path, that priors.
-Copy the file and customize one as you like.
+Files:
 
-#### Styles 
+- `archive-block-loop.php` - Loop of post list
+- `archive-block-more.php` - Archive button
+- `archive-block-toggle.php` - Toggle button
+- `archive-block-wrapper.php` - Wrapper of archive
 
-To override styles, 4 hooks are available.
+#### Styles and Scripts
+
+You can override the plugin’s styles and scripts using these hooks:
 
 1. `rich_taxonomy_block_asset_style`
 2. `rich_taxonomy_block_asset_editor_style`
@@ -69,7 +81,9 @@ To override styles, 4 hooks are available.
 
 To change the look & feel, `rich_taxonomy_block_asset_style` is the best starting point.
 
-```
+##### Example: Override Style
+
+```php
 // Register style.
 add_action( 'init', function() {
     wp_registeR_style( 'my-archive-block', $url, $deps, $version );
@@ -77,20 +91,22 @@ add_action( 'init', function() {
 
 // Override handle.
 add_filter( 'rich_taxonomy_block_asset_style', function( $handle, $block_name ) {
-    if ( 'rich-taxonomy/arcvhie-block' === $block_name ) {
+    if ( 'rich-taxonomy/archive-block' === $block_name ) {
         $handle = 'my-archive-block';
     }
     return $handle;
 }, 10, 2 );
 ```
 
-This style is loaded on both the public site and in the block editor.
+> This style will load on both the front-end and block editor.
 
 #### Default Contents
 
-To define the default contents of the Taxonomy Page, use `rich_taxonomy_default_post_object` filter hook.
+To define the default content of the Taxonomy Page, use the `rich_taxonomy_default_post_object` filter hook.
 
-```
+##### Example: Define Default Content
+
+```php
 /**
  * Filter default post object.
  *
@@ -98,7 +114,7 @@ To define the default contents of the Taxonomy Page, use `rich_taxonomy_default_
  * @param WP_Term $term    Term object assigned to this post.
  * @param string  $context Currently only 'api' is supported.
  */ 
-add_filter( 'rich_taxonomy_default_post_object', function( $args, $term, $contest ) {
+add_filter( 'rich_taxonomy_default_post_object', function( $args, $term, $context ) {
     // If specific taxonomy, enter default content.
     if ( 'category' === $term->taxonomy ) {
         // Post body.
@@ -110,17 +126,16 @@ add_filter( 'rich_taxonomy_default_post_object', function( $args, $term, $contes
 }, 10, 3 );
 ```
 
-
 ## Installation
 
 ### From Plugin Directory
 
-1. Click install and activate it.
-2. Select the taxsonomies in Settings → Reading.
+1. Install and activate the plugin.
+2. Go to **Settings → Reading** and select the taxonomies to enable.
 
 ### From Github
 
-See [releases](https://github.com/tarosky/rich-taxonomy/releases).
+Download from the [Releases page](https://github.com/tarosky/rich-taxonomy/releases).
 
 ## FAQ
 

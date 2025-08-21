@@ -44,6 +44,8 @@ class Editor extends Singleton {
 		add_action( 'add_meta_boxes', [ $this, 'add_meta_box' ] );
 		// Block editor helper.
 		add_action( 'enqueue_block_editor_assets', [ $this, 'enqueue_block_editor_assets' ] );
+		// Add notice for broken pages.
+		add_action( 'admin_notices', [ $this, 'notice_for_broken_pages' ] );
 	}
 
 	/**
@@ -75,7 +77,7 @@ class Editor extends Singleton {
 		// If already published, check original page.
 		if ( 'publish' === $post->post_status ) {
 			$term = $this->get_assigned_term( $post );
-			if ( $term ) {
+			if ( $term && ! is_wp_error( $term ) ) {
 				$actions['rich-taxonomy-preview'] = sprintf(
 					'<a href="%s">%s</a>',
 					esc_url( get_term_link( $term ) ),
@@ -155,7 +157,7 @@ class Editor extends Singleton {
 		switch ( $column ) {
 			case 'taxonomy':
 				$term = get_term( (int) get_post_meta( $post_id, $this->post_meta_key(), true ) );
-				if ( ! $term ) {
+				if ( ! $term || is_wp_error( $term ) ) {
 					printf( '<span style="color:lightgray"><span class="dashicons dashicons-no"></span> %s</span>', esc_html__( 'Error', 'rich-taxonomy' ) );
 				} else {
 					printf(
@@ -236,5 +238,71 @@ class Editor extends Singleton {
 			return;
 		}
 		wp_enqueue_script( 'rich-taxonomy-editor-helper' );
+	}
+
+	/**
+	 * Display a notice for broken pages.
+	 *
+	 * @return void
+	 */
+	public function notice_for_broken_pages( $pagenow ) {
+		// Only show on the taxonomy page list screen.
+		$screen = get_current_screen();
+		if ( ! $screen || 'edit-taxonomy-page' !== $screen->id || $screen->post_type !== $this->post_type() ) {
+			return;
+		}
+		// Get all the taxonomies selected in Settings.
+		$enabled_taxonomies = $this->setting()->rich_taxonomies();
+		// Get all taxonomy pages.
+		$paged          = max( 1, get_query_var( 'paged', 1 ) );
+		$per_page       = get_user_option( 'edit_' . $screen->post_type . '_per_page' );
+		$posts_per_page = $per_page ? $per_page : 20;
+		$query          = new \WP_Query([
+			'post_type'      => $this->post_type(),
+			'post_status'    => 'any',
+			'posts_per_page' => $posts_per_page,
+			'paged'          => $paged,
+			'fields'         => 'ids',
+		]);
+		// Stop here if no posts.
+		if ( ! $query->have_posts() ) {
+			return;
+		}
+		$broken_pages = [];
+		foreach ( $query->posts as $post_id ) {
+			$term_id = get_post_meta( $post_id, $this->post_meta_key(), true );
+			$term    = get_term( (int) $term_id );
+			if ( $term && ! is_wp_error( $term ) ) {
+				if ( ! in_array( $term->taxonomy, $enabled_taxonomies, true ) ) {
+					$taxonomy_obj   = get_taxonomy( $term->taxonomy );
+					$broken_pages[] = [
+						'title'    => get_the_title( $post_id ),
+						'edit_url' => get_edit_post_link( $post_id ),
+						'taxonomy' => $taxonomy_obj ? $taxonomy_obj->label : $term->taxonomy,
+					];
+				}
+			}
+		}
+		if ( ! empty( $broken_pages ) ) {
+			?>
+			<div class="notice notice-warning">
+				<p>
+					<strong><?php esc_html_e( 'Warning:', 'rich-taxonomy' ); ?></strong>
+					<?php esc_html_e( 'These pages may not display correctly. Make sure their taxonomies are selected under Settings → Reading.', 'rich-taxonomy' ); ?>
+				</p>
+				<ul style="list-style: disc; margin-left: 16px;">
+					<?php foreach ( $broken_pages as $page ) : ?>
+						<li>
+							<a href="<?php echo esc_url( $page['edit_url'] ); ?>"><?php echo esc_html( $page['title'] ); ?></a>
+							(
+							<?php esc_html_e( 'Taxonomy:', 'rich-taxonomy' ); ?>
+							<code><?php echo esc_html( $page['taxonomy'] ); ?></code>
+							)
+						</li>
+					<?php endforeach; ?>
+				</ul>
+			</div>
+			<?php
+		}
 	}
 }

@@ -10,14 +10,14 @@ License URI: http://www.gnu.org/licenses/gpl-3.0.txt
 A WordPress plugin that enhances taxonomy archives by replacing them with custom **Taxonomy Pages**.  
 > **Note:** This plugin is for **classic themes** only — it's **not needed** with block themes that support Full Site Editing (FSE).
 
-## Features
+## Description 
 
 - Replace term archive pages with custom Taxonomy Pages (CPT).
 - Use the block editor to design archive landing pages.
 - Includes a **Taxonomy Archive Block** to display posts.
 - Fully customizable via templates and filter hooks.
 
-## How It Works
+### How It Works
 
 The Taxonomy Page will override the **first page** of a term archive. In **Settings** you can choose which taxonomies should have the option to create a Taxonomy Page.
 
@@ -28,7 +28,7 @@ For example, to create a Taxonomy Page for the *News* category:
 3. Edit the Taxonomy Page in the block editor and publish it.
 4. View the page at `/category/news` (assuming your permalink structure is set to “Post name”).
 
-## Taxonomy Archive Block
+### Taxonomy Archive Block
 
 When editing a Taxonomy Page in the block editor, you also have access to the Taxonomy Archive Block. This block displays an overview of every post in the term archive. A number of options allow you to alter its behavior:
 
@@ -41,7 +41,7 @@ Sets the text for the toggle button. This button appears when the total number o
 - **Archive Button Text**  
 Sets the text for the archive button. This button links to the second page of the term archive. It will be displayed when the amount of posts exceeds `Blog pages show at most` in **Settings → Reading**.
 
-## Template Structure
+### Template Structure
 
 You can choose a template for the Taxonomy Page in the block editor. Alternatively, you can create your own template, by adding `singular-taxonomy-page.php` to your theme's templates, or using the filter hook `rich_taxonomy_include_template`.
 
@@ -133,7 +133,7 @@ add_filter( 'rich_taxonomy_default_post_object', function( $args, $term, $contex
 1. Install and activate the plugin.
 2. Go to **Settings → Reading** and select the taxonomies to enable.
 
-### From Github
+### From GitHub
 
 Download from the [Releases page](https://github.com/tarosky/rich-taxonomy/releases).
 
@@ -148,6 +148,11 @@ Please create a new ticket on the support forum.
 Create a new [issue](https://github.com/tarosky/rich-taxonomy/issues) or send [pull requests](https://github.com/tarosky/rich-taxonomy/pulls).
 
 ## Changelog
+
+### 1.1.7
+
+* Enhancement for instructions.
+* Bugfix: remove warning on non-taxonomy pages.
 
 ### 1.1.2
 

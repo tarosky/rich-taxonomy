@@ -34,6 +34,7 @@ class Setting extends Singleton {
 	protected function init() {
 		add_action( 'admin_init', [ $this, 'admin_init' ] );
 		add_action( 'admin_notices', [ $this, 'notice_for_block_theme' ] );
+		add_action( 'admin_notices', [ $this, 'notice_for_getting_started' ] );
 	}
 
 	/**
@@ -45,7 +46,7 @@ class Setting extends Singleton {
 		}
 		// Register setting fields.
 		add_settings_section( 'rich-taxonomy-section', __( 'Taxonomy Page', 'rich-taxonomy' ), function () {
-			printf( '<p class="description">%s</p>', esc_html__( 'Specified taxonomies will have taxonomy page. To create a new taxonomy page, go to the terms archive in admin panel.', 'rich-taxonomy' ) );
+			printf( '<p class="description">%s</p>', esc_html__( 'Selected taxonomies will have their own page. To create or manage taxonomy pages, go to the taxonomy terms list (e.g., Categories or Tags), then hover over a term and click “Taxonomy Page”.', 'rich-taxonomy' ) );
 		}, 'reading' );
 		// Taxonomies.
 		add_settings_field( $this->option_name, __( 'Taxonomies', 'rich-taxonomy' ), function () {
@@ -106,6 +107,26 @@ class Setting extends Singleton {
 					__( 'Your current theme %s is a block theme. Rich Taxonomy is not necessary.', 'rich-taxonomy' ),
 					esc_html( wp_get_theme()->get( 'Name' ) )
 				)
+			);
+		}
+	}
+
+	/**
+	 * Display a notice for getting started.
+	 *
+	 * @return void
+	 */
+	public function notice_for_getting_started( $pagenow ) {
+		if ( ! $this->is_block_theme() && empty( array_filter( $this->rich_taxonomies() ) ) ) {
+			$plugin_name = '<strong>' . esc_html__( 'Rich Taxonomy', 'rich-taxonomy' ) . '</strong>';
+			$message     = sprintf(
+				// translators: %s is the plugin name.
+				__( 'To start using %s, go to Settings → Reading and choose the taxonomies you want to enable pages for.', 'rich-taxonomy' ),
+				$plugin_name
+			);
+			printf(
+				'<div class="notice notice-info"><p>%s</p></div>',
+				$message
 			);
 		}
 	}

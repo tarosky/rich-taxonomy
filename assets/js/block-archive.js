@@ -20,7 +20,7 @@ const { PanelBody, TextControl } = wp.components;
 //
 registerBlockType( RichTaxonomyTermArchiveBlock.name, {
 	title: __( 'Taxonomy Archive Block', 'rich-taxonomy' ),
-	description: __( 'Display archive loop in taxonomy page.', 'rich-taxonomy' ),
+	description: __( 'Display an overview of every post in the term archive.', 'rich-taxonomy' ),
 	icon: 'category',
 	category: 'widgets',
 	attributes: RichTaxonomyTermArchiveBlock.attributes,
@@ -32,11 +32,12 @@ registerBlockType( RichTaxonomyTermArchiveBlock.name, {
 				<InspectorControls>
 					<PanelBody title={ __( 'Archive Setting', 'rich-taxonomy' ) }>
 						<TextControl type="number" label={ __( 'Number of Posts', 'rich-taxonomy' ) } value={ attributes.number } onChange={ ( number ) => setAttributes( { number: parseInt( number, 10 ) } ) }
-							help={ __( 'If set, the loop whose index is more than this amount will be hidden and revealed by clicking toggle button.', 'rich-taxonomy' ) } />
-						<TextControl label={ __( 'Link Text', 'rich-taxonomy' ) } value={ attributes.more } onChange={ ( more ) => setAttributes( { more } ) } placeholder={ moreLabel }
-							help={ __( 'If number of posts are less than default loop number, more label will be displayed.', 'rich-taxonomy' ) } />
-						<TextControl label={ __( 'Toggle Text', 'rich-taxonomy' ) } value={ attributes.toggle } placeholder={ __( 'More', 'rich-taxonomy' ) }
+							help={ __( 'If the total amount of posts exceeds this number, remaining posts will be hidden behind a toggle button.', 'rich-taxonomy' ) } />
+						<TextControl label={ __( 'Toggle Button Text', 'rich-taxonomy' ) } value={ attributes.toggle } placeholder={ __( 'More', 'rich-taxonomy' ) }
+							help={ __( 'The toggle button reveals hidden posts.', 'rich-taxonomy' ) }
 							onChange={ ( toggle ) => setAttributes( { toggle } ) } />
+						<TextControl label={ __( 'Archive Button Text', 'rich-taxonomy' ) } value={ attributes.more } onChange={ ( more ) => setAttributes( { more } ) } placeholder={ moreLabel }
+							help={ __( 'This button links to the second page of the term archive. It will be displayed when the amount of posts exceeds "Blog pages show at most" in Settings → Reading.', 'rich-taxonomy' ) } />
 					</PanelBody>
 				</InspectorControls>
 				<div className="rich-taxonomy-editor-wrapper">

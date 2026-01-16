@@ -27,7 +27,7 @@ jobs:
     name: Check Assets
     uses: tarosky/workflows/.github/workflows/npm.yml@main
     with:
-      node_version: 16
+      node_version: 18
       package: package
 
   status-check:

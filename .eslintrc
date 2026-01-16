@@ -1,5 +1,4 @@
 {
-	"parser": "@babel/eslint-parser",
 	"env": {
 		"browser": true,
 		"jquery": true
@@ -30,7 +29,7 @@
 	},
 	"settings": {
 		"react": {
-			"version": "16.9.0"
+			"version": "18.0"
 		}
 	}
 }

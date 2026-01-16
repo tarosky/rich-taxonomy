@@ -42,7 +42,8 @@ class Rewrites extends Singleton {
 	 */
 	public function register_template_filters() {
 		if ( $this->is_block_theme() ) {
-			// This is block theme, so do nothing.
+			// For block themes, modify template ID via template_include filter.
+			add_filter( 'template_include', [ $this, 'filter_block_template_include' ], 100 );
 			return;
 		}
 		// Change template for archive.
@@ -51,6 +52,39 @@ class Rewrites extends Singleton {
 		add_filter( 'taxonomy_template', [ $this, 'archive_template_include' ], 10, 3 );
 		// Change single page for template.
 		add_filter( 'singular_template', [ $this, 'singular_template_include' ], 10, 3 );
+	}
+
+	/**
+	 * Filter block template include for taxonomy archives.
+	 *
+	 * When a Taxonomy Page exists, change the block template ID to singular.
+	 *
+	 * @param string $template Path to the template file.
+	 * @return string
+	 */
+	public function filter_block_template_include( $template ) {
+		global $wp_query, $_wp_current_template_id, $_wp_current_template_content;
+		$page = $this->get_taxonomy_page_from_query( $wp_query );
+		if ( ! $page ) {
+			return $template;
+		}
+		// Get template assigned to the Taxonomy Page post.
+		$theme_slug     = get_stylesheet();
+		$page_template  = get_page_template_slug( $page );
+		$template_slugs = $page_template ? [ $page_template, 'single', 'index' ] : [ 'single', 'index' ];
+		foreach ( $template_slugs as $slug ) {
+			// Try database templates first, then file templates.
+			$block_template = get_block_template( $theme_slug . '//' . $slug, 'wp_template' );
+			if ( ! $block_template ) {
+				$block_template = get_block_file_template( $theme_slug . '//' . $slug, 'wp_template' );
+			}
+			if ( $block_template ) {
+				$_wp_current_template_id      = $block_template->id;
+				$_wp_current_template_content = $block_template->content;
+				break;
+			}
+		}
+		return $template;
 	}
 
 	/**

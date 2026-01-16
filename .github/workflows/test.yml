@@ -1,0 +1,39 @@
+name: Test Plugin
+
+on:
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  test:
+    name: PHP UnitTest
+    strategy:
+      matrix:
+        php: [ '7.4', '8.0' ] # PHP versions to check.
+        wp: [ 'latest', '5.9' ]      # WordPress version to check.
+    uses: tarosky/workflows/.github/workflows/wp-unit-test.yml@main
+    with:
+      php_version: ${{ matrix.php }}
+      wp_version: ${{ matrix.wp }}
+
+  phpcs:
+    name: Check PHP Codes
+    uses: tarosky/workflows/.github/workflows/phpcs.yml@main
+    with:
+      version: 7.4
+
+  assets:
+    name: Check Assets
+    uses: tarosky/workflows/.github/workflows/npm.yml@main
+    with:
+      node_version: 16
+      package: package
+
+  status-check:
+    name: Status Check
+    runs-on: ubuntu-latest
+    needs: [ test, phpcs, assets ]
+    steps:
+      - name: Display
+        run: echo "All Green!"

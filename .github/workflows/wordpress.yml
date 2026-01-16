@@ -1,9 +1,11 @@
 name: Deploy to WordPress.org
 
 on:
-  push:
-    tags:
-      - '*.*.*'
+  release:
+    types: [published]
+
+permissions:
+  contents: write
 
 jobs:
   deploy:
@@ -29,7 +31,7 @@ jobs:
           node-version: 18
 
       - name: Build package
-        run: bash bin/build.sh ${{ github.ref }}
+        run: bash bin/build.sh ${{ github.event.release.tag_name }}
 
       - name: Deploy to WordPress Directory
         uses: 10up/action-wordpress-plugin-deploy@stable
@@ -38,3 +40,8 @@ jobs:
         env:
           SVN_USERNAME: ${{ secrets.WP_ORG_USERNAME_TAROSKY }}
           SVN_PASSWORD: ${{ secrets.WP_ORG_PASSWORD_TAROSKY }}
+
+      - name: Upload zip to release
+        run: gh release upload ${{ github.event.release.tag_name }} ${{ github.event.repository.name }}.zip --clobber
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

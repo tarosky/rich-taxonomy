@@ -51,6 +51,7 @@ class Rewrites extends Singleton {
 		add_filter( 'category_template', [ $this, 'archive_template_include' ], 10, 3 );
 		add_filter( 'taxonomy_template', [ $this, 'archive_template_include' ], 10, 3 );
 		// Change single page for template.
+		add_filter( 'single_template', [ $this, 'singular_template_include' ], 10, 3 );
 		add_filter( 'singular_template', [ $this, 'singular_template_include' ], 10, 3 );
 	}
 

@@ -28,7 +28,7 @@ jobs:
       - name: Install NPM
         uses: actions/setup-node@v4
         with:
-          node-version: 18
+          node-version: 20
 
       - name: Build package
         run: bash bin/build.sh ${{ github.event.release.tag_name }}

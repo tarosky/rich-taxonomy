@@ -1,4 +1,5 @@
 .browserslistrc
+.claude
 .editorconfig
 .eslintrc
 .distignore

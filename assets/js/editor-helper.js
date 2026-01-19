@@ -42,7 +42,7 @@ registerPlugin( 'post-status-info-assigned-term', {
 				{ loading && (
 					<Spinner />
 				) }
-				{ __( 'Assigned Term: ', 'rich-taxonomy' ) }
+				{ __( 'Assigned Term:', 'rich-taxonomy' ) }
 				{ term ? (
 					<span>
 						<strong>{ term.name }</strong>

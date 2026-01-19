@@ -33,7 +33,6 @@ class Setting extends Singleton {
 	 */
 	protected function init() {
 		add_action( 'admin_init', [ $this, 'admin_init' ] );
-		add_action( 'admin_notices', [ $this, 'notice_for_block_theme' ] );
 		add_action( 'admin_notices', [ $this, 'notice_for_getting_started' ] );
 	}
 
@@ -94,30 +93,12 @@ class Setting extends Singleton {
 	}
 
 	/**
-	 * Display a notice for block themes.
-	 *
-	 * @return void
-	 */
-	public function notice_for_block_theme( $pagenow ) {
-		if ( $this->is_block_theme() ) {
-			printf(
-				'<div class="error"><p>%s</p></div>',
-				sprintf(
-					// translators: %s is a theme name.
-					__( 'Your current theme %s is a block theme. Rich Taxonomy is not necessary.', 'rich-taxonomy' ),
-					esc_html( wp_get_theme()->get( 'Name' ) )
-				)
-			);
-		}
-	}
-
-	/**
 	 * Display a notice for getting started.
 	 *
 	 * @return void
 	 */
 	public function notice_for_getting_started( $pagenow ) {
-		if ( ! $this->is_block_theme() && empty( array_filter( $this->rich_taxonomies() ) ) ) {
+		if ( empty( array_filter( $this->rich_taxonomies() ) ) ) {
 			$plugin_name = '<strong>' . esc_html__( 'Rich Taxonomy', 'rich-taxonomy' ) . '</strong>';
 			$message     = sprintf(
 				// translators: %s is the plugin name.

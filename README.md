@@ -8,7 +8,7 @@ License: GPLv3 or later
 License URI: http://www.gnu.org/licenses/gpl-3.0.txt
 
 A WordPress plugin that enhances taxonomy archives by replacing them with custom **Taxonomy Pages**.  
-> **Note:** This plugin is for **classic themes** only — it's **not needed** with block themes that support Full Site Editing (FSE).
+> **Note:** This plugin works with both **classic themes** and **block themes** that support Full Site Editing (FSE).
 
 ## Description
 
@@ -49,8 +49,8 @@ The default template hierarchy, from highest to lowest priority, is as follows:
 
 1. `singular-taxonomy-page.php`
 2. `page.php`
-3. `singular.php`
-4. `single.php`
+3. `single.php`
+4. `singular.php`
 5. `index.php`
 
 ### Customization

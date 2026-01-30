@@ -8,9 +8,10 @@ License: GPLv3 or later
 License URI: http://www.gnu.org/licenses/gpl-3.0.txt
 
 A WordPress plugin that enhances taxonomy archives by replacing them with custom **Taxonomy Pages**.  
-> **Note:** This plugin works with both **classic themes** and **block themes** that support Full Site Editing (FSE).
 
 ## Description
+
+> **Note:** This plugin works with both **classic themes** and **block themes** that support Full Site Editing (FSE).
 
 - Replace term archive pages with custom Taxonomy Pages (CPT).
 - Use the block editor to design archive landing pages.

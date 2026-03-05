@@ -180,13 +180,13 @@ trait PageAccessor {
 			return new \WP_Error( 'invalid_taxonomy', __( 'Invalid taxonomy.', 'rich-taxonomy' ) );
 		}
 		$default_args = apply_filters( 'rich_taxonomy_default_taxonomy_archive_post_object', [
-			'post_type'     => $this->post_type(),
-			'post_title'    => $taxonomy_obj->labels->singular_name ?? $taxonomy_obj->label,
-			'post_name'     => $taxonomy_obj->rewrite['slug'] ?? $taxonomy,
+			'post_type'    => $this->post_type(),
+			'post_title'   => $taxonomy_obj->labels->singular_name ?? $taxonomy_obj->label,
+			'post_name'    => $taxonomy_obj->rewrite['slug'] ?? $taxonomy,
 			'post_content' => '',
 			'post_status'  => 'draft',
 		], $taxonomy_obj, $context );
-		$post_id = wp_insert_post( $default_args, true );
+		$post_id      = wp_insert_post( $default_args, true );
 		if ( is_wp_error( $post_id ) ) {
 			return $post_id;
 		}

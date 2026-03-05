@@ -137,8 +137,8 @@ class Setting extends Singleton {
 			if ( ! $taxonomy ) {
 				continue;
 			}
-			$page   = $this->get_post_for_taxonomy( $taxonomy_name );
-			$label  = $taxonomy->label;
+			$page  = $this->get_post_for_taxonomy( $taxonomy_name );
+			$label = $taxonomy->label;
 			if ( $page ) {
 				$link = get_edit_post_link( $page );
 				$text = sprintf(

@@ -74,15 +74,30 @@ class Editor extends Singleton {
 		if ( $this->post_type() !== $post->post_type ) {
 			return $actions;
 		}
-		// If already published, check original page.
-		if ( 'publish' === $post->post_status ) {
-			$term = $this->get_assigned_term( $post );
-			if ( $term && ! is_wp_error( $term ) ) {
-				$actions['rich-taxonomy-preview'] = sprintf(
-					'<a href="%s">%s</a>',
-					esc_url( get_term_link( $term ) ),
-					esc_html__( 'View Term Archive', 'rich-taxonomy' )
-				);
+		if ( 'publish' !== $post->post_status ) {
+			return $actions;
+		}
+		$term = $this->get_assigned_term( $post );
+		if ( $term && ! is_wp_error( $term ) ) {
+			$actions['rich-taxonomy-preview'] = sprintf(
+				'<a href="%s">%s</a>',
+				esc_url( get_term_link( $term ) ),
+				esc_html__( 'View Term Archive', 'rich-taxonomy' )
+			);
+		} elseif ( $this->is_taxonomy_archive_page( $post ) ) {
+			$taxonomy = $this->get_assigned_taxonomy( $post );
+			if ( $taxonomy ) {
+				$taxonomy_obj = get_taxonomy( $taxonomy );
+				$url = $taxonomy_obj && ! empty( $taxonomy_obj->rewrite['slug'] )
+					? home_url( '/' . $taxonomy_obj->rewrite['slug'] . '/' )
+					: '';
+				if ( $url ) {
+					$actions['rich-taxonomy-preview'] = sprintf(
+						'<a href="%s">%s</a>',
+						esc_url( $url ),
+						esc_html__( 'View Taxonomy Archive', 'rich-taxonomy' )
+					);
+				}
 			}
 		}
 		return $actions;
@@ -156,16 +171,30 @@ class Editor extends Singleton {
 	public function posts_custom_columns( $column, $post_id ) {
 		switch ( $column ) {
 			case 'taxonomy':
-				$term = get_term( (int) get_post_meta( $post_id, $this->post_meta_key(), true ) );
-				if ( ! $term || is_wp_error( $term ) ) {
-					printf( '<span style="color:lightgray"><span class="dashicons dashicons-no"></span> %s</span>', esc_html__( 'Error', 'rich-taxonomy' ) );
+				if ( $this->is_taxonomy_archive_page( $post_id ) ) {
+					$taxonomy = $this->get_assigned_taxonomy( $post_id );
+					if ( $taxonomy ) {
+						$taxonomy_obj = get_taxonomy( $taxonomy );
+						printf(
+							'<span class="dashicons dashicons-category" style="opacity:0.6;"></span> %s <code>%s</code>',
+							esc_html__( 'Archive', 'rich-taxonomy' ),
+							esc_html( $taxonomy_obj ? $taxonomy_obj->label : $taxonomy )
+						);
+					} else {
+						printf( '<span style="color:lightgray"><span class="dashicons dashicons-no"></span> %s</span>', esc_html__( 'Error', 'rich-taxonomy' ) );
+					}
 				} else {
-					printf(
-						'<a href="%s">%s</a><code>%s</code>',
-						get_edit_term_link( $term->term_id, $term->taxonomy ),
-						esc_html( $term->name ),
-						esc_html( get_taxonomy( $term->taxonomy )->label )
-					);
+					$term = get_term( (int) get_post_meta( $post_id, $this->post_meta_key(), true ) );
+					if ( ! $term || is_wp_error( $term ) ) {
+						printf( '<span style="color:lightgray"><span class="dashicons dashicons-no"></span> %s</span>', esc_html__( 'Error', 'rich-taxonomy' ) );
+					} else {
+						printf(
+							'<a href="%s">%s</a><code>%s</code>',
+							get_edit_term_link( $term->term_id, $term->taxonomy ),
+							esc_html( $term->name ),
+							esc_html( get_taxonomy( $term->taxonomy )->label )
+						);
+					}
 				}
 				break;
 			default:
@@ -210,21 +239,39 @@ class Editor extends Singleton {
 			return;
 		}
 		\add_meta_box( 'rich-taxonomy-original', __( 'Original Taxonomy', 'rich-taxonomy' ), function ( \WP_Post $post ) {
-			$term = $this->get_assigned_term( $post );
-			if ( $term ) {
-				printf(
-					'<p>%s &raquo; <a href="%s" rel="noopener noreferrer" target="_blank">%s</a></p>',
-					sprintf(
-						// translators: %1$s is term name, %2$s is taxonomy.
-						wp_kses( __( 'Assigned Term: <strong>%1$s</strong> <code>%2$s</code>', 'rich-taxonomy' ), [ 'strong' => [], 'code' => [] ] ),
-						esc_html( $term->name ),
-						esc_html( get_taxonomy( $term->taxonomy )->label )
-					),
-					get_edit_term_link( $term->term_id ),
-					esc_html__( 'Edit', 'rich-taxonomy' )
-				);
+			if ( $this->is_taxonomy_archive_page( $post ) ) {
+				$taxonomy = $this->get_assigned_taxonomy( $post );
+				if ( $taxonomy ) {
+					$taxonomy_obj = get_taxonomy( $taxonomy );
+					printf(
+						'<p>%s</p><p><strong>%s</strong></p>',
+						sprintf(
+							/* translators: %s is taxonomy label */
+							esc_html__( 'Taxonomy Archive Page for: %s', 'rich-taxonomy' ),
+							esc_html( $taxonomy_obj ? $taxonomy_obj->label : $taxonomy )
+						),
+						esc_html__( 'Displays at the taxonomy base URL (e.g. /category/, /tag/)', 'rich-taxonomy' )
+					);
+				} else {
+					printf( '<p class="description">%s</p>', esc_html__( 'This post has no assigned taxonomy.', 'rich-taxonomy' ) );
+				}
 			} else {
-				printf( '<p class="description">%s</p>', esc_html__( 'This post has no assigned term.', 'rich-taxonomy' ) );
+				$term = $this->get_assigned_term( $post );
+				if ( $term ) {
+					printf(
+						'<p>%s &raquo; <a href="%s" rel="noopener noreferrer" target="_blank">%s</a></p>',
+						sprintf(
+							// translators: %1$s is term name, %2$s is taxonomy.
+							wp_kses( __( 'Assigned Term: <strong>%1$s</strong> <code>%2$s</code>', 'rich-taxonomy' ), [ 'strong' => [], 'code' => [] ] ),
+							esc_html( $term->name ),
+							esc_html( get_taxonomy( $term->taxonomy )->label )
+						),
+						get_edit_term_link( $term->term_id ),
+						esc_html__( 'Edit', 'rich-taxonomy' )
+					);
+				} else {
+					printf( '<p class="description">%s</p>', esc_html__( 'This post has no assigned term.', 'rich-taxonomy' ) );
+				}
 			}
 		}, $post_type, 'side', 'high' );
 	}
@@ -270,16 +317,28 @@ class Editor extends Singleton {
 		}
 		$broken_pages = [];
 		foreach ( $query->posts as $post_id ) {
-			$term_id = get_post_meta( $post_id, $this->post_meta_key(), true );
-			$term    = get_term( (int) $term_id );
-			if ( $term && ! is_wp_error( $term ) ) {
-				if ( ! in_array( $term->taxonomy, $enabled_taxonomies, true ) ) {
-					$taxonomy_obj   = get_taxonomy( $term->taxonomy );
+			if ( $this->is_taxonomy_archive_page( $post_id ) ) {
+				$taxonomy = $this->get_assigned_taxonomy( $post_id );
+				if ( $taxonomy && ! in_array( $taxonomy, $enabled_taxonomies, true ) ) {
+					$taxonomy_obj   = get_taxonomy( $taxonomy );
 					$broken_pages[] = [
 						'title'    => get_the_title( $post_id ),
 						'edit_url' => get_edit_post_link( $post_id ),
-						'taxonomy' => $taxonomy_obj ? $taxonomy_obj->label : $term->taxonomy,
+						'taxonomy' => $taxonomy_obj ? $taxonomy_obj->label : $taxonomy,
 					];
+				}
+			} else {
+				$term_id = get_post_meta( $post_id, $this->post_meta_key(), true );
+				$term    = get_term( (int) $term_id );
+				if ( $term && ! is_wp_error( $term ) ) {
+					if ( ! in_array( $term->taxonomy, $enabled_taxonomies, true ) ) {
+						$taxonomy_obj   = get_taxonomy( $term->taxonomy );
+						$broken_pages[] = [
+							'title'    => get_the_title( $post_id ),
+							'edit_url' => get_edit_post_link( $post_id ),
+							'taxonomy' => $taxonomy_obj ? $taxonomy_obj->label : $term->taxonomy,
+						];
+					}
 				}
 			}
 		}

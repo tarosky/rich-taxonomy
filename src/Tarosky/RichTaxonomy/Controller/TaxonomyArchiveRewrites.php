@@ -76,7 +76,8 @@ class TaxonomyArchiveRewrites extends Singleton {
 			return $taxonomy;
 		}
 		// Support theme's taxonomy_archive query var (e.g. pubplagraph theme).
-		return $query->get( 'taxonomy_archive' ) ?: null;
+		$taxonomy_archive = $query->get( 'taxonomy_archive' );
+		return $taxonomy_archive ? $taxonomy_archive : null;
 	}
 
 	/**
@@ -110,12 +111,12 @@ class TaxonomyArchiveRewrites extends Singleton {
 		$query->set( self::QUERY_VAR, '' );
 		$query->set( 'taxonomy_archive', '' );
 		$query->set( 'is_taxonomy_archive', false );
-		$query->is_singular  = true;
-		$query->is_single    = true;
-		$query->is_archive   = false;
-		$query->is_tax       = false;
-		$query->is_category  = false;
-		$query->is_tag       = false;
+		$query->is_singular = true;
+		$query->is_single   = true;
+		$query->is_archive  = false;
+		$query->is_tax      = false;
+		$query->is_category = false;
+		$query->is_tag      = false;
 	}
 
 	/**
@@ -172,7 +173,7 @@ class TaxonomyArchiveRewrites extends Singleton {
 		}
 		// Fallback: use theme templates.
 		$fallback = locate_template( [ 'single.php', 'page.php', 'singular.php', 'index.php' ] );
-		return $fallback ?: $template;
+		return $fallback ? $fallback : $template;
 	}
 
 	/**

@@ -125,7 +125,7 @@ trait PageAccessor {
 			return null;
 		}
 		$taxonomy = get_post_meta( $post->ID, $this->taxonomy_archive_meta_key(), true );
-		return $taxonomy ?: null;
+		return $taxonomy ? $taxonomy : null;
 	}
 
 	/**
@@ -180,9 +180,9 @@ trait PageAccessor {
 			return new \WP_Error( 'invalid_taxonomy', __( 'Invalid taxonomy.', 'rich-taxonomy' ) );
 		}
 		$default_args = apply_filters( 'rich_taxonomy_default_taxonomy_archive_post_object', [
-			'post_type'    => $this->post_type(),
-			'post_title'   => $taxonomy_obj->labels->singular_name ?? $taxonomy_obj->label,
-			'post_name'    => $taxonomy_obj->rewrite['slug'] ?? $taxonomy,
+			'post_type'     => $this->post_type(),
+			'post_title'    => $taxonomy_obj->labels->singular_name ?? $taxonomy_obj->label,
+			'post_name'     => $taxonomy_obj->rewrite['slug'] ?? $taxonomy,
 			'post_content' => '',
 			'post_status'  => 'draft',
 		], $taxonomy_obj, $context );

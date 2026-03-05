@@ -88,7 +88,7 @@ class Editor extends Singleton {
 			$taxonomy = $this->get_assigned_taxonomy( $post );
 			if ( $taxonomy ) {
 				$taxonomy_obj = get_taxonomy( $taxonomy );
-				$url = $taxonomy_obj && ! empty( $taxonomy_obj->rewrite['slug'] )
+				$url          = $taxonomy_obj && ! empty( $taxonomy_obj->rewrite['slug'] )
 					? home_url( '/' . $taxonomy_obj->rewrite['slug'] . '/' )
 					: '';
 				if ( $url ) {

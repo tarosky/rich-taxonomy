@@ -41,8 +41,14 @@ jobs:
       - name: Run PHPStan
         run: composer run phpstan
 
-  # TODO: tarosky/workflows#77 が完了したら coverage: true を追加
-  # coverage: ${{ matrix.php == '8.0' && matrix.wp == 'latest' }}
+  coverage:
+    name: Code Coverage
+    needs: [ test ]
+    uses: tarosky/workflows/.github/workflows/wp-unit-test.yml@main
+    with:
+      php_version: '8.0'
+      wp_version: latest
+      coverage: true
 
   assets:
     name: Check Assets

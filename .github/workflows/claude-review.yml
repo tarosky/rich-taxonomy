@@ -60,11 +60,35 @@ jobs:
             - Type errors (PHPStan handles this)
             - Basic escaping/sanitization (PHPStan WordPress extension handles this)
 
+            ## Test Requirement Analysis
+
+            Analyze whether this PR includes adequate tests. Apply these rules:
+
+            1. **New public function/method** → Test REQUIRED (verify inputs, outputs, edge cases)
+            2. **Bug fix (conditional logic change)** → Test REQUIRED (regression test to prevent recurrence)
+            3. **New REST API endpoint** → Test REQUIRED (request validation, permission, response)
+            4. **Signature change of existing function** → Test REQUIRED (backward compatibility)
+            5. **New option/setting** → Test REQUIRED (default value, validation)
+            6. **PHPDoc/comment only** → Test NOT required
+            7. **Template/CSS/asset only** → Test NOT required (E2E territory)
+            8. **Refactoring (no behavior change)** → Test NOT required IF existing tests cover it
+
+            For each testable change, check whether the PR includes a corresponding test file change.
+            If testable changes exist but NO tests are included, this alone is grounds for ❌ 修正必須.
+
             ## Output Format
 
             Post your review as a PR comment in Japanese with this structure:
 
             ### 判定: [✅ 自動承認可能 | ⚠️ 要確認（N箇所） | ❌ 修正必須]
+
+            #### テスト要否
+            For each new/changed function or method, output one line:
+            - 🔴 テスト必須（未実装）: `ClassName::method()` — 理由
+            - 🟢 テスト済み: `ClassName::method()` — テストファイル名
+            - ⚪ テスト不要: `filename` — 理由
+
+            If any 🔴 exists, the 判定 MUST be ❌ 修正必須 with the reason "テストが不足しています".
 
             #### 自動チェック済み（CI に委任）
             - PHPStan Level 5 / PHPCS / PHPUnit / アセットビルド

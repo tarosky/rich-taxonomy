@@ -41,6 +41,9 @@ jobs:
       - name: Run PHPStan
         run: composer run phpstan
 
+  # TODO: tarosky/workflows#77 が完了したら coverage: true を追加
+  # coverage: ${{ matrix.php == '8.0' && matrix.wp == 'latest' }}
+
   assets:
     name: Check Assets
     uses: tarosky/workflows/.github/workflows/npm.yml@main

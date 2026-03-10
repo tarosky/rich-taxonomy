@@ -7,5 +7,5 @@
  */
 
 if ( ! defined( 'RICH_TAXONOMY_PLUGIN_DIR' ) ) {
-	define( 'RICH_TAXONOMY_PLUGIN_DIR', dirname( __FILE__ ) . '/' );
+	define( 'RICH_TAXONOMY_PLUGIN_DIR', __DIR__ . '/' );
 }

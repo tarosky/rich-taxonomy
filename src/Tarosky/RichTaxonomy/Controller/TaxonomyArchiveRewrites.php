@@ -44,7 +44,7 @@ class TaxonomyArchiveRewrites extends Singleton {
 	public function add_rewrite_rules() {
 		foreach ( $this->setting()->rich_taxonomies() as $taxonomy_name ) {
 			$taxonomy = get_taxonomy( $taxonomy_name );
-			if ( ! $taxonomy || ! is_array( $taxonomy->rewrite ?? null ) ) {
+			if ( ! $taxonomy || ! is_array( $taxonomy->rewrite ) ) {
 				continue;
 			}
 			// Use rewrite slug (category/tag use permalink settings). Fallback to taxonomy name.
@@ -172,7 +172,8 @@ class TaxonomyArchiveRewrites extends Singleton {
 		$theme_slug     = get_stylesheet();
 		$custom_slug    = \Tarosky\RichTaxonomy\Controller\Templates::get_instance()->get_post_template( $post );
 		$custom_slug    = $custom_slug ? preg_replace( '/\.php$/', '', $custom_slug ) : '';
-		$page_template  = get_page_template_slug( $post ) ?: $custom_slug;
+		$page_template  = get_page_template_slug( $post );
+		$page_template  = $page_template ? $page_template : $custom_slug;
 		$template_slugs = $page_template ? [ $page_template, 'single', 'index' ] : [ 'single', 'index' ];
 		foreach ( $template_slugs as $slug ) {
 			$block_template = get_block_template( $theme_slug . '//' . $slug, 'wp_template' );

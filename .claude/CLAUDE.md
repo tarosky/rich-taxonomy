@@ -31,14 +31,20 @@ src/Tarosky/RichTaxonomy/
 ## 開発環境
 
 ```bash
-# PHP
+# 事前インストール
+npm install
 composer install
+
+# Docker
+npm start             # Dockerを起動
+npm stop              # 停止
+
+# PHP
 composer run lint     # PHPCS
-composer run phpstan  # PHPStan Level 5
-composer run test     # PHPUnit
+composer run phpstan  # PHPStan
+npm test              # Docker内でPHPUnit実行
 
 # JS/CSS
-npm install
 npm run package       # ビルド
 npm run lint          # ESLint + Stylelint
 ```

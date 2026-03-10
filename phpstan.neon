@@ -1,0 +1,13 @@
+includes:
+    - vendor/szepeviktor/phpstan-wordpress/extension.neon
+    - phpstan-baseline.neon
+
+parameters:
+    level: 5
+    paths:
+        - rich-taxonomy.php
+        - functions.php
+        - src/
+    excludePaths:
+        - vendor/
+        - node_modules/

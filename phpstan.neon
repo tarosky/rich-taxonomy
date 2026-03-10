@@ -9,5 +9,5 @@ parameters:
         - functions.php
         - src/
     excludePaths:
-        - vendor/
-        - node_modules/
+        analyseAndScan:
+            - node_modules (?)

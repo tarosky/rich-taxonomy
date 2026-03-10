@@ -1,13 +1,15 @@
 {
 	"name": "rich-taxonomy",
 	"scripts": {
-		"start": "wp-env start",
-		"update": "wp-env start --update",
+		"start": "wp-env start --xdebug",
+		"update": "wp-env start --xdebug --update",
 		"stop": "wp-env stop",
 		"cli": "wp-env run cli wp",
 		"cli:test": "wp-env run tests-cli wp",
 		"package": "npm run build:css && npm run build:js && npm run dump",
 		"watch": "npm-watch",
+		"test": "RESULT=${PWD##*/} && wp-env run tests-cli ./wp-content/plugins/$RESULT/vendor/bin/phpunit -c ./wp-content/plugins/$RESULT/phpunit.xml.dist",
+		"test:coverage": "RESULT=${PWD##*/} && wp-env run tests-cli bash -c 'XDEBUG_MODE=coverage ./wp-content/plugins/'$RESULT'/vendor/bin/phpunit -c ./wp-content/plugins/'$RESULT'/phpunit.xml.dist --coverage-text'",
 		"build:css": "sass ./assets/scss/:./dist/css/ --style=compressed && postcss ./dist/css/*.css --use autoprefixer --replace",
 		"build:js": "grab-deps js assets/js dist/js",
 		"dump": "grab-deps dump dist",

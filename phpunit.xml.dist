@@ -13,4 +13,11 @@
 			<exclude>./tests/test-sample.php</exclude>
 		</testsuite>
 	</testsuites>
+	<coverage processUncoveredFiles="true">
+		<include>
+			<directory suffix=".php">./src</directory>
+			<file>./functions.php</file>
+			<file>./rich-taxonomy.php</file>
+		</include>
+	</coverage>
 </phpunit>

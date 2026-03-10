@@ -5,6 +5,7 @@ namespace Tarosky\RichTaxonomy\Controller;
 use Tarosky\RichTaxonomy\Pattern\Singleton;
 use Tarosky\RichTaxonomy\Utility\PageAccessor;
 use Tarosky\RichTaxonomy\Utility\SettingAccessor;
+use Tarosky\RichTaxonomy\Utility\TemplateAccessor;
 
 /**
  * Rewrite rules for taxonomy archive (base URL) pages.
@@ -15,6 +16,7 @@ class TaxonomyArchiveRewrites extends Singleton {
 
 	use PageAccessor;
 	use SettingAccessor;
+	use TemplateAccessor;
 
 	/**
 	 * Query var for taxonomy archive.
@@ -27,13 +29,11 @@ class TaxonomyArchiveRewrites extends Singleton {
 	 * Constructor.
 	 */
 	protected function init() {
-		// Priority 25: run after theme's rules (20) so our rule is prepended last and matches first.
-		add_action( 'init', [ $this, 'add_rewrite_rules' ], 25 );
+		// Priority 30: run after theme's rules (20, 25) so our rule is prepended last and matches first.
+		add_action( 'init', [ $this, 'add_rewrite_rules' ], 30 );
 		add_filter( 'query_vars', [ $this, 'add_query_vars' ] );
 		// Priority 11: run after theme's pre_get_posts (10) to override taxonomy_archive handling.
 		add_action( 'pre_get_posts', [ $this, 'pre_get_posts' ], 11 );
-		// Load template directly to bypass theme's template_include (which may load wrong template).
-		add_action( 'template_redirect', [ $this, 'template_redirect' ], 5 );
 		add_filter( 'template_include', [ $this, 'template_include' ], 999 );
 		add_filter( 'post_type_link', [ $this, 'filter_permalink' ], 11, 2 );
 	}
@@ -44,11 +44,12 @@ class TaxonomyArchiveRewrites extends Singleton {
 	public function add_rewrite_rules() {
 		foreach ( $this->setting()->rich_taxonomies() as $taxonomy_name ) {
 			$taxonomy = get_taxonomy( $taxonomy_name );
-			if ( ! $taxonomy || empty( $taxonomy->rewrite['slug'] ) ) {
+			if ( ! $taxonomy || ! is_array( $taxonomy->rewrite ?? null ) ) {
 				continue;
 			}
-			$slug = $taxonomy->rewrite['slug'];
-			$rule = $slug . '/?$';
+			// Use rewrite slug (category/tag use permalink settings). Fallback to taxonomy name.
+			$slug = ! empty( $taxonomy->rewrite['slug'] ) ? $taxonomy->rewrite['slug'] : $taxonomy_name;
+			$rule = preg_quote( $slug, '/' ) . '/?$';
 			add_rewrite_rule( $rule, 'index.php?' . self::QUERY_VAR . '=' . $taxonomy_name, 'top' );
 		}
 	}
@@ -106,7 +107,6 @@ class TaxonomyArchiveRewrites extends Singleton {
 		}
 		$query->set( 'post_type', $this->post_type() );
 		$query->set( 'p', $page->ID );
-		$query->set( 'page_id', $page->ID );
 		$query->set( 'posts_per_page', 1 );
 		$query->set( self::QUERY_VAR, '' );
 		$query->set( 'taxonomy_archive', '' );
@@ -117,30 +117,6 @@ class TaxonomyArchiveRewrites extends Singleton {
 		$query->is_tax      = false;
 		$query->is_category = false;
 		$query->is_tag      = false;
-	}
-
-	/**
-	 * Load template directly - bypasses template_include to avoid theme conflicts.
-	 */
-	public function template_redirect() {
-		global $wp_query, $post;
-		if ( ! $wp_query->is_main_query() ) {
-			return;
-		}
-		if ( ! $wp_query->is_singular( 'taxonomy-page' ) ) {
-			return;
-		}
-		$post = $wp_query->get_queried_object();
-		if ( ! $post instanceof \WP_Post || ! $this->is_taxonomy_archive_page( $post ) ) {
-			return;
-		}
-		$GLOBALS['post'] = $post;
-		setup_postdata( $post );
-		$template = RICH_TAXONOMY_PLUGIN_DIR . 'templates/singular-taxonomy-page.php';
-		if ( file_exists( $template ) ) {
-			load_template( $template, false );
-			exit;
-		}
 	}
 
 	/**
@@ -162,18 +138,54 @@ class TaxonomyArchiveRewrites extends Singleton {
 			return $template;
 		}
 		$GLOBALS['post'] = $post;
-		$custom_template = \Tarosky\RichTaxonomy\Controller\Templates::get_instance()->get_post_template_file( $post );
-		if ( $custom_template ) {
-			return $custom_template;
-		}
-		// Plugin template (guaranteed to display content).
+		setup_postdata( $post );
+
+		// Use plugin template first (guaranteed to display content with the_content()).
 		$plugin_template = RICH_TAXONOMY_PLUGIN_DIR . 'templates/singular-taxonomy-page.php';
 		if ( file_exists( $plugin_template ) ) {
 			return $plugin_template;
 		}
+
+		if ( $this->is_block_theme() ) {
+			return $this->filter_block_template_include( $template, $post );
+		}
+
+		// Classic theme: use Templates::get_post_template_file() for custom template selection.
+		$custom_template = \Tarosky\RichTaxonomy\Controller\Templates::get_instance()->get_post_template_file( $post );
+		if ( $custom_template ) {
+			return $custom_template;
+		}
 		// Fallback: use theme templates.
 		$fallback = locate_template( [ 'single.php', 'page.php', 'singular.php', 'index.php' ] );
 		return $fallback ? $fallback : $template;
+	}
+
+	/**
+	 * Filter block template include for taxonomy archive base URL (singular taxonomy-page).
+	 *
+	 * @param string   $template Path to the template file.
+	 * @param \WP_Post $post     Taxonomy page post.
+	 * @return string
+	 */
+	protected function filter_block_template_include( $template, $post ) {
+		global $_wp_current_template_id, $_wp_current_template_content;
+		$theme_slug     = get_stylesheet();
+		$custom_slug    = \Tarosky\RichTaxonomy\Controller\Templates::get_instance()->get_post_template( $post );
+		$custom_slug    = $custom_slug ? preg_replace( '/\.php$/', '', $custom_slug ) : '';
+		$page_template  = get_page_template_slug( $post ) ?: $custom_slug;
+		$template_slugs = $page_template ? [ $page_template, 'single', 'index' ] : [ 'single', 'index' ];
+		foreach ( $template_slugs as $slug ) {
+			$block_template = get_block_template( $theme_slug . '//' . $slug, 'wp_template' );
+			if ( ! $block_template ) {
+				$block_template = get_block_file_template( $theme_slug . '//' . $slug, 'wp_template' );
+			}
+			if ( $block_template ) {
+				$_wp_current_template_id      = $block_template->id;
+				$_wp_current_template_content = $block_template->content;
+				break;
+			}
+		}
+		return $template;
 	}
 
 	/**

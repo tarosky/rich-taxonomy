@@ -111,14 +111,20 @@ class Setting extends Singleton {
 		// Taxonomy archive page links.
 		add_settings_field( 'rich_taxonomy_archive_pages', __( 'Taxonomy Archive Page', 'rich-taxonomy' ), [ $this, 'render_taxonomy_archive_links' ], 'reading', 'rich-taxonomy-section' );
 		register_setting( 'reading', $this->option_name );
-		add_action( 'update_option_' . $this->option_name, [ $this, 'flush_rewrite_on_option_update' ] );
+		add_action( 'update_option_' . $this->option_name, [ $this, 'flush_rewrite_on_option_update' ], 10, 3 );
 	}
 
 	/**
 	 * Flush rewrite rules when taxonomy settings change.
+	 *
+	 * @param mixed  $old_value Old option value.
+	 * @param mixed  $value     New option value.
+	 * @param string $option    Option name.
 	 */
-	public function flush_rewrite_on_option_update() {
-		flush_rewrite_rules();
+	public function flush_rewrite_on_option_update( $old_value, $value, $option ) {
+		if ( $old_value !== $value ) {
+			flush_rewrite_rules();
+		}
 	}
 
 	/**
@@ -156,10 +162,11 @@ class Setting extends Singleton {
 					$label
 				);
 				printf(
-					'<li><a href="#" class="rich-taxonomy-create-archive" data-taxonomy="%s" data-nonce="%s" data-rest-url="%s">%s</a></li>',
+					'<li><a href="#" class="rich-taxonomy-create-archive" data-taxonomy="%s" data-nonce="%s" data-rest-url="%s" data-original-text="%s">%s</a></li>',
 					esc_attr( $taxonomy_name ),
 					esc_attr( $nonce ),
 					esc_attr( $rest_url ),
+					esc_attr( $text ),
 					esc_html( $text )
 				);
 			}

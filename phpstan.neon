@@ -3,6 +3,8 @@ includes:
     - phpstan-baseline.neon
 
 parameters:
+    bootstrapFiles:
+        - phpstan-bootstrap.php
     level: 5
     paths:
         - rich-taxonomy.php

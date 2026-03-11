@@ -20,8 +20,7 @@ defined( 'ABSPATH' ) || die();
  * Initializer.
  */
 function rich_taxonomy_init() {
-	// Load text domain.
-	load_plugin_textdomain( 'rich-taxonomy', false, basename( __DIR__ ) . '/languages' );
+	// Translations are automatically loaded by WordPress 4.6+ for plugins hosted on WordPress.org.
 	// Initialize.
 	$autoloader = __DIR__ . '/vendor/autoload.php';
 	if ( file_exists( $autoloader ) ) {

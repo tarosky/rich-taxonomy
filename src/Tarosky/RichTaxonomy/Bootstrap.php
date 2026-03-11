@@ -56,7 +56,7 @@ class Bootstrap extends Singleton {
 		if ( ! file_exists( $json ) ) {
 			if ( 'cli' !== php_sapi_name() ) {
 				// Raise error if this is production.
-				trigger_error( __( 'Dependency list is missing.', 'rich-taxonomy' ), E_USER_WARNING );
+				trigger_error( esc_html__( 'Dependency list is missing.', 'rich-taxonomy' ), E_USER_WARNING );
 			}
 			return;
 		}

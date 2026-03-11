@@ -50,11 +50,11 @@ class TermApi extends RestApiPattern {
 		}
 		if ( ! $this->setting()->is_rich( $term->taxonomy ) ) {
 			// translators: %s is term name.
-			return new \WP_Error( 'rich_taxonomy_api_error', sprintf( __( '%s is not able to have a taxonomy page.' ), $term->name ) );
+			return new \WP_Error( 'rich_taxonomy_api_error', sprintf( __( '%s is not able to have a taxonomy page.', 'rich-taxonomy' ), $term->name ) );
 		}
 		if ( $this->has_post( $term ) ) {
 			// translators: %s is term name.
-			return new \WP_Error( 'rich_taxonomy_api_error', sprintf( __( '%s already has a taxonomy page.' ), $term->name ) );
+			return new \WP_Error( 'rich_taxonomy_api_error', sprintf( __( '%s already has a taxonomy page.', 'rich-taxonomy' ), $term->name ) );
 		}
 		return true;
 	}

@@ -258,6 +258,7 @@ class Editor extends Singleton {
 			} else {
 				$term = $this->get_assigned_term( $post );
 				if ( $term ) {
+					$term_link = get_edit_term_link( $term->term_id );
 					printf(
 						'<p>%s &raquo; <a href="%s" rel="noopener noreferrer" target="_blank">%s</a></p>',
 						sprintf(
@@ -266,7 +267,7 @@ class Editor extends Singleton {
 							esc_html( $term->name ),
 							esc_html( get_taxonomy( $term->taxonomy )->label )
 						),
-						get_edit_term_link( $term->term_id ),
+						esc_url( $term_link ?: '#' ),
 						esc_html__( 'Edit', 'rich-taxonomy' )
 					);
 				} else {

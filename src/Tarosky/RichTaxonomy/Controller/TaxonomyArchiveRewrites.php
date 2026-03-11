@@ -140,24 +140,17 @@ class TaxonomyArchiveRewrites extends Singleton {
 		$GLOBALS['post'] = $post;
 		setup_postdata( $post );
 
-		// Use plugin template first (guaranteed to display content with the_content()).
+		if ( $this->is_block_theme() ) {
+			return $this->filter_block_template_include( $template, $post );
+		}
+
+		// Classic theme only: use plugin template.
 		$plugin_template = RICH_TAXONOMY_PLUGIN_DIR . 'templates/singular-taxonomy-page.php';
 		if ( file_exists( $plugin_template ) ) {
 			return $plugin_template;
 		}
 
-		if ( $this->is_block_theme() ) {
-			return $this->filter_block_template_include( $template, $post );
-		}
-
-		// Classic theme: use Templates::get_post_template_file() for custom template selection.
-		$custom_template = \Tarosky\RichTaxonomy\Controller\Templates::get_instance()->get_post_template_file( $post );
-		if ( $custom_template ) {
-			return $custom_template;
-		}
-		// Fallback: use theme templates.
-		$fallback = locate_template( [ 'single.php', 'page.php', 'singular.php', 'index.php' ] );
-		return $fallback ? $fallback : $template;
+		return $template;
 	}
 
 	/**
@@ -174,7 +167,8 @@ class TaxonomyArchiveRewrites extends Singleton {
 		$custom_slug    = $custom_slug ? preg_replace( '/\.php$/', '', $custom_slug ) : '';
 		$page_template  = get_page_template_slug( $post );
 		$page_template  = $page_template ? $page_template : $custom_slug;
-		$template_slugs = $page_template ? [ $page_template, 'single', 'index' ] : [ 'single', 'index' ];
+		// Search order: single-taxonomy-page → post template setting → single → index.
+		$template_slugs = $page_template ? [ 'single-taxonomy-page', $page_template, 'single', 'index' ] : [ 'single-taxonomy-page', 'single', 'index' ];
 		foreach ( $template_slugs as $slug ) {
 			$block_template = get_block_template( $theme_slug . '//' . $slug, 'wp_template' );
 			if ( ! $block_template ) {
@@ -183,7 +177,10 @@ class TaxonomyArchiveRewrites extends Singleton {
 			if ( $block_template ) {
 				$_wp_current_template_id      = $block_template->id;
 				$_wp_current_template_content = $block_template->content;
-				break;
+				// Return template-canvas.php so the block template is actually rendered.
+				// The incoming $template may be a PHP file (e.g. front-page.php) that ignores
+				// $_wp_current_template_id; we must load the block canvas directly.
+				return ABSPATH . WPINC . '/template-canvas.php';
 			}
 		}
 		return $template;
@@ -208,9 +205,11 @@ class TaxonomyArchiveRewrites extends Singleton {
 			return $link;
 		}
 		$taxonomy_obj = get_taxonomy( $taxonomy );
-		if ( ! $taxonomy_obj || empty( $taxonomy_obj->rewrite['slug'] ) ) {
+		if ( ! $taxonomy_obj || ! is_array( $taxonomy_obj->rewrite ) ) {
 			return $link;
 		}
-		return home_url( '/' . $taxonomy_obj->rewrite['slug'] . '/' );
+		// Fallback to $taxonomy name when slug is empty, same as add_rewrite_rules.
+		$slug = ! empty( $taxonomy_obj->rewrite['slug'] ) ? $taxonomy_obj->rewrite['slug'] : $taxonomy;
+		return home_url( '/' . $slug . '/' );
 	}
 }

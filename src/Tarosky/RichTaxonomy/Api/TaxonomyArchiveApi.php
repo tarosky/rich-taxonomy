@@ -75,9 +75,10 @@ class TaxonomyArchiveApi extends RestApiPattern {
 		if ( is_wp_error( $post_id ) ) {
 			return $post_id;
 		}
+		$edit_link = get_edit_post_link( $post_id, 'api' );
 		return new \WP_REST_Response( [
 			'post_id'   => $post_id,
-			'edit_link' => get_edit_post_link( $post_id, 'api' ),
+			'edit_link' => $edit_link ?? '',
 		] );
 	}
 }

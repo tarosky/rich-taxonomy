@@ -152,7 +152,7 @@ class Setting extends Singleton {
 					__( 'Edit %s archive page', 'rich-taxonomy' ),
 					$label
 				);
-				printf( '<li><a href="%s">%s</a></li>', esc_url( $link ), esc_html( $text ) );
+				printf( '<li><a href="%s">%s</a></li>', esc_url( $link ?? '' ), esc_html( $text ) );
 			} else {
 				$rest_url = rest_url( 'rich-taxonomy/v1/taxonomy-archive/' . $taxonomy_name );
 				$nonce    = wp_create_nonce( 'wp_rest' );

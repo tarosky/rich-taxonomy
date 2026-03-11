@@ -1,0 +1,25 @@
+parameters:
+	ignoreErrors:
+		-
+			message: '#^Parameter \#1 \$taxonomy of method Tarosky\\RichTaxonomy\\Controller\\Setting\:\:is_rich\(\) expects string, int given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/Tarosky/RichTaxonomy/Controller/DataSync.php
+
+		-
+			message: '#^Call to function is_wp_error\(\) with WP_Term will always evaluate to false\.$#'
+			identifier: function.impossibleType
+			count: 1
+			path: src/Tarosky/RichTaxonomy/Controller/Editor.php
+
+		-
+			message: '#^Found usage of constant DOING_AJAX\. Use wp_doing_ajax\(\) instead\.$#'
+			identifier: phpstanWP.wpConstant.fetch
+			count: 1
+			path: src/Tarosky/RichTaxonomy/Controller/Setting.php
+
+		-
+			message: '#^Parameter \#2 \$output of function get_taxonomies expects ''names''\|''objects'', ''OBJECT'' given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/Tarosky/RichTaxonomy/Controller/Setting.php

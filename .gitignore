@@ -2,7 +2,8 @@
 /node_modules
 /wordpress
 /dist
-composer.lock
+.DS_Store
 package-lock.json
 wp-dependencies.json
 .claude/settings.local.json
+/*.cache

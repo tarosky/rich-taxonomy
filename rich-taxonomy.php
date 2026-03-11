@@ -6,7 +6,7 @@
  * Author: Tarosky INC.
  * Version: nightly
  * Requires at least: 5.9
- * Requires PHP: 7.0
+ * Requires PHP: 7.4
  * Author URI: https://tarosky.co.jp/
  * License: GPL3 or later
  * License URI: https://www.gnu.org/licenses/gpl-3.0.html
@@ -20,8 +20,7 @@ defined( 'ABSPATH' ) || die();
  * Initializer.
  */
 function rich_taxonomy_init() {
-	// Load text domain.
-	load_plugin_textdomain( 'rich-taxonomy', false, basename( __DIR__ ) . '/languages' );
+	// Translations are automatically loaded by WordPress 4.6+ for plugins hosted on WordPress.org.
 	// Initialize.
 	$autoloader = __DIR__ . '/vendor/autoload.php';
 	if ( file_exists( $autoloader ) ) {

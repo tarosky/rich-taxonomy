@@ -67,7 +67,11 @@ class Setting extends Singleton {
 				);
 			}
 		}, 'reading', 'rich-taxonomy-section' );
-		register_setting( 'reading', $this->option_name );
+		register_setting( 'reading', $this->option_name, [
+			'sanitize_callback' => function ( $value ) {
+				return is_array( $value ) ? array_map( 'sanitize_text_field', $value ) : [];
+			},
+		] );
 	}
 
 	/**
@@ -107,7 +111,7 @@ class Setting extends Singleton {
 			);
 			printf(
 				'<div class="notice notice-info"><p>%s</p></div>',
-				$message
+				wp_kses( $message, [ 'strong' => [] ] )
 			);
 		}
 	}

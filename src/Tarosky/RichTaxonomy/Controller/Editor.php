@@ -162,7 +162,7 @@ class Editor extends Singleton {
 				} else {
 					printf(
 						'<a href="%s">%s</a><code>%s</code>',
-						get_edit_term_link( $term->term_id, $term->taxonomy ),
+						esc_url( get_edit_term_link( $term->term_id, $term->taxonomy ) ),
 						esc_html( $term->name ),
 						esc_html( get_taxonomy( $term->taxonomy )->label )
 					);
@@ -220,7 +220,7 @@ class Editor extends Singleton {
 						esc_html( $term->name ),
 						esc_html( get_taxonomy( $term->taxonomy )->label )
 					),
-					get_edit_term_link( $term->term_id ),
+					esc_url( get_edit_term_link( $term->term_id ) ),
 					esc_html__( 'Edit', 'rich-taxonomy' )
 				);
 			} else {

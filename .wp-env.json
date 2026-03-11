@@ -1,7 +1,8 @@
 {
 	"plugins": [
 		".",
-		"https://downloads.wordpress.org/plugin/query-monitor.latest-stable.zip"
+		"https://downloads.wordpress.org/plugin/query-monitor.latest-stable.zip",
+		"https://downloads.wordpress.org/plugin/plugin-check.latest-stable.zip"
 	],
 	"themes": [
 		"https://downloads.wordpress.org/theme/twentytwentyone.latest-stable.zip"

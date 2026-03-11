@@ -2,7 +2,7 @@
 
 Tags: taxonomy, terms, seo  
 Contributors: tarosky, Takahashi_Fumiki, megane9988, tswallie  
-Tested up to: 6.8  
+Tested up to: 6.9  
 Stable Tag: nightly  
 License: GPLv3 or later  
 License URI: http://www.gnu.org/licenses/gpl-3.0.txt

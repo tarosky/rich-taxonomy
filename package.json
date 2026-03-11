@@ -1,6 +1,7 @@
 {
 	"name": "rich-taxonomy",
 	"scripts": {
+		"prepare": "husky",
 		"start": "wp-env start --xdebug",
 		"update": "wp-env start --xdebug --update",
 		"stop": "wp-env stop",
@@ -21,7 +22,7 @@
 		"lint:js": "wp-scripts lint-js ./assets/js"
 	},
 	"engines": {
-		"node": ">=20.0"
+		"node": ">=22.0"
 	},
 	"author": "Hametuha inc.",
 	"license": "LGPL-3.0-or-later",
@@ -33,7 +34,14 @@
 		"npm-watch": "^0.13.0",
 		"postcss": "^8.4.33",
 		"postcss-cli": "^11.0.0",
+		"husky": "^9.1.7",
+		"lint-staged": "^16.2.7",
 		"sass": "^1.69.7"
+	},
+	"lint-staged": {
+		"*.js": "npm run lint:js",
+		"*.scss": "npm run lint:css",
+		"*.php": "composer lint"
 	},
 	"watch": {
 		"build:js": {

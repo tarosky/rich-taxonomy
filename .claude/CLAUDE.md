@@ -38,6 +38,7 @@ composer install
 # Docker
 npm start             # Dockerを起動
 npm stop              # 停止
+npm run cli           # Dockerコンテナ内でwp-cliを実行 e.g. npm run cli plugin list
 
 # PHP
 composer run lint     # PHPCS

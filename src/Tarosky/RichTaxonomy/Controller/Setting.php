@@ -110,7 +110,11 @@ class Setting extends Singleton {
 		}, 'reading', 'rich-taxonomy-section' );
 		// Taxonomy archive page links.
 		add_settings_field( 'rich_taxonomy_archive_pages', __( 'Taxonomy Archive Page', 'rich-taxonomy' ), [ $this, 'render_taxonomy_archive_links' ], 'reading', 'rich-taxonomy-section' );
-		register_setting( 'reading', $this->option_name );
+		register_setting( 'reading', $this->option_name, [
+			'sanitize_callback' => function ( $value ) {
+				return is_array( $value ) ? array_map( 'sanitize_text_field', $value ) : [];
+			},
+		] );
 		add_action( 'update_option_' . $this->option_name, [ $this, 'flush_rewrite_on_option_update' ], 10, 3 );
 	}
 
@@ -211,7 +215,7 @@ class Setting extends Singleton {
 			);
 			printf(
 				'<div class="notice notice-info"><p>%s</p></div>',
-				$message
+				wp_kses( $message, [ 'strong' => [] ] )
 			);
 		}
 	}

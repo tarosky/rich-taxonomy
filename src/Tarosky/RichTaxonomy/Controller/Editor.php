@@ -267,7 +267,7 @@ class Editor extends Singleton {
 							esc_html( $term->name ),
 							esc_html( get_taxonomy( $term->taxonomy )->label )
 						),
-						esc_url( $term_link ?: '#' ),
+						esc_url( $term_link ? $term_link : '#' ),
 						esc_html__( 'Edit', 'rich-taxonomy' )
 					);
 				} else {

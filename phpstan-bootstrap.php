@@ -9,3 +9,11 @@
 if ( ! defined( 'RICH_TAXONOMY_PLUGIN_DIR' ) ) {
 	define( 'RICH_TAXONOMY_PLUGIN_DIR', __DIR__ . '/' );
 }
+
+if ( ! defined( 'ABSPATH' ) ) {
+	define( 'ABSPATH', __DIR__ . '/' );
+}
+
+if ( ! defined( 'WPINC' ) ) {
+	define( 'WPINC', 'wp-includes' );
+}

@@ -162,11 +162,11 @@ class TaxonomyArchiveRewrites extends Singleton {
 	 */
 	protected function filter_block_template_include( $template, $post ) {
 		global $_wp_current_template_id, $_wp_current_template_content;
-		$theme_slug     = get_stylesheet();
-		$custom_slug    = \Tarosky\RichTaxonomy\Controller\Templates::get_instance()->get_post_template( $post );
-		$custom_slug    = $custom_slug ? preg_replace( '/\.php$/', '', $custom_slug ) : '';
-		$page_template  = get_page_template_slug( $post );
-		$page_template  = $page_template ? $page_template : $custom_slug;
+		$theme_slug    = get_stylesheet();
+		$custom_slug   = \Tarosky\RichTaxonomy\Controller\Templates::get_instance()->get_post_template( $post );
+		$custom_slug   = $custom_slug ? preg_replace( '/\.php$/', '', $custom_slug ) : '';
+		$page_template = get_page_template_slug( $post );
+		$page_template = $page_template ? $page_template : $custom_slug;
 		// Search order: single-taxonomy-page → post template setting → single → index.
 		$template_slugs = $page_template ? [ 'single-taxonomy-page', $page_template, 'single', 'index' ] : [ 'single-taxonomy-page', 'single', 'index' ];
 		foreach ( $template_slugs as $slug ) {

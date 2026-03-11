@@ -1,9 +1,8 @@
 name: Deploy to WordPress.org
 
 on:
-  push:
-    tags:
-      - '*.*.*'
+  release:
+    types: [published]
 
 permissions:
   contents: write
@@ -37,7 +36,7 @@ jobs:
         run: npm install
 
       - name: Build Assets
-        run: bash bin/build.sh ${{ github.ref }}
+        run: bash bin/build.sh ${{ github.event.release.tag_name }}
 
       - name: Generate readme.txt
         uses: tarosky/workflows/actions/wp-readme@main
@@ -45,7 +44,7 @@ jobs:
       - name: Versioning
         uses: tarosky/workflows/actions/versioning@main
         with:
-          version: ${{ github.ref }}
+          version: ${{ github.event.release.tag_name }}
           files: readme.txt,rich-taxonomy.php
 
       - name: Deploy to WordPress Directory

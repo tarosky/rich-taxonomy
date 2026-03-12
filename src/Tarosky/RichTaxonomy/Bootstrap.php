@@ -4,12 +4,14 @@ namespace Tarosky\RichTaxonomy;
 
 
 use Tarosky\RichTaxonomy\Api\PostApi;
+use Tarosky\RichTaxonomy\Api\TaxonomyArchiveApi;
 use Tarosky\RichTaxonomy\Api\TermApi;
 use Tarosky\RichTaxonomy\Blocks\TermArchiveBlock;
 use Tarosky\RichTaxonomy\Controller\DataSync;
 use Tarosky\RichTaxonomy\Controller\Editor;
 use Tarosky\RichTaxonomy\Controller\Rewrites;
 use Tarosky\RichTaxonomy\Controller\Setting;
+use Tarosky\RichTaxonomy\Controller\TaxonomyArchiveRewrites;
 use Tarosky\RichTaxonomy\Controller\Templates;
 use Tarosky\RichTaxonomy\Pattern\Singleton;
 use Tarosky\RichTaxonomy\Utility\DirectoryAccessor;
@@ -36,8 +38,10 @@ class Bootstrap extends Singleton {
 		// REST API
 		TermApi::get_instance();
 		PostApi::get_instance();
+		TaxonomyArchiveApi::get_instance();
 		// Rewrite rules.
 		Rewrites::get_instance();
+		TaxonomyArchiveRewrites::get_instance();
 		// Register block.
 		TermArchiveBlock::get_instance();
 		// Register scripts.

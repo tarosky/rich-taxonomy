@@ -16,6 +16,8 @@
 
 defined( 'ABSPATH' ) || die();
 
+define( 'RICH_TAXONOMY_PLUGIN_DIR', plugin_dir_path( __FILE__ ) );
+
 /**
  * Initializer.
  */
@@ -31,6 +33,23 @@ function rich_taxonomy_init() {
 	require_once __DIR__ . '/functions.php';
 }
 add_action( 'plugins_loaded', 'rich_taxonomy_init' );
+
+/**
+ * Flush rewrite rules on activation.
+ */
+function rich_taxonomy_activate() {
+	rich_taxonomy_init();
+	flush_rewrite_rules();
+}
+register_activation_hook( __FILE__, 'rich_taxonomy_activate' );
+
+/**
+ * Flush rewrite rules on deactivation.
+ */
+function rich_taxonomy_deactivate() {
+	flush_rewrite_rules();
+}
+register_deactivation_hook( __FILE__, 'rich_taxonomy_deactivate' );
 
 /**
  * Get plugin version.

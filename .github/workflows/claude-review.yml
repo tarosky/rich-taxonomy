@@ -29,6 +29,8 @@ jobs:
     outputs:
       pr_number: ${{ steps.pr.outputs.number }}
     steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
       - name: Get PR number
         id: pr
         run: |
@@ -49,8 +51,7 @@ jobs:
       custom_focus: |
         - Singleton パターンの遵守
         - リライトルール変更時の flush_rewrite_rules 確認
-    secrets:
-      ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+    secrets: inherit
 
   # @claude コメントで手動レビュー（メンバーのみ）
   call-claude:

@@ -7,7 +7,7 @@ on:
 
 jobs:
   audit:
-    uses: tarosky/workflows/.github/workflows/wp-plugin-audit.yml@main
+    uses: tarosky/workflows/.github/workflows/plugin-audit.yml@main
     with:
       slug: rich-taxonomy
       language: ja

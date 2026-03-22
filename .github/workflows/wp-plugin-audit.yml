@@ -1,0 +1,14 @@
+name: WP Plugin Audit
+
+on:
+  schedule:
+    - cron: '0 0 1 * *'
+  workflow_dispatch:
+
+jobs:
+  audit:
+    uses: tarosky/workflows/.github/workflows/wp-plugin-audit.yml@main
+    with:
+      slug: rich-taxonomy
+      language: ja
+    secrets: inherit

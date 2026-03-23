@@ -8,5 +8,6 @@ on:
 
 jobs:
   assistant:
+    if: "!contains(github.event.comment.body, '@claude auto-review')"
     uses: tarosky/workflows/.github/workflows/claude-assistant.yml@main
     secrets: inherit

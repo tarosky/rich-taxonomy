@@ -31,6 +31,13 @@
 		<config name="testVersion" value="7.0-"/>
 	</rule>
 
+	<file>rich-taxonomy.php</file>
+	<file>functions.php</file>
+	<file>phpstan-bootstrap.php</file>
+	<file>src</file>
+	<file>template-parts</file>
+	<file>templates</file>
+
 	<exclude-pattern>*/node_modules/*</exclude-pattern>
 	<exclude-pattern>*.js</exclude-pattern>
 	<exclude-pattern>*/vendor/*</exclude-pattern>

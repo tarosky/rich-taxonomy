@@ -5,8 +5,8 @@
 	"license": "GPL-3.0-or-later",
 	"scripts": {
 		"test": "phpunit",
-		"lint": "phpcs --standard=phpcs.ruleset.xml $(find ./ -name '*.php')",
-		"fix":  "phpcbf --standard=phpcs.ruleset.xml $(find ./ -name '*.php')",
+		"lint": "phpcs --standard=phpcs.ruleset.xml",
+		"fix": "phpcbf --standard=phpcs.ruleset.xml",
 		"phpstan": "phpstan analyse --memory-limit=1G"
 	},
 	"authors": [

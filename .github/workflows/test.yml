@@ -10,7 +10,7 @@ jobs:
     name: PHP UnitTest
     strategy:
       matrix:
-        php: [ '7.4', '8.0' ] # PHP versions to check.
+        php: [ '8.1', '8.3' ] # PHP versions to check.
         wp: [ 'latest', '6.6' ]      # WordPress version to check.
     uses: tarosky/workflows/.github/workflows/wp-unit-test.yml@main
     with:
@@ -21,7 +21,7 @@ jobs:
     name: Check PHP Codes
     uses: tarosky/workflows/.github/workflows/phpcs.yml@main
     with:
-      version: 7.4
+      version: 8.1
 
   phpstan:
     name: PHPStan
@@ -32,7 +32,7 @@ jobs:
       - name: Setup PHP
         uses: shivammathur/setup-php@v2
         with:
-          php-version: '8.0'
+          php-version: '8.1'
           tools: composer
 
       - name: Install dependencies
@@ -46,7 +46,7 @@ jobs:
     needs: [ test ]
     uses: tarosky/workflows/.github/workflows/wp-unit-test.yml@main
     with:
-      php_version: '8.0'
+      php_version: '8.1'
       wp_version: latest
       coverage: true
 

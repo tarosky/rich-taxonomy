@@ -6,7 +6,7 @@
  * Author: Tarosky INC.
  * Version: nightly
  * Requires at least: 5.9
- * Requires PHP: 7.4
+ * Requires PHP: 8.1
  * Author URI: https://tarosky.co.jp/
  * License: GPL3 or later
  * License URI: https://www.gnu.org/licenses/gpl-3.0.html

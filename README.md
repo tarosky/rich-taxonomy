@@ -1,6 +1,6 @@
 # Rich Taxonomy
 
-Tags: taxonomy, terms, seo  
+Tags: seo, category, topic cluster, pillar page, landing page  
 Contributors: tarosky, Takahashi_Fumiki, megane9988, tswallie  
 Tested up to: 6.9  
 Requires PHP: 8.1  
@@ -88,7 +88,7 @@ To change the look & feel, `rich_taxonomy_block_asset_style` is the best startin
 ```php
 // Register style.
 add_action( 'init', function() {
-    wp_registeR_style( 'my-archive-block', $url, $deps, $version );
+    wp_register_style( 'my-archive-block', $url, $deps, $version );
 } );
 
 // Override handle.
@@ -150,6 +150,23 @@ Please create a new ticket on the support forum.
 Create a new [issue](https://github.com/tarosky/rich-taxonomy/issues) or send [pull requests](https://github.com/tarosky/rich-taxonomy/pulls).
 
 ## Changelog
+
+### 1.2.1
+
+* Update Node.js version to 20 in release workflow.
+
+### 1.2.0
+
+* Add block theme (FSE) support for template override.
+* Fix template override when `single.php` exists in classic themes.
+* Fix layout of the sync information notice.
+* Replace Gulp build system with npm scripts and `@kunoichi/grab-deps`.
+
+### 1.1.8
+
+* Add pagination to the broken page warning.
+* Add notices to improve UX.
+* Bugfix: handle missing taxonomy and null term.
 
 ### 1.1.7
 

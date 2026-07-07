@@ -54,16 +54,21 @@ npm run lint          # ESLint + Stylelint
 
 PR作成時に以下が自動実行される。すべてパスしないとマージ不可：
 
-- PHPUnit（PHP 7.4/8.0 × WP latest/5.9）
+- PHPUnit（PHP × WP のバージョンマトリックスは `.github/workflows/test.yml` を参照）
 - PHPCS（WordPress-Core）
 - PHPStan Level 5
 - アセットビルド確認
+
+> **バージョンの情報源（Single Source of Truth）** — 本ドキュメントには具体的なバージョン番号を記載しない（乖離防止のため）。
+> - **対応 PHP**: `composer.json`（`require.php` / `config.platform.php`）が正。`rich-taxonomy.php` の `Requires PHP` はこれに追従する
+> - **Node**: `.node-version`
+> - **CI テストマトリックス（PHP × WP）**: `.github/workflows/test.yml`
 
 ## コーディング規約
 
 - WordPress Coding Standards 準拠
 - PSR-0 オートロード（`Tarosky\RichTaxonomy` → `src/`）
-- PHP 7.0+ 互換（ただし CI は 7.4+ でテスト）
+- 対応 PHP バージョンは `composer.json`（`require.php` / `config.platform.php`）と CI マトリックス（`.github/workflows/test.yml`）に従う
 - 新規コードは PHPStan Level 5 をパスすること（既存のbaselineエラーを増やさない）
 
 ## 注意事項

@@ -2,6 +2,7 @@
 
 Tags: seo, category, topic cluster, pillar page, landing page  
 Contributors: tarosky, Takahashi_Fumiki, megane9988, tswallie  
+Requires at least: 6.6  
 Tested up to: 6.9  
 Requires PHP: 8.1  
 Stable Tag: nightly  
@@ -18,6 +19,14 @@ A WordPress plugin that enhances taxonomy archives by replacing them with custom
 - Use the block editor to design archive landing pages.
 - Includes a **Taxonomy Archive Block** to display posts.
 - Fully customizable via templates and filter hooks.
+
+### Use Cases
+
+**Topic clusters & pillar pages (SEO).** Turn a category or tag archive into a *pillar page* that introduces the topic and links out to its individual posts (the *cluster content*). This is the topic-cluster model used in modern SEO: one authoritative hub page that consolidates internal links and signals topical authority — instead of a bare, auto-generated list of post titles.
+
+**Category & taxonomy landing pages.** Give any taxonomy term a fully designed landing page — hero, introduction, curated blocks — while still automatically listing the posts assigned to that term. Ideal for product categories, service areas, or editorial sections.
+
+**Content hubs.** Build a curated hub for a series, event, or campaign: write an editorial introduction in the block editor, then let the Taxonomy Archive Block surface the latest related posts automatically.
 
 ### How It Works
 

@@ -27,10 +27,6 @@
 		<exclude name="WordPress.Arrays.ArrayDeclarationSpacing.AssociativeArrayFound" />
 	</rule>
 
-	<rule ref="PHPCompatibility">
-		<config name="testVersion" value="7.0-"/>
-	</rule>
-
 	<file>rich-taxonomy.php</file>
 	<file>functions.php</file>
 	<file>phpstan-bootstrap.php</file>

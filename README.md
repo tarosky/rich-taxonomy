@@ -1,8 +1,10 @@
 # Rich Taxonomy
 
-Tags: taxonomy, terms, seo  
+Tags: seo, category, topic cluster, pillar page, landing page  
 Contributors: tarosky, Takahashi_Fumiki, megane9988, tswallie  
+Requires at least: 6.6  
 Tested up to: 6.9  
+Requires PHP: 8.1  
 Stable Tag: nightly  
 License: GPLv3 or later  
 License URI: http://www.gnu.org/licenses/gpl-3.0.txt
@@ -17,6 +19,14 @@ A WordPress plugin that enhances taxonomy archives by replacing them with custom
 - Use the block editor to design archive landing pages.
 - Includes a **Taxonomy Archive Block** to display posts.
 - Fully customizable via templates and filter hooks.
+
+### Use Cases
+
+**Topic clusters & pillar pages (SEO).** Turn a category or tag archive into a *pillar page* that introduces the topic and links out to its individual posts (the *cluster content*). This is the topic-cluster model used in modern SEO: one authoritative hub page that consolidates internal links and signals topical authority — instead of a bare, auto-generated list of post titles.
+
+**Category & taxonomy landing pages.** Give any taxonomy term a fully designed landing page — hero, introduction, curated blocks — while still automatically listing the posts assigned to that term. Ideal for product categories, service areas, or editorial sections.
+
+**Content hubs.** Build a curated hub for a series, event, or campaign: write an editorial introduction in the block editor, then let the Taxonomy Archive Block surface the latest related posts automatically.
 
 ### How It Works
 
@@ -87,7 +97,7 @@ To change the look & feel, `rich_taxonomy_block_asset_style` is the best startin
 ```php
 // Register style.
 add_action( 'init', function() {
-    wp_registeR_style( 'my-archive-block', $url, $deps, $version );
+    wp_register_style( 'my-archive-block', $url, $deps, $version );
 } );
 
 // Override handle.
@@ -149,6 +159,23 @@ Please create a new ticket on the support forum.
 Create a new [issue](https://github.com/tarosky/rich-taxonomy/issues) or send [pull requests](https://github.com/tarosky/rich-taxonomy/pulls).
 
 ## Changelog
+
+### 1.2.1
+
+* Update Node.js version to 20 in release workflow.
+
+### 1.2.0
+
+* Add block theme (FSE) support for template override.
+* Fix template override when `single.php` exists in classic themes.
+* Fix layout of the sync information notice.
+* Replace Gulp build system with npm scripts and `@kunoichi/grab-deps`.
+
+### 1.1.8
+
+* Add pagination to the broken page warning.
+* Add notices to improve UX.
+* Bugfix: handle missing taxonomy and null term.
 
 ### 1.1.7
 

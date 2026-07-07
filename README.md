@@ -2,6 +2,7 @@
 
 Tags: taxonomy, terms, seo  
 Contributors: tarosky, Takahashi_Fumiki, megane9988, tswallie  
+Requires at least: 6.6  
 Tested up to: 6.9  
 Requires PHP: 8.1  
 Stable Tag: nightly  

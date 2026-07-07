@@ -5,7 +5,7 @@
  * Plugin URI: https://wordpress.org/plugins/rich-taxonomy/
  * Author: Tarosky INC.
  * Version: nightly
- * Requires at least: 5.9
+ * Requires at least: 6.6
  * Requires PHP: 8.1
  * Author URI: https://tarosky.co.jp/
  * License: GPL3 or later

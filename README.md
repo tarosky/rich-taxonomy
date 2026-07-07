@@ -19,6 +19,14 @@ A WordPress plugin that enhances taxonomy archives by replacing them with custom
 - Includes a **Taxonomy Archive Block** to display posts.
 - Fully customizable via templates and filter hooks.
 
+### Use Cases
+
+**Topic clusters & pillar pages (SEO).** Turn a category or tag archive into a *pillar page* that introduces the topic and links out to its individual posts (the *cluster content*). This is the topic-cluster model used in modern SEO: one authoritative hub page that consolidates internal links and signals topical authority — instead of a bare, auto-generated list of post titles.
+
+**Category & taxonomy landing pages.** Give any taxonomy term a fully designed landing page — hero, introduction, curated blocks — while still automatically listing the posts assigned to that term. Ideal for product categories, service areas, or editorial sections.
+
+**Content hubs.** Build a curated hub for a series, event, or campaign: write an editorial introduction in the block editor, then let the Taxonomy Archive Block surface the latest related posts automatically.
+
 ### How It Works
 
 The Taxonomy Page will override the **first page** of a term archive. In **Settings** you can choose which taxonomies should have the option to create a Taxonomy Page.

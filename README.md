@@ -166,6 +166,13 @@ Create a new [issue](https://github.com/tarosky/rich-taxonomy/issues) or send [p
 
 ## Changelog
 
+### 1.3.0
+
+* Add support for creating a Taxonomy Page for a taxonomy's base URL (the whole archive), in addition to individual terms.
+* Raise minimum requirements to PHP 8.1 and WordPress 6.6.
+* Confirm compatibility with WordPress 7.0.
+* Update the plugin icon.
+
 ### 1.2.1
 
 * Update Node.js version to 20 in release workflow.

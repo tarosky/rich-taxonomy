@@ -3,7 +3,7 @@
 Tags: seo, category, topic cluster, pillar page, landing page  
 Contributors: tarosky, Takahashi_Fumiki, megane9988, tswallie  
 Requires at least: 6.6  
-Tested up to: 6.9  
+Tested up to: 7.0  
 Requires PHP: 8.1  
 Stable Tag: nightly  
 License: GPLv3 or later  
@@ -157,6 +157,12 @@ Please create a new ticket on the support forum.
 ### How can I contribute?
 
 Create a new [issue](https://github.com/tarosky/rich-taxonomy/issues) or send [pull requests](https://github.com/tarosky/rich-taxonomy/pulls).
+
+## Screenshots
+
+1. Edit a Taxonomy Page in the block editor, including the Taxonomy Archive Block and its settings.
+2. The Taxonomy Page shown on the front end in place of the term archive.
+3. Create a Taxonomy Page directly from the term list (Posts → Categories).
 
 ## Changelog
 

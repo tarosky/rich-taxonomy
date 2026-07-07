@@ -158,6 +158,12 @@ Please create a new ticket on the support forum.
 
 Create a new [issue](https://github.com/tarosky/rich-taxonomy/issues) or send [pull requests](https://github.com/tarosky/rich-taxonomy/pulls).
 
+## Screenshots
+
+1. Edit a Taxonomy Page in the block editor, including the Taxonomy Archive Block and its settings.
+2. The Taxonomy Page shown on the front end in place of the term archive.
+3. Create a Taxonomy Page directly from the term list (Posts → Categories).
+
 ## Changelog
 
 ### 1.2.1

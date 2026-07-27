@@ -29,14 +29,14 @@
 	"license": "LGPL-3.0-or-later",
 	"devDependencies": {
 		"@kunoichi/grab-deps": "^3.0.0",
-		"@wordpress/env": "^10.0",
-		"@wordpress/scripts": "^31.4.0",
-		"autoprefixer": "^10.4.16",
+		"@wordpress/env": "^11.11",
+		"@wordpress/scripts": "^33.0.0",
+		"autoprefixer": "^10.5.4",
 		"npm-watch": "^0.13.0",
-		"postcss": "^8.4.33",
+		"postcss": "^8.5.20",
 		"postcss-cli": "^11.0.0",
 		"husky": "^9.1.7",
-		"lint-staged": "^16.2.7",
+		"lint-staged": "^17.1.0",
 		"sass": "^1.69.7"
 	},
 	"lint-staged": {

@@ -1,0 +1,35 @@
+name: Update WordPress.org assets
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - '.wordpress-org/**'
+      - 'README.md'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  assets:
+    name: Update assets on WordPress.org
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: 7.4
+
+      - name: Generate readme.txt
+        uses: tarosky/workflows/actions/wp-readme@main
+
+      - name: Update assets and readme on WordPress.org
+        uses: 10up/action-wordpress-plugin-asset-update@stable
+        env:
+          SVN_USERNAME: ${{ secrets.WP_ORG_USERNAME_TAROSKY }}
+          SVN_PASSWORD: ${{ secrets.WP_ORG_PASSWORD_TAROSKY }}

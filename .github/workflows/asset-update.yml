@@ -1,0 +1,11 @@
+name: Update WordPress.org assets
+
+on:
+  workflow_dispatch:
+
+jobs:
+  update:
+    uses: tarosky/workflows/.github/workflows/asset-update.yml@main
+    with:
+      slug: ${{ github.event.repository.name }}
+    secrets: inherit

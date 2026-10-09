@@ -1,0 +1,31 @@
+name: WP Compat Check
+
+# WordPress本体の互換性カタログと照合し、影響があれば Issue を作成・更新する。
+# https://github.com/tarosky/workflows/wiki#wp-compat-check
+
+on:
+  schedule:
+    - cron: '0 0 * * 1' # 毎週月曜。ベータ・RC期間中の新しい変更を拾う
+  workflow_dispatch:
+    inputs:
+      to:
+        description: 更新先（例 7.2、latest）
+        default: latest
+      from:
+        description: 現在のバージョン（空なら更新先の直前のリリース）
+        default: ''
+  pull_request:
+    paths:
+      - .github/workflows/wp-compat.yml
+
+jobs:
+  check:
+    uses: tarosky/workflows/.github/workflows/wp-compat-check.yml@main
+    permissions:
+      contents: read
+      issues: write
+    with:
+      to: ${{ inputs.to || 'latest' }}
+      from: ${{ inputs.from || '' }}
+      # PR ではワークフロー自体の確認のみ（Issue は作らない）
+      dry_run: ${{ github.event_name == 'pull_request' }}

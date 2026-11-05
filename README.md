@@ -3,7 +3,7 @@
 Tags: seo, category, topic cluster, pillar page, landing page  
 Contributors: tarosky, Takahashi_Fumiki, megane9988, tswallie  
 Requires at least: 6.6  
-Tested up to: 7.0  
+Tested up to: 7.1  
 Requires PHP: 8.1  
 Stable Tag: nightly  
 License: GPLv3 or later  
@@ -165,6 +165,11 @@ Create a new [issue](https://github.com/tarosky/rich-taxonomy/issues) or send [p
 3. Create a Taxonomy Page directly from the term list (Posts → Categories).
 
 ## Changelog
+
+### 1.3.1
+
+* Fix a "doing it wrong" notice shown under `WP_DEBUG` when rendering the Term Archive block (invalid schema type `int`).
+* Confirm compatibility with WordPress 7.1.
 
 ### 1.3.0
 

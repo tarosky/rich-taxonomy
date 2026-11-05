@@ -1,0 +1,38 @@
+{
+    "$schema": "https://playground.wordpress.net/blueprint-schema.json",
+    "meta": {
+        "title": "Rich Taxonomy demo: a travel magazine category landing page",
+        "description": "The Kyoto category archive is replaced with a block-built landing page with an intro, featured areas and a list of the latest stories. The Osaka category keeps the normal archive for comparison.",
+        "author": "tarosky",
+        "categories": [
+            "Content"
+        ]
+    },
+    "landingPage": "/category/kyoto/",
+    "preferredVersions": {
+        "php": "8.2",
+        "wp": "latest"
+    },
+    "features": {
+        "networking": true
+    },
+    "steps": [
+        {
+            "step": "login"
+        },
+        {
+            "step": "installPlugin",
+            "pluginData": {
+                "resource": "wordpress.org/plugins",
+                "slug": "rich-taxonomy"
+            },
+            "options": {
+                "activate": true
+            }
+        },
+        {
+            "step": "runPHP",
+            "code": "<?php\n/**\n * Live Preview のデモデータ。\n *\n * シナリオ: 架空の旅行マガジン「Wander Japan」。カテゴリー「Kyoto」のアーカイブを Taxonomy Page（LP）に差し替え、\n * 導入文・おすすめエリア・Archive Block（3 件表示＋トグル）を見せる。比較用の「Osaka」は通常のアーカイブのまま。\n * 着地は /category/kyoto/。\n *\n * このファイルがマスター。編集したら次で blueprint.json に埋め込むこと:\n *   php <skill>/scripts/blueprint.php embed .\n */\nrequire '/wordpress/wp-load.php';\n\n// runPHP はログインユーザー無しで動く。権限チェックのある API（tax_input など）が黙って無視されるので、管理者として実行する。\nwp_set_current_user( 1 );\n\nupdate_option( 'blogname', 'Wander Japan' );\nupdate_option( 'blogdescription', 'Slow travel guides to Japanese cities' );\n\n// update_option() だけでは $wp_rewrite が古い構造のままで、最後の flush が投稿・カテゴリーのルールを書き出さない。\nglobal $wp_rewrite;\n$wp_rewrite->set_permalink_structure( '/%postname%/' );\n\n// カテゴリーで Taxonomy Page を有効にする。init は空の設定で走り終わっているので、投稿タイプとルールを登録し直す。\nupdate_option( 'rich_taxonomy_names', array( 'category' ) );\n\\Tarosky\\RichTaxonomy\\Controller\\Editor::get_instance()->register_post_type();\n\\Tarosky\\RichTaxonomy\\Controller\\TaxonomyArchiveRewrites::get_instance()->add_rewrite_rules();\n\n$kyoto = wp_insert_term( 'Kyoto', 'category', array(\n\t'slug'        => 'kyoto',\n\t'description' => 'Temples, tea houses and quiet lanes in the old capital.',\n) );\n$osaka = wp_insert_term( 'Osaka', 'category', array(\n\t'slug'        => 'osaka',\n\t'description' => 'Street food, neon and the friendliest city in Japan.',\n) );\n\n/**\n * 記事を作る。日付は現在時刻からの相対（日数）。\n *\n * @param int    $cat_id Category ID.\n * @param string $title  Title.\n * @param string $body   Body text.\n * @param int    $days   Days ago.\n */\n$create_article = function ( $cat_id, $title, $body, $days ) {\n\twp_insert_post( array(\n\t\t'post_type'     => 'post',\n\t\t'post_status'   => 'publish',\n\t\t'post_title'    => $title,\n\t\t'post_content'  => \"<!-- wp:paragraph -->\\n<p>\" . $body . \"</p>\\n<!-- /wp:paragraph -->\",\n\t\t'post_excerpt'  => $body,\n\t\t'post_date'     => wp_date( 'Y-m-d H:i:s', time() - $days * DAY_IN_SECONDS ),\n\t\t'post_category' => array( $cat_id ),\n\t) );\n};\n\n$kyoto_articles = array(\n\tarray( 'An Early Morning at Fushimi Inari', 'Beat the crowds and walk the torii gates in the blue hour before sunrise.' ),\n\tarray( 'Five Tea Houses Worth the Detour', 'From centuries-old counters to modern matcha bars tucked behind Gion.' ),\n\tarray( 'Cycling the Kamo River', 'A flat, easy route from Demachiyanagi to Shichijo with plenty of places to stop.' ),\n\tarray( 'Arashiyama Beyond the Bamboo Grove', 'Boat rides, monkey park views and a riverside lunch away from the main path.' ),\n\tarray( 'A Rainy Day in Kyoto', 'Museums, covered markets and temples that look even better in the rain.' ),\n\tarray( 'Where to Stay: Machiya Guesthouses', 'What to expect from a night in a restored wooden townhouse.' ),\n\tarray( 'Eating Your Way Through Nishiki Market', 'Pickles, grilled skewers and soy milk doughnuts, stall by stall.' ),\n);\nforeach ( $kyoto_articles as $index => $article ) {\n\t$create_article( (int) $kyoto['term_id'], $article[0], $article[1], 3 + $index * 6 );\n}\n\n$osaka_articles = array(\n\tarray( 'Takoyaki Crawl in Dotonbori', 'Six stalls, one evening, and how to tell the good ones from the tourist traps.' ),\n\tarray( 'A Day Trip to the Osaka Castle Park', 'Plum groves, the moat walk and the best viewpoint for photos.' ),\n\tarray( 'Shinsekai After Dark', 'Retro arcades, kushikatsu and the glow of Tsutenkaku tower.' ),\n);\nforeach ( $osaka_articles as $index => $article ) {\n\t$create_article( (int) $osaka['term_id'], $article[0], $article[1], 5 + $index * 9 );\n}\n\n// Kyoto の LP。プラグインの API で下書きを作り（ターム ID のメタも付く）、本文を入れて公開する。\n$page_id = \\Tarosky\\RichTaxonomy\\Controller\\Setting::get_instance()->draft_for_term( get_term( (int) $kyoto['term_id'], 'category' ) );\n$content = <<<'HTML'\n<!-- wp:paragraph {\"fontSize\":\"large\"} -->\n<p class=\"has-large-font-size\">Kyoto rewards the slow traveler. This guide collects everything we have written about the city, from dawn at the shrines to late-night bowls of ramen.</p>\n<!-- /wp:paragraph -->\n\n<!-- wp:heading -->\n<h2 class=\"wp-block-heading\">Where to Start</h2>\n<!-- /wp:heading -->\n\n<!-- wp:columns -->\n<div class=\"wp-block-columns\"><!-- wp:column -->\n<div class=\"wp-block-column\"><!-- wp:heading {\"level\":3} -->\n<h3 class=\"wp-block-heading\">Higashiyama</h3>\n<!-- /wp:heading -->\n\n<!-- wp:paragraph -->\n<p>Stone-paved slopes, Kiyomizu-dera and the lantern-lit lanes of Gion.</p>\n<!-- /wp:paragraph --></div>\n<!-- /wp:column -->\n\n<!-- wp:column -->\n<div class=\"wp-block-column\"><!-- wp:heading {\"level\":3} -->\n<h3 class=\"wp-block-heading\">Arashiyama</h3>\n<!-- /wp:heading -->\n\n<!-- wp:paragraph -->\n<p>Bamboo groves, river boats and mountain views on the western edge of the city.</p>\n<!-- /wp:paragraph --></div>\n<!-- /wp:column -->\n\n<!-- wp:column -->\n<div class=\"wp-block-column\"><!-- wp:heading {\"level\":3} -->\n<h3 class=\"wp-block-heading\">Central Kyoto</h3>\n<!-- /wp:heading -->\n\n<!-- wp:paragraph -->\n<p>Nishiki Market, the Imperial Palace and the best coffee shops in town.</p>\n<!-- /wp:paragraph --></div>\n<!-- /wp:column --></div>\n<!-- /wp:columns -->\n\n<!-- wp:heading -->\n<h2 class=\"wp-block-heading\">Latest Kyoto Stories</h2>\n<!-- /wp:heading -->\n\n<!-- wp:rich-taxonomy/term-archive-block {\"number\":3,\"toggle\":\"Show more stories\"} /-->\nHTML;\nwp_update_post( array(\n\t'ID'           => $page_id,\n\t'post_title'   => 'Kyoto Travel Guide',\n\t'post_status'  => 'publish',\n\t'post_content' => $content,\n) );\n\n// 不要な既定コンテンツを片付ける。\nwp_delete_post( 1, true ); // Hello world!\nwp_delete_post( 2, true ); // Sample Page\n\n// 新しいパーマリンク構造とベース URL 用のルールを反映する。\nflush_rewrite_rules();\n"
+        }
+    ]
+}

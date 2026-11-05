@@ -25,7 +25,7 @@ class TermApi extends RestApiPattern {
 				'methods'             => 'POST',
 				'args'                => [
 					'term_id' => [
-						'type'              => 'int',
+						'type'              => 'integer',
 						'description'       => _x( 'Term ID to create post.', 'rest-param', 'rich-taxonomy' ),
 						'validate_callback' => [ $this, 'validate_term_id' ],
 					],

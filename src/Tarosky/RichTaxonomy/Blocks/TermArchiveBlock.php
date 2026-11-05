@@ -33,7 +33,7 @@ class TermArchiveBlock extends DynamicBlockPattern {
 				'default' => '',
 			],
 			'number' => [
-				'type'    => 'int',
+				'type'    => 'integer',
 				'default' => 0,
 			],
 		];

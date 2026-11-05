@@ -29,7 +29,7 @@ class PostApi extends RestApiPattern {
 				'args'                => [
 					'post_id' => [
 						'required'          => true,
-						'type'              => 'int',
+						'type'              => 'integer',
 						'description'       => _x( 'Post ID', 'rest-param', 'rich-taxonomy' ),
 						'validate_callback' => [ $this, 'validate_post' ],
 					],
